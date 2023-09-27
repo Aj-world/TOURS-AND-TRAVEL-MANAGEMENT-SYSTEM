@@ -1,0 +1,79 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+
+<head>
+	<meta charset="UTF-8">
+	<title>Login System</title>
+	<link href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/css/bootstrap.min.css" rel="stylesheet">
+</head>
+
+<body>
+
+	<nav class="navbar navbar-expand-lg navbar-dark bg-dark">
+		<div class="container-fluid">
+			<a class="navbar-brand">Aj-World Toor and Travels Management System</a>
+			<button class="navbar-toggler" type="button" data-bs-toggle="collapse"
+				data-bs-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false"
+				aria-label="Toggle navigation">
+				<span class="navbar-toggler-icon"></span>
+			</button>
+		</div>
+	</nav>
+
+	<br /><br />
+	<div class="container">
+		<div class="row">
+			<div class="col-md-6 offset-md-3">
+
+
+				<div class="card">
+					<div class="card-header">
+						<h2 class="text-center">Admin Resistation Form</h2>
+					</div>
+					<div class="card-body">
+						<form method="post" th:action="@{/Aj/Resistation_process_Admin}" class="form-horizontal">
+
+							<div class="form-group mb-3">
+								<label class="control-label" for="name"> Firstname</label>
+								<input type="text" id="name" name="UserName1" class="form-control"
+									placeholder="Enter your Firstname"required />
+							</div>
+
+							<div class="form-group mb-3">
+								<label class="control-label" for="email"> Email</label>
+								<input type="text" id="email" name="email" class="form-control"
+									placeholder="Enter email address"required />
+							</div>
+
+							<div class="form-group mb-3">
+								<label class="control-label" for="password"> Password</label>
+								<input type="password" id="password" name="UserPassword" class="form-control"
+									placeholder="Enter password" required/>
+							</div>
+
+							<div class="form-group mb-3">
+								<label class="control-label" for="R-password"> Retype Password</label>
+								<input type="password" id="R-password"  class="form-control"
+									placeholder="Enter password again" required />
+						  
+							
+							<input type="text"   placeholder="Country Code" value="+91" size="2" />
+							<input type="text" name="UserPhoneNO"   placeholder="phone no." size="10"  required> 
+						    
+
+							<div class="form-group mb-3">
+								<button type="submit" class="btn btn-primary">Submit</button>
+							</div>
+							
+							<input type="hidden" name="UserRole" value="ADMIN">
+                           
+
+						</form>
+					</div>
+				</div>
+			</div>
+		</div>
+	</div>
+</body>
+
+</html>

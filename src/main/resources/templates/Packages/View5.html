@@ -1,0 +1,226 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+
+<head>
+	<meta charset="UTF-8">
+
+	<meta http-equiv="X-UA-Compatible" content="IE=edge">
+	<meta name="viewport" content="width=device-width, initial-scale=1.0">
+	<title>about</title>
+
+	<!-- swiper css link  -->
+	<link rel="stylesheet" href="https://unpkg.com/swiper@7/swiper-bundle.min.css" />
+
+	<!-- font awesome cdn link  -->
+	<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css">
+
+	<!-- custom css file link  -->
+	<link th:href="@{/css/style.css}" rel="stylesheet" />
+</head>
+
+<body>
+
+	<!-- header section starts  -->
+
+	<section class="header">
+
+		<a href="home.html" class="logo">travel.</a>
+
+		<nav class="navbar">
+			<a href="/home_Page">home</a>
+			<a href="#">about</a>
+			<a href="/Package_Page">package</a>
+			<a href="/Book_Page">book</a>
+			<a href="/User_about_Page"><img id="Aj" src="images/pic-2.png"></a>
+
+		</nav>
+
+		<div id="menu-btn" class="fas fa-bars"></div>
+
+	</section>
+
+	<!-- header section ends -->
+
+	<section class="home">
+
+		<div class="swiper home-slider">
+
+			<div class="swiper-wrapper">
+
+				<div class="swiper-slide slide"
+					style="background:url(images/denys-nevozhai-guNIjIuUcgY-unsplash.jpg) no-repeat">
+					<div class="content">
+						<span>explore, discover, travel</span>
+						<h3>discover the new places</h3>
+						<a href="package.html" class="btn">discover more</a>
+							<h1> Special price 50% off Rs. 180,000 </h1>
+							
+							<h1>  Only pay Rs. 80,000 </h1>
+					</div>
+				</div>
+
+				<div class="swiper-slide slide"
+					style="background:url(images/bruno-van-der-kraan--0QMJQfDD50-unsplash.jpg) no-repeat">
+					<div class="content">
+						<span>explore, discover, travel</span>
+						<h3>make your tour worthwhile</h3>
+						<a href="package.html" class="btn">discover more</a>
+						<h1> Special price 50% off Rs. 180,000 </h1>
+							
+							<h1>  Only pay Rs. 80,000 </h1>
+					</div>
+				</div>
+
+				<div class="swiper-slide slide"
+					style="background:url(images/lance-asper-5Kp5LVjINgI-unsplash.jpg) no-repeat">
+					<div class="content">
+						<span>explore, discover, travel</span>
+						<h3>travel arround the world</h3>
+						<a href="package.html" class="btn">discover more</a>
+						<h1> Special price 50% off Rs. 180,000 </h1>
+							
+							<h1>  Only pay Rs. 80,000 </h1>
+					</div>
+				</div>
+
+
+
+			</div>
+
+			<div class="swiper-button-next"></div>
+			<div class="swiper-button-prev"></div>
+
+		</div>
+
+	</section>
+
+
+<!-- booking section starts  -->
+
+<section class="booking">
+
+   <h1 class="heading-title">book your trip!</h1>
+
+   <form action="Packge_process" method="post" class="book-form">
+
+      <div class="flex">
+         <div class="inputBox">
+            <span>name :</span>
+            <input type="text" placeholder="enter your name" name="name" required>
+         </div>
+         <div class="inputBox">
+            <span>email :</span>
+            <input type="email" placeholder="enter your email" name="email" required>
+         </div>
+         <div class="inputBox">
+            <span>phone :</span>
+            <input type="number" placeholder="enter your number" name="phone" required>
+         </div>
+         <div class="inputBox">
+            <span>address :</span>
+            <input type="text" placeholder="enter your address" name="address" required>
+         </div>
+         <div class="inputBox">
+            <span>where to :</span>
+            <input type="text" placeholder="place you want to visit" name="location" required>
+         </div>
+         <div class="inputBox">
+            <span>how many :</span>
+            <input type="number" placeholder="number of guests" name="guests" required>
+         </div>
+         <div class="inputBox">
+            <span>arrivals :</span>
+            <input type="date" name="ArivalDate" required>
+         </div>
+         <div class="inputBox">
+            <span>leaving :</span>
+            <input type="date" name="LeavingDate" required>
+         </div>
+      </div>
+      
+      <input type="hidden" value="80000" name="price">
+
+      <input  type="submit" value="submit" id="btn" name="send">
+
+   </form>
+
+</section>
+<!-- booking section ends -->
+
+
+
+	 
+
+
+
+
+
+	<!-- footer section starts  -->
+
+	<section class="footer">
+
+		<div class="box-container">
+
+			<div class="box">
+				<h3>quick links</h3>
+				<a href="home.html"> <i class="fas fa-angle-right"></i> home</a>
+				<a href="about.html"> <i class="fas fa-angle-right"></i> about</a>
+				<a href="package.html"> <i class="fas fa-angle-right"></i> package</a>
+				<a href="book.html"> <i class="fas fa-angle-right"></i> book</a>
+			</div>
+
+			<div class="box">
+				<h3>extra links</h3>
+				<a href="#"> <i class="fas fa-angle-right"></i> ask questions</a>
+				<a href="about.html"> <i class="fas fa-angle-right"></i> about us</a>
+				<a href="#"> <i class="fas fa-angle-right"></i> privacy policy</a>
+				<a href="#"> <i class="fas fa-angle-right"></i> terms of use</a>
+			</div>
+
+			<div class="box">
+				<h3>contact info</h3>
+				<a href="#"> <i class="fas fa-phone"></i> +123-456-7890 </a>
+				<a href="#"> <i class="fas fa-phone"></i> +111-222-3333 </a>
+				<a href="#"> <i class="fas fa-envelope"></i> nainabaghel43@gmail.com </a>
+				<a href="#"> <i class="fas fa-map"></i> Chandigarh, India - 400104 </a>
+			</div>
+
+			<div class="box">
+				<h3>follow us</h3>
+				<a href="#"> <i class="fab fa-facebook-f"></i> facebook </a>
+				<a href="#"> <i class="fab fa-twitter"></i> twitter </a>
+				<a href="#"> <i class="fab fa-instagram"></i> instagram </a>
+				<a href="#"> <i class="fab fa-linkedin"></i> linkedin </a>
+			</div>
+
+		</div>
+
+		<div class="credit"> created by <span>Students of CU </span> | all rights reserved! </div>
+
+	</section>
+
+	<!-- footer section ends -->
+
+
+
+
+
+
+
+
+
+	<!-- swiper js link  -->
+	<script src="https://unpkg.com/swiper@7/swiper-bundle.min.js"></script>
+
+	<!-- custom js file link  -->
+	<script src="https://checkout.razorpay.com/v1/checkout.js"></script>
+
+	<script th:src="@{/js/script.js}"></script>
+	<script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.7.1/jquery.min.js"
+		integrity="sha512-v2CJ7UaYy4JwqLDIrZUI/4hqeoQieOmAZNXBeQyjo21dadnwR+8ZaIJVT8EE2iyI61OV8e6M8PP2/4hpQINQ/g=="
+		crossorigin="anonymous" referrerpolicy="no-referrer"></script>
+
+
+</body>
+
+</html>

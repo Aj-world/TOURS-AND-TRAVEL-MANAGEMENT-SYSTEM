@@ -1,0 +1,35 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+<meta charset="ISO-8859-1">
+<title>Insert title here</title>
+   <style>
+	  
+	   body {  
+    background-color: black;  
+    	color: aliceblue;
+} 
+ 
+   </style>
+
+
+</head>
+<body>
+
+<h1>404 ! error</h1>
+
+<div class="cloak__wrapper">
+  <div class="cloak__container">
+    <div class="cloak"></div>
+  </div>
+ 
+
+<div id="rror">
+        <h1>Oops! Something Went Wrong</h1>
+        <h3>We apologize for the inconvenience. The page you are looking for may be temporarily unavailable.</h3>
+        <h3>Please try again later.</h3>
+        <h1 th:text="${error}"></h1>
+    </div>
+
+</body>
+</html>
