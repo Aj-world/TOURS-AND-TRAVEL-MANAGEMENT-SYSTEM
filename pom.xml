@@ -102,13 +102,7 @@
 
 	<build>
 		<plugins>
-			<plugin>
-  <artifactId>maven-surefire-plugin</artifactId>
-  
-  <configuration>
-    <useFile>false</useFile>
-  </configuration>
-</plugin>
+			
 			 
 			<plugin>
 				
