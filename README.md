@@ -1,9 +1,9 @@
 # Tours and Travel Management System
 
-![Java](https://img.shields.io/badge/Java-17-orange)
+![Java](https://img.shields.io/badge/Java-21-orange)
 ![Spring Boot](https://img.shields.io/badge/SpringBoot-3.x-brightgreen)
-![Spring Security](https://img.shields.io/badge/Spring%20Security-JWT-blue)
-![Database](https://img.shields.io/badge/Database-MySQL-blue)
+![Spring Security](https://img.shields.io/badge/Spring%20Security-Authentication-blue)
+![Database](https://img.shields.io/badge/Database-H2%20%7C%20MySQL-blue)
 ![Build Tool](https://img.shields.io/badge/Build-Maven-red)
 ![Payment](https://img.shields.io/badge/Payment-Razorpay-purple)
 ![Architecture](https://img.shields.io/badge/Architecture-Server--Side--Rendering-yellow)
@@ -17,12 +17,33 @@
 
 # Project Description
 
-The **Tours and Travel Management System** is a full-stack travel booking web application developed using **Spring Boot, Spring Security, JWT Authentication, Razorpay Payment Gateway, MySQL, and Thymeleaf**.
+The **Tours and Travel Management System** is a full-stack travel booking web application developed using **Spring Boot, Spring Security, Razorpay Payment Gateway, JPA/Hibernate, and Thymeleaf**.
 
-The platform allows users to explore travel packages, securely book tours, and complete online payments.
-Administrators can manage packages, bookings, users, and payments through a dedicated admin dashboard.
+The platform allows users to explore travel packages, create bookings, and securely complete payments.  
+Administrators can manage travel packages, users, bookings, and payment records through a dedicated admin interface.
 
-This project demonstrates real-world backend development concepts such as secure authentication, payment gateway integration, database management, MVC architecture, and server-side rendering.
+This project demonstrates important backend development concepts such as:
+
+- MVC architecture
+- Secure authentication with Spring Security
+- Payment gateway integration
+- Database management using JPA/Hibernate
+- Server-side rendering using Thymeleaf
+
+---
+
+# Project Status
+
+This repository contains a **legacy academic project that has been stabilized and updated**.
+
+Recent updates include:
+
+- Fixing Spring Security configuration issues
+- Resolving runtime startup problems
+- Updating dependencies for **Spring Boot 3**
+- Organizing project architecture (DTO, Service, Repository)
+- Improving payment processing flow
+- Adding exception handling
 
 ---
 
@@ -30,66 +51,69 @@ This project demonstrates real-world backend development concepts such as secure
 
 ## Backend
 
-* Java 17
-* Spring Boot 3
-* Spring Security
-* JWT Authentication (JJWT)
-* Spring Data JPA
-* Hibernate ORM
+- Java 21
+- Spring Boot 3
+- Spring Security
+- Spring Data JPA
+- Hibernate ORM
 
 ## Frontend
 
-* Thymeleaf
-* HTML5
-* CSS3
-* JavaScript
+- Thymeleaf
+- HTML5
+- CSS3
+- JavaScript
 
 ## Database
 
-* MySQL
+- H2 Database (Development)
+- MySQL Compatible Configuration
 
 ## Payment Integration
 
-* Razorpay Payment Gateway
+- Razorpay Payment Gateway
 
 ## Build Tool
 
-* Maven
+- Maven
 
 ## Development Tools
 
-* Lombok
-* Spring Boot DevTools
+- IntelliJ IDEA / Eclipse
+- Lombok
+- Spring Boot DevTools
+- Git & GitHub
 
 ---
 
 # Project Overview
 
-The application simplifies the process of travel package booking and management through a secure and structured platform.
+The application simplifies travel package booking and management through a secure web platform.
 
 Users can:
 
-* Register and login securely
-* Browse available travel packages
-* View detailed package information
-* Book travel packages
-* Make secure online payments
+- Register and login
+- Browse travel packages
+- View detailed package information
+- Book travel packages
+- Complete secure online payments
+- Track booking status
 
 Administrators can:
 
-* Manage travel packages
-* Manage users
-* Monitor bookings
-* Track payments
-* Control system access using role-based authorization
+- Manage travel packages
+- Manage users
+- Monitor bookings
+- Track payments
+- Control system access using role-based authorization
 
 ---
 
 # Server-Side Rendering Architecture
 
-This application follows a **Server-Side Rendering (SSR)** architecture using **Spring Boot and Thymeleaf**.
+The application follows **Server-Side Rendering (SSR)** using **Spring Boot and Thymeleaf**.
 
-Instead of rendering pages in the browser using JavaScript frameworks, the HTML views are generated on the server and delivered directly to the client.
+Instead of rendering pages using frontend frameworks, the HTML pages are generated on the server.
 
 ### Rendering Flow
 
@@ -100,19 +124,21 @@ Spring Boot Controller
         ↓
 Service Layer (Business Logic)
         ↓
-Database Access using JPA
+Repository Layer (JPA)
+        ↓
+Database
         ↓
 Thymeleaf Template Engine
         ↓
-Rendered HTML sent to browser
+Rendered HTML returned to browser
 ```
 
 ### Advantages
 
-* Faster initial page load
-* SEO-friendly pages
-* Secure server-side processing
-* Simplified frontend logic
+- Faster initial page load
+- SEO-friendly pages
+- Secure server-side processing
+- Simplified frontend logic
 
 ---
 
@@ -120,54 +146,24 @@ Rendered HTML sent to browser
 
 ## User Features
 
-* User Registration and Login
-* Secure JWT Authentication
-* Browse Travel Packages
-* View Package Details
-* Online Booking System
-* Razorpay Payment Integration
-* Booking Confirmation
+- User Registration and Login
+- Secure authentication using Spring Security
+- Browse travel packages
+- View package details
+- Online booking system
+- Razorpay payment integration
+- Booking confirmation
 
 ---
 
 ## Admin Features
 
-* Admin Dashboard
-* Travel Package Management
-* Booking Management
-* User Management
-* Payment Monitoring
-* Role-Based Access Control
-
----
-
-# Security Implementation
-
-Security is implemented using **Spring Security with JWT Authentication**.
-
-### Authentication Flow
-
-```
-User Login
-      ↓
-Spring Security validates credentials
-      ↓
-JWT Token generated
-      ↓
-Token returned to client
-      ↓
-Client sends token in Authorization header
-      ↓
-Server validates token for each request
-```
-
-### Authorization Header Example
-
-```
-Authorization: Bearer <JWT_TOKEN>
-```
-
-This ensures **secure and stateless authentication**.
+- Admin dashboard
+- Travel package management
+- Booking management
+- User management
+- Payment monitoring
+- Role-based access control
 
 ---
 
@@ -186,10 +182,8 @@ User completes payment
         ↓
 Payment verified by backend
         ↓
-Booking confirmation stored in database
+Booking confirmed and stored in database
 ```
-
-This demonstrates **third-party API integration in a Spring Boot application**.
 
 ---
 
@@ -207,10 +201,10 @@ Controller Layer
 Service Layer
         │
         ▼
-Repository (DAO) Layer
+Repository Layer
         │
         ▼
-MySQL Database
+Database
 ```
 
 ---
@@ -222,14 +216,14 @@ src
  └── main
      ├── java
      │   └── com
-     │       └── example
-     │           ├── controller
-     │           ├── service
-     │           ├── dao
-     │           ├── entity
-     │           ├── security
-     │           ├── dto
-     │           └── exception
+     │       └── Aj
+     │           ├── Controller
+     │           ├── Service
+     │           ├── Repository
+     │           ├── Entity
+     │           ├── DTO
+     │           ├── SecurityConfiguration
+     │           └── Exception
      │
      └── resources
          ├── static
@@ -239,9 +233,7 @@ src
          │
          ├── templates
          │   ├── Admin
-         │   ├── Authentication
-         │   ├── Packages
-         │   └── User
+         │   ├── User
          │
          └── application.properties
 ```
@@ -254,27 +246,15 @@ A static preview of the application's **HTML interface** is available on Netlify
 
 Netlify Preview:
 
+```
 https://your-netlify-link.netlify.app
+```
 
 Note:
+
 This preview only displays the **frontend UI**.
-Full functionality such as authentication, booking logic, payment processing, and database operations requires the **Spring Boot backend server**.
 
----
-
-# Application Screenshots
-
-You can add UI screenshots for quick preview.
-
-Example folder structure:
-
-```
-screenshots
- ├── home.png
- ├── packages.png
- ├── booking.png
- └── admin-dashboard.png
-```
+Full functionality such as authentication, booking logic, payment processing, and database operations requires the **Spring Boot backend server running locally**.
 
 ---
 
@@ -282,10 +262,10 @@ screenshots
 
 ## Prerequisites
 
-* Java 17+
-* Maven
-* MySQL Server
-* IDE (IntelliJ / Eclipse / VS Code)
+- Java 21+
+- Maven
+- MySQL Server (optional)
+- IDE (IntelliJ / Eclipse)
 
 ---
 
@@ -297,22 +277,10 @@ git clone https://github.com/Aj-world/TOURS-AND-TRAVEL-MANAGEMENT-SYSTEM.git
 
 ---
 
-## Navigate to the Project
+## Navigate to Project
 
 ```
 cd TOURS-AND-TRAVEL-MANAGEMENT-SYSTEM
-```
-
----
-
-## Configure Database
-
-Update the database configuration in **application.properties**.
-
-```
-spring.datasource.url=jdbc:mysql://localhost:3306/travel_db
-spring.datasource.username=your_username
-spring.datasource.password=your_password
 ```
 
 ---
@@ -328,7 +296,33 @@ mvn spring-boot:run
 Application will start at:
 
 ```
-http://localhost:8080
+http://localhost:8081
+```
+
+---
+
+## H2 Database Console
+
+```
+http://localhost:8081/h2-console
+```
+
+Database URL
+
+```
+jdbc:h2:mem:testdb
+```
+
+Username
+
+```
+sa
+```
+
+Password
+
+```
+(empty)
 ```
 
 ---
@@ -339,47 +333,22 @@ This project was developed as part of the **Master of Computer Applications (MCA
 
 It is a **certified college project**, and supporting academic documents are available including:
 
-* Project approval letter
-* Academic project report
-* College certification documents
-
-These documents verify the **official academic submission of this project**.
+- Academic project report
+- College certification
+- Project approval documentation
 
 ---
 
 # Future Improvements
 
-* REST API support
-* Docker containerization
-* Pagination and sorting
-* Email notifications for booking confirmation
-* API documentation using Swagger
+Possible future enhancements:
 
----
-
-# Learning Outcomes
-
-Through this project the following concepts were implemented:
-
-* Spring Boot web application development
-* Secure JWT authentication
-* Payment gateway integration
-* Database management using JPA/Hibernate
-* Server-side rendering with Thymeleaf
-* Role-based authorization using Spring Security
-
----
-
-# Contributing
-
-Contributions are welcome.
-
-If you would like to improve this project:
-
-1. Fork the repository
-2. Create a new feature branch
-3. Commit your changes
-4. Submit a pull request
+- REST API support
+- Docker containerization
+- Pagination and sorting
+- Email notifications for booking confirmation
+- API documentation using Swagger
+- Cloud deployment
 
 ---
 
@@ -387,10 +356,10 @@ If you would like to improve this project:
 
 **Abinash Nayak**
 
-Java Backend Developer
+Java Backend Developer  
 MCA Graduate
 
-GitHub
+GitHub  
 https://github.com/Aj-world
 
 ---
