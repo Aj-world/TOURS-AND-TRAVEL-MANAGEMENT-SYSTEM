@@ -14,19 +14,7 @@
 ![GitHub license](https://img.shields.io/github/license/Aj-world/TOURS-AND-TRAVEL-MANAGEMENT-SYSTEM)
 
 ---
-# Application Screenshots
 
-### Home Page
-![Home Page](screenshots/home.png)
-
-### Travel Packages
-![Packages](screenshots/packages.png)
-
-### Booking Page
-![Booking](screenshots/booking.png)
-
-### Admin Dashboard
-![Admin](screenshots/admin-dashboard.png)
 # Project Description
 
 The **Tours and Travel Management System** is a full-stack travel booking web application developed using **Spring Boot, Spring Security, Razorpay Payment Gateway, JPA/Hibernate, and Thymeleaf**.
