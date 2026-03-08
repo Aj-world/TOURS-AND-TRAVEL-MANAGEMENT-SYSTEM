@@ -377,7 +377,19 @@ Key backend concepts demonstrated:
 - Database persistence with JPA/Hibernate
 
 The repository is maintained as a **stable legacy academic project** showcasing backend development practices.
+# Application Screenshots
 
+### Home Page
+![Home Page](screenshots/home.png)
+
+### Travel Packages
+![Packages](screenshots/packages.png)
+
+### Booking Page
+![Booking](screenshots/booking.png)
+
+### Admin Dashboard
+![Admin](screenshots/admin-dashboard.png)
 # Author
 
 **Abinash Nayak**
