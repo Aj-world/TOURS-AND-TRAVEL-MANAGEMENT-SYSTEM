@@ -26,7 +26,6 @@ public class PackageController {
 	@PreAuthorize("hasAuthority('USER')")
 	@GetMapping("/View2")
 	public String h2() {
-		System.out.println("run");
 		return "/Packages/View2";
 	}
 	
@@ -34,7 +33,6 @@ public class PackageController {
 	@PreAuthorize("hasAuthority('USER')")
 	@GetMapping("/View3")
 	public String h3() {
-		System.out.println("run");
 		return "/Packages/View3";
 	}
 	
@@ -42,7 +40,6 @@ public class PackageController {
 	@PreAuthorize("hasAuthority('USER')")
 	@GetMapping("/View4")
 	public String h4() {
-		System.out.println("run");
 		return "/Packages/View4";
 	}
 	
@@ -50,7 +47,6 @@ public class PackageController {
 	@PreAuthorize("hasAuthority('USER')")
 	@GetMapping("/View5")
 	public String h5() {
-		System.out.println("run");
 		return "/Packages/View5";
 	}
 	
@@ -58,7 +54,6 @@ public class PackageController {
 	@PreAuthorize("hasAuthority('USER')")
 	@GetMapping("/View6")
 	public String h6() {
-		System.out.println("run");
 		return "/Packages/View6";
 	}
 	
@@ -66,7 +61,6 @@ public class PackageController {
 	@PreAuthorize("hasAuthority('USER')")
 	@GetMapping("/View7")
 	public String h7() {
-		System.out.println("run");
 		return "/Packages/View7";
 	}
 	
@@ -74,7 +68,6 @@ public class PackageController {
 	@PreAuthorize("hasAuthority('USER')")
 	@GetMapping("/View8")
 	public String h8() {
-		System.out.println("run");
 		return "/Packages/View8";
 	}
 	
@@ -82,7 +75,6 @@ public class PackageController {
 	@PreAuthorize("hasAuthority('USER')")
 	@GetMapping("/View9")
 	public String h9() {
-		System.out.println("run");
 		return "/Packages/View9";
 	}
 	
@@ -90,7 +82,6 @@ public class PackageController {
 	@PreAuthorize("hasAuthority('USER')")
 	@GetMapping("/View91")
 	public String h91() {
-		System.out.println("run");
 		return "/Packages/View91";
 	}
 	
@@ -98,7 +89,6 @@ public class PackageController {
 	@PreAuthorize("hasAuthority('USER')")
 	@GetMapping("/View92")
 	public String h92() {
-		System.out.println("run");
 		return "/Packages/View92";
 	}
 	
@@ -106,10 +96,13 @@ public class PackageController {
 	@PreAuthorize("hasAuthority('USER')")
 	@GetMapping("/View93")
 	public String h93() {
-		System.out.println("run");
 		return "/Packages/View93";
 	}
-	
-	 
+
+	@PreAuthorize("hasAuthority('USER')")
+	@GetMapping("/Book_Page")
+	public String bookPage() {
+		return "/User/Book_Page";
+	}
 
 }

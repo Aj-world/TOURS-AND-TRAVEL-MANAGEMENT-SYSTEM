@@ -1,57 +1,44 @@
 package com.Aj.Service;
 
-import java.util.ArrayList;
-
-
-
-
 import java.util.List;
 
-import org.springframework.beans.factory.annotation.Autowired;
- 
 import org.springframework.stereotype.Service;
 
-import com.Aj.Dao.UserDao;
 import com.Aj.Entity.User;
+import com.Aj.Exception.ResourceNotFoundException;
+import com.Aj.Repository.UserRepository;
 
 @Service
 public class UserService {
-	@Autowired
-	private UserDao userDao;
 
-	 
-	
-	public User saveUser(User uEntity) {
-		
-		 
+	private final UserRepository userRepository;
 
-		return this.userDao.save(uEntity );
+	public UserService(UserRepository userRepository) {
+		this.userRepository = userRepository;
 	}
 
-	
+	public User saveUser(User user) {
+		return userRepository.save(user);
+	}
+
 	public List<User> getAllUser() {
-		
-		List<User> userRecords = new ArrayList<>();
-		this.userDao.findAll().forEach(userRecords::add);
-
-		return userRecords;
-
+		return userRepository.findAll();
 	}
+
 	public User getUserby_id(int id) {
-		
-		return	this.userDao.findById(id).get();
-			
-		}
+		return userRepository.findById(id).orElseThrow(() -> new ResourceNotFoundException("User not found: " + id));
+	}
+
 	public User updateUser(int id) {
-		
-		return	this.userDao.findById(id).get();
-			
+		return userRepository.findById(id).orElseThrow(() -> new ResourceNotFoundException("User not found: " + id));
+	}
+
+	public int deleteUser(int id) {
+		if (!userRepository.existsById(id)) {
+			throw new ResourceNotFoundException("User not found: " + id);
 		}
-		
-		public int deleteUser(int id) {
-			
-			  this.userDao.deleteById(id);
-			  return 1;
-		}
+		userRepository.deleteById(id);
+		return 1;
+	}
 
 }

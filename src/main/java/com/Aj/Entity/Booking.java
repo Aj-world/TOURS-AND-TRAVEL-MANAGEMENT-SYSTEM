@@ -1,32 +1,54 @@
 package com.Aj.Entity;
 
-import java.sql.Date;
+import java.time.LocalDate;
 
+import jakarta.persistence.CascadeType;
+import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
+import jakarta.persistence.EnumType;
+import jakarta.persistence.Enumerated;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
+import jakarta.persistence.JoinColumn;
 import jakarta.persistence.ManyToOne;
 import jakarta.persistence.OneToOne;
+import jakarta.persistence.Table;
 import lombok.Data;
+
 @Entity
+@Table(name = "bookings")
 @Data
 public class Booking {
+
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	@Id
 	private int BookId;
-	private int guest;
-	private Date ArivalDate;
-	private Date LeavingDate;
- 
-	@OneToOne
-	private Package package1;
-	
-	@OneToOne
-	private Pament pament;
-	
-	@ManyToOne
-	private User user;
 
-	
+	@Column(nullable = false)
+	private int guest;
+
+	@Column(nullable = false)
+	private LocalDate ArivalDate;
+
+	@Column(nullable = false)
+	private LocalDate LeavingDate;
+
+	@Column(nullable = false)
+	private int totalAmount;
+
+	@Enumerated(EnumType.STRING)
+	@Column(nullable = false, length = 20)
+	private BookingStatus status = BookingStatus.PENDING_PAYMENT;
+
+	@OneToOne(cascade = CascadeType.ALL, orphanRemoval = true)
+	@JoinColumn(name = "package_id", unique = true)
+	private Package package1;
+
+	@OneToOne(mappedBy = "booking", cascade = CascadeType.ALL, orphanRemoval = true)
+	private Payment payment;
+
+	@ManyToOne
+	@JoinColumn(name = "user_id", nullable = false)
+	private User user;
 }

@@ -87,8 +87,16 @@ if (loadMoreBtn) {
 
 const paymentStart = () => {
 	console.log("payment started");
+	const bookingIdElement = document.getElementById('bookingId');
+	const keyElement = document.getElementById('razorpayKeyId');
+	if (!bookingIdElement || !bookingIdElement.value) {
+		alert("Booking id missing");
+		return;
+	}
+	const bookingId = parseInt(bookingIdElement.value, 10);
+	const razorpayKey = keyElement && keyElement.value ? keyElement.value : "rzp_test_Obz1IQlDtOvh1b";
 
-	fetch('Packge_process2')
+	fetch(`Packge_process2?bookingId=${bookingId}`)
 		.then(response => {
 			if (!response.ok) {
 				throw new Error('Network response was not ok');
@@ -100,8 +108,8 @@ const paymentStart = () => {
 			 
 			$.ajax(
 				{
-					url: '/createOrder', // It should be "url" instead of "URL"
-					data: JSON.stringify({ amount: amount, info: "order info" }),
+					url: '/createOrder',
+					data: JSON.stringify({ bookingId: bookingId }),
 					contentType: "application/json",
 					type: "post",
 					dataType: "json",
@@ -110,17 +118,32 @@ const paymentStart = () => {
 			
 						if (response.status == "created") {
 							var options = {
-								"key": "rzp_test_Obz1IQlDtOvh1b", // Enter the Key ID generated from the Dashboard
-								"amount": response.amount, // Amount is in currency subunits. Default currency is INR. Hence, 50000 refers to 50000 paise
+								"key": razorpayKey,
+								"amount": response.amount,
 								"currency": "INR",
 								"name": "Aj world",
 								"description": "Test Transaction",
 								"image": "https://as2.ftcdn.net/v2/jpg/03/35/08/79/1000_F_335087931_YPDWx4rfylDAJ6nsQaqE1C6KNN7SNhGm.jpg",
-								"order_id": response.id, //This is a sample Order ID. Pass the `id` obtained in the response of Step 1
+								"order_id": response.id,
 								"handler": function(response) {
-									alert(response.razorpay_payment_id);
-									alert(response.razorpay_order_id);
-									alert(response.razorpay_signature)
+									$.ajax({
+										url: '/payment/verify',
+										data: JSON.stringify({
+											bookingId: bookingId,
+											razorpayOrderId: response.razorpay_order_id,
+											razorpayPaymentId: response.razorpay_payment_id,
+											razorpaySignature: response.razorpay_signature
+										}),
+										contentType: "application/json",
+										type: "post",
+										dataType: "json",
+										success: function() {
+											window.location.href = `/Pament_Page_process?bookingId=${bookingId}`;
+										},
+										error: function() {
+											alert("Payment verification failed");
+										}
+									});
 								},
 								"prefill": {
 									"name": " ",

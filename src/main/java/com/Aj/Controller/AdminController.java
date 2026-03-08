@@ -4,6 +4,7 @@ import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.access.prepost.PreAuthorize;
+import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -20,6 +21,9 @@ public class AdminController {
 
 	@Autowired
 	private UserService	userService;
+
+	@Autowired
+	private PasswordEncoder passwordEncoder;
 	
 
 	@PreAuthorize("hasAuthority('ADMIN')")
@@ -49,7 +53,7 @@ public class AdminController {
 
 		this.userService.deleteUser(id);
 
-		return "redirect: /Admin_Fetch_Data";
+		return "redirect:/Admin_Fetch_Data";
 
 	}
 	
@@ -74,13 +78,15 @@ public class AdminController {
 
 		uEntity2.setUserId(id);
 		uEntity2.setUserName1(uEntity.getUserName1());
-		uEntity2.setUserPassword(uEntity.getUserPassword());
+		if (uEntity.getUserPassword() != null && !uEntity.getUserPassword().isBlank()) {
+			uEntity2.setUserPassword(passwordEncoder.encode(uEntity.getUserPassword()));
+		}
 		uEntity2.setEmail(uEntity.getEmail()); 
 		 
 		uEntity2.setUserPhoneNO(uEntity.getUserPhoneNO());
 
 		this.userService.saveUser(uEntity2);
-		return "redirect:/Admin/Admin_Fetch_Data";
+		return "redirect:/Admin_Fetch_Data";
 	}
 
 }
