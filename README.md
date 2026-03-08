@@ -46,19 +46,7 @@ https://tours-and-travelproject-documentation.netlify.app/
 
 ---
 
----
-## Documentation
-
-Full technical documentation for this project is available here:
-
-Live Documentation :-
-https://tours-travel-docs.netlify.app
-
-Repository Version
-   :- docs/project-documentation.html
-
----
-
+ 
 ## Tech Stack
 
 | Layer                 | Technologies                                                        |
