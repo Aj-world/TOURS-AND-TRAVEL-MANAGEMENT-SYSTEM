@@ -39,7 +39,7 @@ A **static preview of the UI (HTML templates)** is deployed for demonstration pu
 Full technical documentation for this project is available here:
 
 ### Live Documentation
-https://tours-travelproject-documentation.netlify.app/
+https://tours-and-travelproject-documentation.netlify.app/
 
 ### Repository Version
 [View HTML Documentation](docs/project-documentation.html)
