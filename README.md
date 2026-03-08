@@ -32,6 +32,17 @@ A **static preview of the UI (HTML templates)** is deployed for demonstration pu
 > **Note:** The Netlify deployment is a **static UI preview only**. Backend functionality such as authentication, bookings, and payments require the Spring Boot server to run locally.
 
 ---
+## Documentation
+
+Full technical documentation for this project is available here:
+
+Live Documentation :-
+https://tours-travel-docs.netlify.app
+
+Repository Version
+   :- docs/project-documentation.html
+
+---
 
 ## Tech Stack
 
@@ -314,6 +325,19 @@ This project was developed as part of the **Master of Computer Applications (MCA
 
 ---
 
+## Development Notes
+
+This repository represents a **completed academic project demonstrating a full-stack Spring Boot MVC application with authentication and payment integration**.
+
+The project showcases backend development practices including:
+
+- Spring Boot architecture
+- MVC pattern implementation
+- Secure authentication with Spring Security
+- Payment gateway integration
+- Database persistence with JPA/Hibernate
+- Server-side HTML rendering using Thymeleaf
+
 ## Author
 
 **Abinash Nayak**  
@@ -327,17 +351,3 @@ GitHub: [https://github.com/Aj-world](https://github.com/Aj-world)
 
 This project is created for **educational and learning purposes**.
 
----
-
-## Development Notes
-
-This repository represents a **completed academic project demonstrating a full-stack Spring Boot MVC application with authentication and payment integration**.
-
-The project showcases backend development practices including:
-
-- Spring Boot architecture
-- MVC pattern implementation
-- Secure authentication with Spring Security
-- Payment gateway integration
-- Database persistence with JPA/Hibernate
-- Server-side HTML rendering using Thymeleaf
