@@ -14,7 +14,19 @@
 ![GitHub license](https://img.shields.io/github/license/Aj-world/TOURS-AND-TRAVEL-MANAGEMENT-SYSTEM)
 
 ---
+# Application Screenshots
 
+### Home Page
+![Home Page](screenshots/home.png)
+
+### Travel Packages
+![Packages](screenshots/packages.png)
+
+### Booking Page
+![Booking](screenshots/booking.png)
+
+### Admin Dashboard
+![Admin](screenshots/admin-dashboard.png)
 # Project Description
 
 The **Tours and Travel Management System** is a full-stack travel booking web application developed using **Spring Boot, Spring Security, Razorpay Payment Gateway, JPA/Hibernate, and Thymeleaf**.
@@ -192,19 +204,31 @@ Booking confirmed and stored in database
 The application follows **MVC (Model-View-Controller)** architecture.
 
 ```
-Client (Browser)
-        │
-        ▼
-Controller Layer
-        │
-        ▼
-Service Layer
-        │
-        ▼
-Repository Layer
-        │
-        ▼
-Database
+                ┌──────────────────┐
+                │      Browser     │
+                │  (Client UI)     │
+                └─────────┬────────┘
+                          │ HTTP Request
+                          ▼
+               ┌─────────────────────┐
+               │   Spring Boot App   │
+               │   (MVC Framework)   │
+               └─────────┬───────────┘
+                         │
+       ┌─────────────────┼─────────────────┐
+       ▼                 ▼                 ▼
+Controller Layer   Service Layer     Security Layer
+   (Endpoints)     (Business Logic)  (Authentication)
+
+                         │
+                         ▼
+                 Repository Layer
+                  (Spring Data JPA)
+
+                         │
+                         ▼
+                     Database
+                (H2 / MySQL Storage)
 ```
 
 ---
@@ -247,7 +271,7 @@ A static preview of the application's **HTML interface** is available on Netlify
 Netlify Preview:
 
 ```
-https://your-netlify-link.netlify.app
+https://tours-and-travel-management-system.netlify.app
 ```
 
 Note:
@@ -351,6 +375,20 @@ Possible future enhancements:
 - Cloud deployment
 
 ---
+# Development Notes
+
+This project demonstrates a complete **Spring Boot MVC application with secure authentication and payment integration**.
+
+Key backend concepts demonstrated:
+
+- Spring Boot backend architecture
+- MVC pattern implementation
+- Spring Security authentication
+- Payment gateway integration
+- Server-side rendering using Thymeleaf
+- Database persistence with JPA/Hibernate
+
+The repository is maintained as a **stable legacy academic project** showcasing backend development practices.
 
 # Author
 
