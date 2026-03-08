@@ -1,0 +1,1445 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Tours and Travel Management System — Documentation</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@600;700&family=Inter:wght@300;400;500;600&family=Fira+Code:wght@400;500&display=swap" rel="stylesheet" />
+    <style>
+        *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+        :root {
+          --bg:           #f0f2f7;
+          --surface:      #ffffff;
+          --surface-2:    #f8f9fc;
+          --border:       #dde1eb;
+          --border-light: #e8ebf3;
+          --ink:          #12172b;
+          --ink-mid:      #3d4462;
+          --ink-soft:     #7c84a3;
+          --accent:       #1e3a8a;
+          --accent-mid:   #2d52c4;
+          --accent-light: #eef2ff;
+          --accent-glow:  #c7d4f8;
+          --teal:         #0f766e;
+          --teal-light:   #e6faf8;
+          --amber:        #92400e;
+          --amber-light:  #fffbeb;
+          --amber-border: #fcd34d;
+          --code-bg:      #0f1629;
+          --code-surface: #161e38;
+          --code-text:    #cdd6f4;
+          --code-comment: #585f82;
+          --code-key:     #89dceb;
+          --code-val:     #f9e2af;
+          --code-bracket: #89b4fa;
+          --code-string:  #a6e3a1;
+          --radius:    8px;
+          --radius-lg: 14px;
+          --radius-xl: 20px;
+          --shadow-sm: 0 1px 3px rgba(0,0,0,.06), 0 2px 8px rgba(0,0,0,.04);
+          --shadow:    0 2px 8px rgba(0,0,0,.08), 0 6px 24px rgba(0,0,0,.06);
+          --shadow-lg: 0 4px 16px rgba(0,0,0,.10), 0 12px 40px rgba(0,0,0,.08);
+          --font-body: 'Inter', system-ui, sans-serif;
+          --font-head: 'Playfair Display', Georgia, serif;
+          --font-mono: 'Fira Code', 'Courier New', monospace;
+        }
+
+        html { scroll-behavior: smooth; }
+
+        body {
+          background: var(--bg);
+          color: var(--ink);
+          font-family: var(--font-body);
+          font-size: 17px;
+          line-height: 1.8;
+        }
+
+        /* ── LAYOUT ── */
+        .page-wrap {
+          display: grid;
+          grid-template-columns: 262px 1fr;
+          min-height: 100vh;
+        }
+
+        /* ── SIDEBAR ── */
+        .sidebar {
+          position: sticky;
+          top: 0;
+          height: 100vh;
+          overflow-y: auto;
+          background: var(--surface);
+          border-right: 1px solid var(--border);
+          padding: 0 0 2rem;
+          scrollbar-width: thin;
+          scrollbar-color: var(--border) transparent;
+        }
+
+        .sidebar-logo {
+          padding: 1.6rem 1.4rem 1.2rem;
+          border-bottom: 1px solid var(--border-light);
+          background: linear-gradient(135deg, var(--accent-light) 0%, var(--surface) 100%);
+        }
+
+        .sidebar-logo .project-tag {
+          display: inline-block;
+          background: var(--accent);
+          color: #fff;
+          font-size: 10.5px;
+          font-weight: 600;
+          letter-spacing: .1em;
+          text-transform: uppercase;
+          padding: 3px 10px;
+          border-radius: 20px;
+          margin-bottom: .55rem;
+        }
+
+        .sidebar-logo h2 {
+          font-family: var(--font-head);
+          font-size: 15.5px;
+          font-weight: 700;
+          color: var(--ink);
+          line-height: 1.45;
+        }
+
+        .sidebar nav { padding: .65rem 0; }
+
+        .nav-group { margin-bottom: .15rem; }
+
+        .nav-group-label {
+          display: block;
+          font-size: 10.5px;
+          font-weight: 600;
+          letter-spacing: .12em;
+          text-transform: uppercase;
+          color: var(--ink-soft);
+          padding: .75rem 1.4rem .3rem;
+        }
+
+        .sidebar nav a {
+          display: block;
+          font-size: 14px;
+          font-weight: 400;
+          color: var(--ink-mid);
+          text-decoration: none;
+          padding: .44rem 1.4rem .44rem 1.75rem;
+          border-left: 2px solid transparent;
+          transition: all .15s ease;
+        }
+
+        .sidebar nav a:hover {
+          color: var(--accent);
+          border-left-color: var(--accent-mid);
+          background: var(--accent-light);
+          padding-left: 2rem;
+        }
+
+        /* ── MAIN COLUMN ── */
+        .main-col { min-width: 0; }
+
+        /* ── HERO BANNER ── */
+        .hero {
+          background: linear-gradient(160deg, #1e3a8a 0%, #162d70 100%);
+          background-image:
+            radial-gradient(ellipse at 75% 10%, rgba(99,135,255,.35) 0%, transparent 55%),
+            radial-gradient(ellipse at 15% 85%, rgba(0,0,0,.25) 0%, transparent 50%),
+            linear-gradient(160deg, #1e3a8a 0%, #162d70 100%);
+          color: #fff;
+          padding: 4.5rem 4rem 4rem;
+          position: relative;
+          overflow: hidden;
+        }
+
+        .hero::after {
+          content: '';
+          position: absolute;
+          right: -50px;
+          bottom: -70px;
+          width: 360px;
+          height: 360px;
+          border-radius: 50%;
+          background: rgba(255,255,255,.03);
+          pointer-events: none;
+        }
+
+        .hero-eyebrow {
+          display: inline-flex;
+          align-items: center;
+          gap: .55rem;
+          font-size: 12px;
+          font-weight: 600;
+          letter-spacing: .18em;
+          text-transform: uppercase;
+          opacity: .7;
+          margin-bottom: 1.1rem;
+        }
+
+        .hero-eyebrow::before {
+          content: '';
+          display: inline-block;
+          width: 28px;
+          height: 2px;
+          background: rgba(255,255,255,.6);
+          border-radius: 2px;
+        }
+
+        .hero h1 {
+          font-family: var(--font-head);
+          font-size: clamp(2rem, 3.5vw, 3rem);
+          font-weight: 700;
+          line-height: 1.2;
+          margin-bottom: 1.3rem;
+          letter-spacing: -.01em;
+        }
+
+        .hero p {
+          font-size: 1.1rem;
+          opacity: .85;
+          max-width: 560px;
+          line-height: 1.75;
+          margin-bottom: 2rem;
+        }
+
+        .hero-badges {
+          display: flex;
+          flex-wrap: wrap;
+          gap: .55rem;
+        }
+
+        .badge {
+          display: inline-flex;
+          align-items: center;
+          gap: .35rem;
+          background: rgba(255,255,255,.12);
+          border: 1px solid rgba(255,255,255,.22);
+          color: #fff;
+          font-size: 13px;
+          font-weight: 500;
+          padding: 5px 14px;
+          border-radius: 20px;
+          backdrop-filter: blur(6px);
+        }
+
+        /* ── CONTENT AREA ── */
+        .content {
+          max-width: 860px;
+          margin: 0 auto;
+          padding: 3.5rem 4rem;
+        }
+
+        /* ── SECTIONS ── */
+        .doc-section {
+          margin-bottom: 4.5rem;
+          padding-top: .5rem;
+        }
+
+        .section-anchor {
+          display: block;
+          position: relative;
+          top: -88px;
+          visibility: hidden;
+        }
+
+        .section-label {
+          display: inline-flex;
+          align-items: center;
+          gap: .45rem;
+          font-size: 11px;
+          font-weight: 600;
+          letter-spacing: .14em;
+          text-transform: uppercase;
+          color: var(--accent-mid);
+          margin-bottom: .6rem;
+        }
+
+        .section-label::before {
+          content: '';
+          display: inline-block;
+          width: 18px;
+          height: 2px;
+          background: var(--accent-mid);
+          border-radius: 2px;
+        }
+
+        h2.section-title {
+          font-family: var(--font-head);
+          font-size: 2rem;
+          font-weight: 700;
+          color: var(--ink);
+          margin-bottom: 1.4rem;
+          padding-bottom: .85rem;
+          border-bottom: 2px solid var(--border);
+          letter-spacing: -.01em;
+        }
+
+        h3.sub-title {
+          font-family: var(--font-head);
+          font-size: 1.22rem;
+          font-weight: 600;
+          color: var(--ink);
+          margin: 2.3rem 0 .9rem;
+        }
+
+        p {
+          margin-bottom: 1.1rem;
+          color: var(--ink-mid);
+          font-size: 17px;
+        }
+
+        /* ── CODE BLOCKS ── */
+        pre {
+          background: var(--code-bg);
+          color: var(--code-text);
+          font-family: var(--font-mono);
+          font-size: 14px;
+          line-height: 1.7;
+          padding: 1.75rem 2rem;
+          border-radius: var(--radius-lg);
+          overflow-x: auto;
+          margin: 1.4rem 0;
+          box-shadow: var(--shadow-lg);
+        }
+
+        code {
+          font-family: var(--font-mono);
+          font-size: .875em;
+          background: var(--accent-light);
+          color: var(--accent);
+          padding: .18em .5em;
+          border-radius: 5px;
+          border: 1px solid var(--accent-glow);
+        }
+
+        pre code {
+          background: none;
+          color: inherit;
+          padding: 0;
+          font-size: inherit;
+          border: none;
+        }
+
+        .code-label {
+          display: flex;
+          align-items: center;
+          justify-content: space-between;
+          background: var(--code-surface);
+          color: #6272a4;
+          font-family: var(--font-mono);
+          font-size: 12.5px;
+          padding: .65rem 1.5rem;
+          border-radius: var(--radius-lg) var(--radius-lg) 0 0;
+          border-bottom: 1px solid rgba(255,255,255,.05);
+          margin-top: 1.4rem;
+        }
+
+        .code-label + pre {
+          margin-top: 0;
+          border-radius: 0 0 var(--radius-lg) var(--radius-lg);
+        }
+
+        .code-dot {
+          display: inline-flex;
+          gap: 6px;
+        }
+
+        .code-dot span {
+          width: 11px;
+          height: 11px;
+          border-radius: 50%;
+        }
+
+        .code-dot span:nth-child(1) { background: #ff5f57; }
+        .code-dot span:nth-child(2) { background: #febc2e; }
+        .code-dot span:nth-child(3) { background: #28c840; }
+
+        .kw  { color: var(--code-key); }
+        .val { color: var(--code-val); }
+        .cm  { color: var(--code-comment); font-style: italic; }
+        .br  { color: var(--code-bracket); }
+        .st  { color: var(--code-string); }
+
+        /* ── DIAGRAM BLOCK ── */
+        .diagram {
+          background: var(--surface-2);
+          border: 1px solid var(--border);
+          border-left: 4px solid var(--accent-mid);
+          border-radius: 0 var(--radius-lg) var(--radius-lg) 0;
+          padding: 1.75rem 2.25rem;
+          margin: 1.4rem 0;
+          font-family: var(--font-mono);
+          font-size: 13.5px;
+          line-height: 2.1;
+          color: var(--ink-mid);
+          overflow-x: auto;
+        }
+
+        /* ── TABLES ── */
+        .table-wrap {
+          overflow-x: auto;
+          margin: 1.4rem 0;
+          border-radius: var(--radius-lg);
+          box-shadow: var(--shadow-sm);
+        }
+
+        table {
+          width: 100%;
+          border-collapse: collapse;
+          font-size: 15.5px;
+          background: var(--surface);
+        }
+
+        thead tr {
+          background: var(--accent);
+          color: #fff;
+        }
+
+        thead th {
+          padding: .9rem 1.2rem;
+          text-align: left;
+          font-weight: 600;
+          letter-spacing: .02em;
+          font-size: 14px;
+        }
+
+        tbody tr {
+          border-bottom: 1px solid var(--border-light);
+          transition: background .12s;
+        }
+
+        tbody tr:last-child { border: none; }
+        tbody tr:hover { background: var(--accent-light); }
+
+        td {
+          padding: .85rem 1.2rem;
+          color: var(--ink-mid);
+          vertical-align: top;
+          font-size: 15px;
+        }
+
+        td:first-child { font-weight: 500; color: var(--ink); }
+
+        /* ── CALLOUT BOXES ── */
+        .callout {
+          display: flex;
+          gap: 1.1rem;
+          padding: 1.15rem 1.4rem;
+          border-radius: var(--radius-lg);
+          margin: 1.4rem 0;
+          font-size: 15.5px;
+          line-height: 1.7;
+        }
+
+        .callout-info {
+          background: var(--accent-light);
+          border: 1px solid var(--accent-glow);
+          color: #1e3564;
+        }
+
+        .callout-warn {
+          background: var(--amber-light);
+          border: 1px solid var(--amber-border);
+          color: #78350f;
+        }
+
+        .callout-teal {
+          background: var(--teal-light);
+          border: 1px solid #99e6e0;
+          color: #0f4f4b;
+        }
+
+        .callout-icon { font-size: 1.3rem; flex-shrink: 0; line-height: 1.7; }
+
+        /* ── FEATURE GRID ── */
+        .feature-grid {
+          display: grid;
+          grid-template-columns: repeat(auto-fill, minmax(230px, 1fr));
+          gap: 1.1rem;
+          margin: 1.4rem 0;
+        }
+
+        .feature-card {
+          background: var(--surface);
+          border: 1px solid var(--border);
+          border-radius: var(--radius-lg);
+          padding: 1.4rem;
+          box-shadow: var(--shadow-sm);
+          transition: box-shadow .18s, transform .18s;
+        }
+
+        .feature-card:hover {
+          box-shadow: var(--shadow);
+          transform: translateY(-2px);
+        }
+
+        .feature-card .fc-icon {
+          font-size: 1.75rem;
+          margin-bottom: .7rem;
+        }
+
+        .feature-card h4 {
+          font-size: 15.5px;
+          font-weight: 600;
+          color: var(--ink);
+          margin-bottom: .45rem;
+        }
+
+        .feature-card p {
+          font-size: 14px;
+          margin: 0;
+          color: var(--ink-soft);
+          line-height: 1.6;
+        }
+
+        /* ── STEPS / FLOW ── */
+        .flow-steps { margin: 1.4rem 0; }
+
+        .flow-step {
+          display: flex;
+          gap: 1.15rem;
+          position: relative;
+          padding-bottom: 1.75rem;
+        }
+
+        .flow-step::before {
+          content: '';
+          position: absolute;
+          left: 19px;
+          top: 42px;
+          bottom: 0;
+          width: 2px;
+          background: linear-gradient(to bottom, var(--accent-glow), transparent);
+        }
+
+        .flow-step:last-child { padding-bottom: 0; }
+        .flow-step:last-child::before { display: none; }
+
+        .step-num {
+          flex-shrink: 0;
+          width: 40px;
+          height: 40px;
+          background: var(--accent);
+          color: #fff;
+          border-radius: 50%;
+          display: flex;
+          align-items: center;
+          justify-content: center;
+          font-size: 14px;
+          font-weight: 700;
+          box-shadow: 0 0 0 4px var(--accent-light);
+        }
+
+        .step-body h4 {
+          font-size: 16.5px;
+          font-weight: 600;
+          padding-top: .5rem;
+          color: var(--ink);
+        }
+
+        .step-body p {
+          font-size: 15.5px;
+          margin: .3rem 0 0;
+        }
+
+        /* ── ENTITY CARDS ── */
+        .entity-grid {
+          display: grid;
+          grid-template-columns: repeat(auto-fill, minmax(210px, 1fr));
+          gap: 1.1rem;
+          margin: 1.4rem 0;
+        }
+
+        .entity-card {
+          background: var(--surface);
+          border: 1px solid var(--border);
+          border-radius: var(--radius-lg);
+          overflow: hidden;
+          box-shadow: var(--shadow-sm);
+        }
+
+        .entity-head {
+          background: linear-gradient(90deg, var(--accent) 0%, var(--accent-mid) 100%);
+          color: #fff;
+          font-size: 13px;
+          font-weight: 700;
+          letter-spacing: .06em;
+          text-transform: uppercase;
+          padding: .75rem 1.1rem;
+        }
+
+        .entity-fields {
+          list-style: none;
+          padding: .85rem 1.1rem;
+        }
+
+        .entity-fields li {
+          font-family: var(--font-mono);
+          font-size: 13.5px;
+          color: var(--ink-mid);
+          padding: .28rem 0;
+          border-bottom: 1px solid var(--border-light);
+        }
+
+        .entity-fields li:last-child { border: none; }
+        .entity-fields .pk { color: var(--accent-mid); font-weight: 700; }
+        .entity-fields .fk { color: #b45309; }
+
+        /* ── TECH PILLS ── */
+        .tech-pills { display: flex; flex-wrap: wrap; gap: .55rem; margin: .9rem 0 1.6rem; }
+
+        .pill {
+          background: var(--surface);
+          border: 1px solid var(--border);
+          color: var(--ink-mid);
+          font-size: 13.5px;
+          font-weight: 500;
+          padding: .38rem 1rem;
+          border-radius: 20px;
+          box-shadow: var(--shadow-sm);
+        }
+
+        .pill.accent {
+          background: var(--accent-light);
+          border-color: var(--accent-glow);
+          color: var(--accent);
+          font-weight: 600;
+        }
+
+        /* ── OUTCOME LIST ── */
+        .outcome-list { list-style: none; margin: 1rem 0; }
+
+        .outcome-list li {
+          display: flex;
+          gap: .9rem;
+          align-items: flex-start;
+          padding: .78rem 0;
+          border-bottom: 1px solid var(--border-light);
+          font-size: 16px;
+          color: var(--ink-mid);
+        }
+
+        .outcome-list li::before {
+          content: '✓';
+          display: flex;
+          align-items: center;
+          justify-content: center;
+          min-width: 22px;
+          height: 22px;
+          background: var(--accent);
+          color: #fff;
+          font-size: 12px;
+          font-weight: 700;
+          border-radius: 50%;
+          flex-shrink: 0;
+          margin-top: 3px;
+        }
+
+        /* ── ROADMAP ── */
+        .roadmap-list { list-style: none; margin: 1rem 0; }
+
+        .roadmap-list li {
+          display: flex;
+          gap: .9rem;
+          align-items: center;
+          padding: .72rem 0;
+          font-size: 16px;
+          color: var(--ink-mid);
+          border-bottom: 1px solid var(--border-light);
+        }
+
+        .roadmap-list li .tag {
+          font-size: 10.5px;
+          font-weight: 700;
+          padding: 3px 9px;
+          border-radius: 5px;
+          text-transform: uppercase;
+          letter-spacing: .06em;
+          flex-shrink: 0;
+        }
+
+        .tag-api    { background: #dbeafe; color: #1d4ed8; }
+        .tag-infra  { background: #f3e8ff; color: #7e22ce; }
+        .tag-ux     { background: #dcfce7; color: #166534; }
+        .tag-notify { background: #fef9c3; color: #854d0e; }
+        .tag-docs   { background: #e0f2fe; color: #075985; }
+        .tag-deploy { background: #ffe4e6; color: #9f1239; }
+        .tag-sec    { background: #fff7ed; color: #9a3412; }
+
+        /* ── AUTHOR CARD ── */
+        .author-card {
+          background: linear-gradient(135deg, var(--surface) 0%, var(--accent-light) 100%);
+          border: 1px solid var(--accent-glow);
+          border-radius: var(--radius-xl);
+          padding: 2.25rem;
+          display: flex;
+          gap: 1.75rem;
+          align-items: center;
+          box-shadow: var(--shadow);
+          margin-top: 1.5rem;
+        }
+
+        .author-avatar {
+          width: 82px;
+          height: 82px;
+          border-radius: 50%;
+          background: linear-gradient(135deg, var(--accent) 0%, var(--accent-mid) 100%);
+          display: flex;
+          align-items: center;
+          justify-content: center;
+          color: #fff;
+          font-family: var(--font-head);
+          font-size: 2rem;
+          font-weight: 700;
+          flex-shrink: 0;
+          box-shadow: 0 4px 16px rgba(30,58,138,.3);
+        }
+
+        .author-info h3 {
+          font-family: var(--font-head);
+          font-size: 1.45rem;
+          font-weight: 700;
+          color: var(--ink);
+          margin-bottom: .3rem;
+        }
+
+        .author-info .role {
+          font-size: 14.5px;
+          color: var(--ink-soft);
+          margin-bottom: .75rem;
+        }
+
+        .author-info a {
+          display: inline-flex;
+          align-items: center;
+          gap: .4rem;
+          color: var(--accent-mid);
+          font-size: 14.5px;
+          text-decoration: none;
+          font-weight: 600;
+          border: 1px solid var(--accent-glow);
+          background: var(--surface);
+          padding: .38rem 1.1rem;
+          border-radius: 20px;
+          transition: all .15s;
+        }
+
+        .author-info a:hover {
+          background: var(--accent);
+          color: #fff;
+          border-color: var(--accent);
+        }
+
+        /* ── FOOTER ── */
+        footer {
+          border-top: 1px solid var(--border);
+          padding: 2.25rem 4rem;
+          text-align: center;
+          color: var(--ink-soft);
+          font-size: 15px;
+          background: var(--surface);
+        }
+
+        footer strong { color: var(--ink-mid); }
+        footer a { color: var(--accent-mid); text-decoration: none; font-weight: 500; }
+        footer a:hover { text-decoration: underline; }
+
+        /* ── RESPONSIVE ── */
+        @media (max-width: 900px) {
+          .page-wrap { grid-template-columns: 1fr; }
+
+          .sidebar {
+            position: static;
+            height: auto;
+            border-right: none;
+            border-bottom: 1px solid var(--border);
+          }
+
+          .hero { padding: 3rem 2rem 2.5rem; }
+          .content { padding: 2.5rem 2rem; }
+          footer { padding: 1.75rem 2rem; }
+
+          .entity-grid,
+          .feature-grid { grid-template-columns: 1fr 1fr; }
+
+          .author-card { flex-direction: column; text-align: center; }
+          .author-info a { justify-content: center; }
+        }
+
+        @media (max-width: 540px) {
+          .entity-grid,
+          .feature-grid { grid-template-columns: 1fr; }
+          .hero h1 { font-size: 1.75rem; }
+          body { font-size: 16px; }
+        }
+    </style>
+</head>
+<body>
+
+<div class="page-wrap">
+
+    <!-- ── SIDEBAR ── -->
+    <aside class="sidebar">
+        <div class="sidebar-logo">
+            <span class="project-tag">Docs v1.0</span>
+            <h2>Tours &amp; Travel<br>Management System</h2>
+        </div>
+        <nav>
+            <div class="nav-group">
+                <span class="nav-group-label">Introduction</span>
+                <a href="#overview">Project Overview</a>
+                <a href="#architecture">System Architecture</a>
+                <a href="#tech-stack">Technology Stack</a>
+            </div>
+            <div class="nav-group">
+                <span class="nav-group-label">Features</span>
+                <a href="#features">Application Features</a>
+                <a href="#user-workflow">User Workflow</a>
+                <a href="#payment-flow">Payment Flow</a>
+            </div>
+            <div class="nav-group">
+                <span class="nav-group-label">Design</span>
+                <a href="#database">Database Design</a>
+                <a href="#structure">Project Structure</a>
+                <a href="#security">Security Implementation</a>
+            </div>
+            <div class="nav-group">
+                <span class="nav-group-label">Setup</span>
+                <a href="#installation">Setup &amp; Installation</a>
+                <a href="#running">Running the Application</a>
+                <a href="#configuration">Developer Configuration</a>
+            </div>
+            <div class="nav-group">
+                <span class="nav-group-label">More</span>
+                <a href="#roadmap">Future Improvements</a>
+                <a href="#outcomes">Learning Outcomes</a>
+                <a href="#author">Author</a>
+            </div>
+        </nav>
+    </aside>
+
+    <!-- ── MAIN COLUMN ── -->
+    <div class="main-col">
+
+        <!-- HERO -->
+        <header class="hero">
+            <div class="hero-eyebrow">Technical Documentation</div>
+            <h1>Tours and Travel<br>Management System</h1>
+            <div>A full-stack travel booking web application built on Spring Boot MVC architecture with Thymeleaf server-side rendering, Spring Security, and Razorpay payment integration.</div>
+            <div class="hero-badges">
+                <span class="badge">☕ Java 21</span>
+                <span class="badge">🌱 Spring Boot 3</span>
+                <span class="badge">🔒 Spring Security</span>
+                <span class="badge">💳 Razorpay</span>
+                <span class="badge">🗄 JPA / Hibernate</span>
+                <span class="badge">🖥 Thymeleaf SSR</span>
+            </div>
+        </header>
+
+        <!-- CONTENT -->
+        <main class="content">
+
+            <!-- 1. OVERVIEW -->
+            <section class="doc-section">
+                <span class="section-anchor" id="overview"></span>
+                <div class="section-label">01 — Introduction</div>
+                <h2 class="section-title">Project Overview</h2>
+                <p>The <strong>Tours and Travel Management System</strong> is a complete, backend-driven web application that enables users to discover travel packages, make bookings, and process payments — all within a single, secure platform.</p>
+                <p>Administrators have a dedicated dashboard to manage packages, users, bookings, and payment records. The project is built following a clean layered architecture, demonstrating real-world patterns used in enterprise Spring Boot applications.</p>
+                <div class="callout callout-info">
+                    <span class="callout-icon">🌐</span>
+                    <div>A <strong>static UI preview</strong> is deployed on Netlify for demonstration purposes: <a href="https://tours-and-travel-management-system.netlify.app" target="_blank">tours-and-travel-management-system.netlify.app</a>. Backend features such as authentication, bookings, and payments require the local Spring Boot server to be running.</div>
+                </div>
+                <div class="callout callout-warn">
+                    <span class="callout-icon">⚠️</span>
+                    <div>This project was developed as part of a <strong>Master of Computer Applications (MCA)</strong> curriculum and is intended for educational and portfolio use.</div>
+                </div>
+            </section>
+
+            <!-- 2. ARCHITECTURE -->
+            <section class="doc-section">
+                <span class="section-anchor" id="architecture"></span>
+                <div class="section-label">02 — Design</div>
+                <h2 class="section-title">System Architecture</h2>
+                <p>The application follows a <strong>layered MVC architecture</strong>. Each layer has a single, clearly defined responsibility, promoting separation of concerns and testability.</p>
+                <div class="diagram">
+                    Browser (HTTP Request)
+                    │
+                    ▼
+                    ┌─────────────────────────────────┐
+                    │   Spring MVC Controller Layer   │   ← Routes requests, handles HTTP
+                    └─────────────────┬───────────────┘
+                    │
+                    ▼
+                    ┌─────────────────────────────────┐
+                    │      Service Layer              │   ← Business logic, orchestration
+                    └─────────────────┬───────────────┘
+                    │
+                    ▼
+                    ┌─────────────────────────────────┐
+                    │   Repository Layer (JPA)        │   ← Data access, queries
+                    └─────────────────┬───────────────┘
+                    │
+                    ▼
+                    ┌─────────────────────────────────┐
+                    │     Database (H2 / MySQL)       │   ← Persistence
+                    └─────────────────────────────────┘
+                    │
+                    ▼
+                    Thymeleaf Templates → Rendered HTML → Browser
+                </div>
+                <h3 class="sub-title">Key Architectural Decisions</h3>
+                <div class="table-wrap">
+                    <table>
+                        <thead><tr><th>Decision</th><th>Rationale</th></tr></thead>
+                        <tbody>
+                        <tr><td>Server-Side Rendering (Thymeleaf)</td><td>Simplifies state management; no separate frontend framework required</td></tr>
+                        <tr><td>Spring Security</td><td>Industry-standard authentication and role-based access control</td></tr>
+                        <tr><td>H2 (dev) + MySQL (prod)</td><td>Fast development iteration with H2; production-grade persistence with MySQL</td></tr>
+                        <tr><td>Razorpay Integration</td><td>PCI-compliant payment handling without storing card data on the server</td></tr>
+                        <tr><td>Spring Data JPA</td><td>Reduced boilerplate; consistent repository pattern across all entities</td></tr>
+                        </tbody>
+                    </table>
+                </div>
+            </section>
+
+            <!-- 3. TECH STACK -->
+            <section class="doc-section">
+                <span class="section-anchor" id="tech-stack"></span>
+                <div class="section-label">03 — Technologies</div>
+                <h2 class="section-title">Technology Stack</h2>
+                <div class="table-wrap">
+                    <table>
+                        <thead><tr><th>Layer</th><th>Technology</th><th>Version</th></tr></thead>
+                        <tbody>
+                        <tr><td>Language</td><td>Java</td><td>21 LTS</td></tr>
+                        <tr><td>Framework</td><td>Spring Boot</td><td>3.x</td></tr>
+                        <tr><td>Security</td><td>Spring Security</td><td>6.x</td></tr>
+                        <tr><td>ORM</td><td>Spring Data JPA / Hibernate</td><td>6.x</td></tr>
+                        <tr><td>Templating</td><td>Thymeleaf</td><td>3.x</td></tr>
+                        <tr><td>Database (dev)</td><td>H2 In-Memory</td><td>2.x</td></tr>
+                        <tr><td>Database (prod)</td><td>MySQL</td><td>8.x</td></tr>
+                        <tr><td>Payment</td><td>Razorpay</td><td>REST API</td></tr>
+                        <tr><td>Build Tool</td><td>Apache Maven</td><td>3.x</td></tr>
+                        <tr><td>Dev Tools</td><td>Lombok, Spring DevTools</td><td>—</td></tr>
+                        <tr><td>Frontend</td><td>HTML5, CSS3, JavaScript</td><td>—</td></tr>
+                        </tbody>
+                    </table>
+                </div>
+                <div class="tech-pills">
+                    <span class="pill accent">Java 21</span>
+                    <span class="pill accent">Spring Boot 3</span>
+                    <span class="pill">Thymeleaf</span>
+                    <span class="pill">Spring Security</span>
+                    <span class="pill">JPA / Hibernate</span>
+                    <span class="pill">Razorpay</span>
+                    <span class="pill">H2 / MySQL</span>
+                    <span class="pill">Maven</span>
+                    <span class="pill">Lombok</span>
+                </div>
+            </section>
+
+            <!-- 4. FEATURES -->
+            <section class="doc-section">
+                <span class="section-anchor" id="features"></span>
+                <div class="section-label">04 — Capabilities</div>
+                <h2 class="section-title">Application Features</h2>
+                <h3 class="sub-title">User Features</h3>
+                <div class="feature-grid">
+                    <div class="feature-card">
+                        <div class="fc-icon">🔐</div>
+                        <h4>Secure Authentication</h4>
+                        <p>User registration and login with encrypted passwords and session management.</p>
+                    </div>
+                    <div class="feature-card">
+                        <div class="fc-icon">🗺️</div>
+                        <h4>Browse Packages</h4>
+                        <p>Explore all available travel packages with destinations and pricing.</p>
+                    </div>
+                    <div class="feature-card">
+                        <div class="fc-icon">📋</div>
+                        <h4>Package Details</h4>
+                        <p>View full package information including description, price, and availability.</p>
+                    </div>
+                    <div class="feature-card">
+                        <div class="fc-icon">📅</div>
+                        <h4>Make Bookings</h4>
+                        <p>Book a travel package in a simple, guided booking flow.</p>
+                    </div>
+                    <div class="feature-card">
+                        <div class="fc-icon">💳</div>
+                        <h4>Online Payment</h4>
+                        <p>Complete secure payments through the Razorpay payment gateway.</p>
+                    </div>
+                    <div class="feature-card">
+                        <div class="fc-icon">📊</div>
+                        <h4>Track Bookings</h4>
+                        <p>Monitor booking status and payment confirmation from a personal dashboard.</p>
+                    </div>
+                </div>
+                <h3 class="sub-title">Admin Features</h3>
+                <div class="feature-grid">
+                    <div class="feature-card">
+                        <div class="fc-icon">📦</div>
+                        <h4>Manage Packages</h4>
+                        <p>Create, update, and remove travel packages from the platform.</p>
+                    </div>
+                    <div class="feature-card">
+                        <div class="fc-icon">👥</div>
+                        <h4>Manage Users</h4>
+                        <p>View and administer registered user accounts.</p>
+                    </div>
+                    <div class="feature-card">
+                        <div class="fc-icon">🗒️</div>
+                        <h4>Monitor Bookings</h4>
+                        <p>View all booking records across all users and packages.</p>
+                    </div>
+                    <div class="feature-card">
+                        <div class="fc-icon">💰</div>
+                        <h4>Payment Records</h4>
+                        <p>Track all payment statuses and transaction IDs.</p>
+                    </div>
+                    <div class="feature-card">
+                        <div class="fc-icon">🛡️</div>
+                        <h4>Role-Based Access</h4>
+                        <p>Admin and user roles with route-level access control enforced by Spring Security.</p>
+                    </div>
+                </div>
+            </section>
+
+            <!-- 5. USER WORKFLOW -->
+            <section class="doc-section">
+                <span class="section-anchor" id="user-workflow"></span>
+                <div class="section-label">05 — Flows</div>
+                <h2 class="section-title">User Workflow</h2>
+                <div class="flow-steps">
+                    <div class="flow-step">
+                        <div class="step-num">1</div>
+                        <div class="step-body">
+                            <h4>Register / Login</h4>
+                            <p>The user creates an account or logs in with existing credentials. Spring Security handles session management and password encryption.</p>
+                        </div>
+                    </div>
+                    <div class="flow-step">
+                        <div class="step-num">2</div>
+                        <div class="step-body">
+                            <h4>Browse Travel Packages</h4>
+                            <p>The user navigates the packages listing page to explore available travel destinations and pricing.</p>
+                        </div>
+                    </div>
+                    <div class="flow-step">
+                        <div class="step-num">3</div>
+                        <div class="step-body">
+                            <h4>Select a Package</h4>
+                            <p>The user views the full details of a chosen travel package, including the description and cost.</p>
+                        </div>
+                    </div>
+                    <div class="flow-step">
+                        <div class="step-num">4</div>
+                        <div class="step-body">
+                            <h4>Confirm Booking</h4>
+                            <p>The user confirms their booking. A booking record is created in the database with a <code>PENDING</code> status.</p>
+                        </div>
+                    </div>
+                    <div class="flow-step">
+                        <div class="step-num">5</div>
+                        <div class="step-body">
+                            <h4>Complete Payment</h4>
+                            <p>The user is redirected to the Razorpay payment widget to complete the transaction securely.</p>
+                        </div>
+                    </div>
+                    <div class="flow-step">
+                        <div class="step-num">6</div>
+                        <div class="step-body">
+                            <h4>Booking Confirmed</h4>
+                            <p>Payment is verified by the backend. The booking status is updated to <code>CONFIRMED</code> and the user sees a confirmation page.</p>
+                        </div>
+                    </div>
+                </div>
+            </section>
+
+            <!-- 6. PAYMENT FLOW -->
+            <section class="doc-section">
+                <span class="section-anchor" id="payment-flow"></span>
+                <div class="section-label">06 — Payments</div>
+                <h2 class="section-title">Payment Flow</h2>
+                <p>Payments are handled via the <strong>Razorpay Payment Gateway</strong>. The backend creates a Razorpay order, the frontend renders the payment widget, and the backend independently verifies the payment signature before confirming the booking.</p>
+                <div class="diagram">
+                    User selects package &amp; confirms booking
+                    │
+                    ▼
+                    Backend creates Razorpay Order (server-side)
+                    [razorpay.orders.create()]
+                    │
+                    ▼
+                    Frontend renders Razorpay checkout widget
+                    (order_id passed from backend to template)
+                    │
+                    ▼
+                    User completes payment (card / UPI / wallet)
+                    │
+                    ▼
+                    Razorpay returns: payment_id, order_id, signature
+                    │
+                    ▼
+                    Backend verifies HMAC-SHA256 signature
+                    [razorpay.utils.verifyPaymentSignature()]
+                    │
+                    ┌────┴────┐
+                    Valid     Invalid
+                    │           │
+                    ▼           ▼
+                    Booking CONFIRMED  Payment FAILED
+                    Payment stored     Error shown to user
+                </div>
+                <div class="callout callout-teal">
+                    <span class="callout-icon">🔐</span>
+                    <div>Payment verification is always performed <strong>server-side</strong>. The signature is validated using the Razorpay secret key before any booking is confirmed. Card details are never stored or processed by this application.</div>
+                </div>
+            </section>
+
+            <!-- 7. DATABASE -->
+            <section class="doc-section">
+                <span class="section-anchor" id="database"></span>
+                <div class="section-label">07 — Data Model</div>
+                <h2 class="section-title">Database Design</h2>
+                <h3 class="sub-title">Entity Relationship Overview</h3>
+                <div class="diagram">
+                    ┌──────────┐         ┌──────────────┐         ┌───────────────┐
+                    │   User   │ 1 ─── N │   Booking    │ N ─── 1 │ TravelPackage │
+                    │          │         │              │         │               │
+                    │ id       │         │ id           │         │ id            │
+                    │ name     │         │ user_id (FK) │         │ destination   │
+                    │ email    │         │ package_id   │         │ description   │
+                    │ password │         │ booking_date │         │ price         │
+                    │ role     │         │ status       │         └───────────────┘
+                    └──────────┘         └──────┬───────┘
+                    │ 1
+                    │
+                    ┌──┴──────┐
+                    │ Payment │
+                    │         │
+                    │ id      │
+                    │ booking_id (FK)
+                    │ payment_id
+                    │ status  │
+                    └─────────┘
+                </div>
+                <h3 class="sub-title">Entities</h3>
+                <div class="entity-grid">
+                    <div class="entity-card">
+                        <div class="entity-head">User</div>
+                        <ul class="entity-fields">
+                            <li class="pk">id (PK)</li>
+                            <li>name</li>
+                            <li>email</li>
+                            <li>password</li>
+                            <li>role</li>
+                        </ul>
+                    </div>
+                    <div class="entity-card">
+                        <div class="entity-head">TravelPackage</div>
+                        <ul class="entity-fields">
+                            <li class="pk">id (PK)</li>
+                            <li>destination</li>
+                            <li>description</li>
+                            <li>price</li>
+                        </ul>
+                    </div>
+                    <div class="entity-card">
+                        <div class="entity-head">Booking</div>
+                        <ul class="entity-fields">
+                            <li class="pk">id (PK)</li>
+                            <li class="fk">user_id (FK)</li>
+                            <li class="fk">package_id (FK)</li>
+                            <li>booking_date</li>
+                            <li>status</li>
+                        </ul>
+                    </div>
+                    <div class="entity-card">
+                        <div class="entity-head">Payment</div>
+                        <ul class="entity-fields">
+                            <li class="pk">id (PK)</li>
+                            <li class="fk">booking_id (FK)</li>
+                            <li>payment_id</li>
+                            <li>payment_status</li>
+                        </ul>
+                    </div>
+                </div>
+                <h3 class="sub-title">Relationships</h3>
+                <div class="table-wrap">
+                    <table>
+                        <thead><tr><th>From</th><th>Relation</th><th>To</th></tr></thead>
+                        <tbody>
+                        <tr><td>User</td><td>One-to-Many</td><td>Booking</td></tr>
+                        <tr><td>TravelPackage</td><td>One-to-Many</td><td>Booking</td></tr>
+                        <tr><td>Booking</td><td>One-to-One</td><td>Payment</td></tr>
+                        </tbody>
+                    </table>
+                </div>
+            </section>
+
+            <!-- 8. STRUCTURE -->
+            <section class="doc-section">
+                <span class="section-anchor" id="structure"></span>
+                <div class="section-label">08 — Codebase</div>
+                <h2 class="section-title">Project Structure</h2>
+                <div class="code-label">
+                    <span><span class="code-dot"><span></span><span></span><span></span></span> &nbsp; Directory Layout</span>
+                    <span>Maven Project</span>
+                </div>
+                <pre><code>src/main/
+├── java/com/aj/
+│   ├── <span class="kw">controller</span>/          ← Spring MVC Controllers (HTTP layer)
+│   │   ├── UserController.java
+│   │   ├── PackageController.java
+│   │   ├── BookingController.java
+│   │   ├── PaymentController.java
+│   │   └── AdminController.java
+│   │
+│   ├── <span class="kw">service</span>/             ← Business Logic Layer
+│   │   ├── UserService.java
+│   │   ├── PackageService.java
+│   │   ├── BookingService.java
+│   │   └── PaymentService.java
+│   │
+│   ├── <span class="kw">repository</span>/          ← Spring Data JPA Repositories
+│   │   ├── UserRepository.java
+│   │   ├── PackageRepository.java
+│   │   ├── BookingRepository.java
+│   │   └── PaymentRepository.java
+│   │
+│   ├── <span class="kw">entity</span>/              ← JPA Entity Classes
+│   │   ├── User.java
+│   │   ├── TravelPackage.java
+│   │   ├── Booking.java
+│   │   └── Payment.java
+│   │
+│   ├── <span class="kw">dto</span>/                 ← Data Transfer Objects
+│   ├── <span class="kw">security</span>/            ← Spring Security Configuration
+│   └── <span class="kw">exception</span>/           ← Global Exception Handling
+│
+└── resources/
+    ├── static/
+    │   ├── <span class="val">css</span>/              ← Stylesheets
+    │   ├── <span class="val">js</span>/               ← JavaScript files
+    │   └── <span class="val">images</span>/           ← Static images
+    ├── templates/
+    │   ├── <span class="val">admin</span>/            ← Admin Thymeleaf templates
+    │   └── <span class="val">user</span>/             ← User-facing Thymeleaf templates
+    └── application.properties   ← Application configuration</code></pre>
+            </section>
+
+            <!-- 9. INSTALLATION -->
+            <section class="doc-section">
+                <span class="section-anchor" id="installation"></span>
+                <div class="section-label">09 — Setup</div>
+                <h2 class="section-title">Setup and Installation</h2>
+                <h3 class="sub-title">Prerequisites</h3>
+                <div class="table-wrap">
+                    <table>
+                        <thead><tr><th>Requirement</th><th>Version</th><th>Notes</th></tr></thead>
+                        <tbody>
+                        <tr><td>Java JDK</td><td>21+</td><td>Required</td></tr>
+                        <tr><td>Apache Maven</td><td>3.x</td><td>Required</td></tr>
+                        <tr><td>MySQL</td><td>8.x</td><td>Optional — H2 is used by default</td></tr>
+                        <tr><td>IDE</td><td>Any</td><td>IntelliJ IDEA or Eclipse recommended</td></tr>
+                        <tr><td>Razorpay Account</td><td>—</td><td>Required for payment testing</td></tr>
+                        </tbody>
+                    </table>
+                </div>
+                <h3 class="sub-title">Clone the Repository</h3>
+                <div class="code-label">
+                    <span><span class="code-dot"><span></span><span></span><span></span></span> &nbsp; bash</span>
+                </div>
+                <pre><code><span class="cm"># Clone the repository</span>
+git clone https://github.com/Aj-world/TOURS-AND-TRAVEL-MANAGEMENT-SYSTEM.git
+
+<span class="cm"># Navigate into the project directory</span>
+cd TOURS-AND-TRAVEL-MANAGEMENT-SYSTEM</code></pre>
+            </section>
+
+            <!-- 10. RUNNING -->
+            <section class="doc-section">
+                <span class="section-anchor" id="running"></span>
+                <div class="section-label">10 — Running</div>
+                <h2 class="section-title">Running the Application</h2>
+                <div class="code-label">
+                    <span><span class="code-dot"><span></span><span></span><span></span></span> &nbsp; bash</span>
+                </div>
+                <pre><code><span class="cm"># Build the project</span>
+mvn clean install
+
+<span class="cm"># Start the Spring Boot server</span>
+mvn spring-boot:run</code></pre>
+                <p>The application will start on:</p>
+                <div class="code-label">
+                    <span><span class="code-dot"><span></span><span></span><span></span></span> &nbsp; URL</span>
+                </div>
+                <pre><code>http://localhost:8081</code></pre>
+                <h3 class="sub-title">H2 Database Console</h3>
+                <p>When running in development mode, an in-memory H2 database is used. The web console is available at:</p>
+                <div class="table-wrap">
+                    <table>
+                        <thead><tr><th>Setting</th><th>Value</th></tr></thead>
+                        <tbody>
+                        <tr><td>Console URL</td><td><code>http://localhost:8081/h2-console</code></td></tr>
+                        <tr><td>JDBC URL</td><td><code>jdbc:h2:mem:testdb</code></td></tr>
+                        <tr><td>Username</td><td><code>sa</code></td></tr>
+                        <tr><td>Password</td><td><em>(leave blank)</em></td></tr>
+                        </tbody>
+                    </table>
+                </div>
+            </section>
+
+            <!-- 11. CONFIGURATION -->
+            <section class="doc-section">
+                <span class="section-anchor" id="configuration"></span>
+                <div class="section-label">11 — Configuration</div>
+                <h2 class="section-title">Developer Configuration</h2>
+                <h3 class="sub-title">Razorpay Credentials</h3>
+                <p>Add your Razorpay API credentials to <code>src/main/resources/application.properties</code>:</p>
+                <div class="code-label">
+                    <span><span class="code-dot"><span></span><span></span><span></span></span> &nbsp; application.properties</span>
+                </div>
+                <pre><code><span class="cm"># Razorpay Payment Gateway</span>
+<span class="kw">razorpay.key_id</span>=<span class="val">YOUR_RAZORPAY_KEY_ID</span>
+<span class="kw">razorpay.key_secret</span>=<span class="val">YOUR_RAZORPAY_KEY_SECRET</span></code></pre>
+                <div class="callout callout-warn">
+                    <span class="callout-icon">⚠️</span>
+                    <div>Never commit your Razorpay secret key to a public repository. Add <code>application.properties</code> to <code>.gitignore</code>, or use environment variables to inject credentials securely.</div>
+                </div>
+                <h3 class="sub-title">MySQL Configuration (Production)</h3>
+                <p>To switch from H2 to MySQL, update <code>application.properties</code>:</p>
+                <div class="code-label">
+                    <span><span class="code-dot"><span></span><span></span><span></span></span> &nbsp; application.properties</span>
+                </div>
+                <pre><code><span class="cm"># MySQL Datasource</span>
+<span class="kw">spring.datasource.url</span>=<span class="val">jdbc:mysql://localhost:3306/travel_db</span>
+<span class="kw">spring.datasource.username</span>=<span class="val">root</span>
+<span class="kw">spring.datasource.password</span>=<span class="val">yourpassword</span>
+<span class="kw">spring.datasource.driver-class-name</span>=<span class="val">com.mysql.cj.jdbc.Driver</span>
+
+<span class="cm"># JPA / Hibernate</span>
+<span class="kw">spring.jpa.hibernate.ddl-auto</span>=<span class="val">update</span>
+<span class="kw">spring.jpa.show-sql</span>=<span class="val">true</span></code></pre>
+            </section>
+
+            <!-- 12. SECURITY -->
+            <section class="doc-section">
+                <span class="section-anchor" id="security"></span>
+                <div class="section-label">12 — Security</div>
+                <h2 class="section-title">Security Implementation</h2>
+                <p>Authentication and authorization are implemented using <strong>Spring Security 6</strong>. Key aspects of the security implementation include:</p>
+                <div class="table-wrap">
+                    <table>
+                        <thead><tr><th>Feature</th><th>Implementation</th></tr></thead>
+                        <tbody>
+                        <tr><td>Password Encryption</td><td>BCryptPasswordEncoder — passwords are never stored in plain text</td></tr>
+                        <tr><td>Session Management</td><td>Spring Security session-based authentication with CSRF protection</td></tr>
+                        <tr><td>Role-Based Access</td><td>Two roles: <code>ROLE_USER</code> and <code>ROLE_ADMIN</code></td></tr>
+                        <tr><td>Route Protection</td><td>Admin routes secured via <code>SecurityFilterChain</code> configuration</td></tr>
+                        <tr><td>Login / Logout</td><td>Custom login form and logout endpoint managed by Spring Security</td></tr>
+                        </tbody>
+                    </table>
+                </div>
+                <h3 class="sub-title">Security Configuration (Conceptual)</h3>
+                <div class="code-label">
+                    <span><span class="code-dot"><span></span><span></span><span></span></span> &nbsp; SecurityConfig.java</span>
+                </div>
+                <pre><code><span class="br">@Configuration</span>
+<span class="br">@EnableWebSecurity</span>
+<span class="kw">public class</span> SecurityConfig {
+
+    <span class="br">@Bean</span>
+    <span class="kw">public</span> SecurityFilterChain filterChain(HttpSecurity http) <span class="kw">throws</span> Exception {
+        http
+          .authorizeHttpRequests(auth -> auth
+            .requestMatchers(<span class="st">"/admin/**"</span>).hasRole(<span class="st">"ADMIN"</span>)
+            .requestMatchers(<span class="st">"/user/**"</span>).hasRole(<span class="st">"USER"</span>)
+            .requestMatchers(<span class="st">"/", "/register", "/css/**"</span>).permitAll()
+            .anyRequest().authenticated()
+          )
+          .formLogin(form -> form.loginPage(<span class="st">"/login"</span>).permitAll())
+          .logout(logout -> logout.permitAll());
+        <span class="kw">return</span> http.build();
+    }
+
+    <span class="br">@Bean</span>
+    <span class="kw">public</span> PasswordEncoder passwordEncoder() {
+        <span class="kw">return new</span> BCryptPasswordEncoder();
+    }
+}</code></pre>
+            </section>
+
+            <!-- 13. ROADMAP -->
+            <section class="doc-section">
+                <span class="section-anchor" id="roadmap"></span>
+                <div class="section-label">13 — Roadmap</div>
+                <h2 class="section-title">Future Improvements</h2>
+                <ul class="roadmap-list">
+                    <li><span class="tag tag-api">API</span> REST API endpoints for decoupled frontend integration</li>
+                    <li><span class="tag tag-infra">Infra</span> Docker containerization and Compose setup</li>
+                    <li><span class="tag tag-ux">UX</span> Pagination and sorting for packages and bookings</li>
+                    <li><span class="tag tag-notify">Notify</span> Email notifications for booking confirmation</li>
+                    <li><span class="tag tag-docs">Docs</span> Swagger / OpenAPI documentation for REST endpoints</li>
+                    <li><span class="tag tag-deploy">Deploy</span> Cloud deployment (AWS / Railway / Render)</li>
+                    <li><span class="tag tag-ux">UX</span> Package image uploads and gallery support</li>
+                    <li><span class="tag tag-sec">Security</span> OAuth2 / social login integration</li>
+                </ul>
+            </section>
+
+            <!-- 14. OUTCOMES -->
+            <section class="doc-section">
+                <span class="section-anchor" id="outcomes"></span>
+                <div class="section-label">14 — Reflection</div>
+                <h2 class="section-title">Learning Outcomes</h2>
+                <ul class="outcome-list">
+                    <li>Designed and implemented a full-stack Spring Boot MVC application end-to-end</li>
+                    <li>Applied layered architecture with clear separation of Controller, Service, and Repository layers</li>
+                    <li>Configured Spring Security for authentication, role-based authorization, and CSRF protection</li>
+                    <li>Integrated a third-party payment gateway (Razorpay) with server-side signature verification</li>
+                    <li>Used Spring Data JPA and Hibernate for entity mapping, relationships, and database persistence</li>
+                    <li>Implemented server-side rendering using Thymeleaf with dynamic data binding</li>
+                    <li>Practiced H2 in-memory database for development and MySQL for production</li>
+                    <li>Structured a scalable Maven project following standard Spring Boot conventions</li>
+                    <li>Added global exception handling for a consistent error response strategy</li>
+                </ul>
+            </section>
+
+            <!-- 15. AUTHOR -->
+            <section class="doc-section">
+                <span class="section-anchor" id="author"></span>
+                <div class="section-label">15 — Author</div>
+                <h2 class="section-title">Author Information</h2>
+                <div class="author-card">
+                    <div class="author-avatar">AN</div>
+                    <div class="author-info">
+                        <h3>Abinash Nayak</h3>
+                        <div class="role">Java Backend Developer &nbsp;·&nbsp; Spring Boot &nbsp;·&nbsp; Backend Systems &nbsp;·&nbsp; Payment Integration</div>
+                        <div class="tech-pills" style="margin: .6rem 0 .9rem;">
+                            <span class="pill accent">Java</span>
+                            <span class="pill accent">Spring Boot</span>
+                            <span class="pill">MCA Graduate</span>
+                        </div>
+                        <a href="https://github.com/Aj-world" target="_blank">⟶ &nbsp;github.com/Aj-world</a>
+                    </div>
+                </div>
+                <div class="callout callout-info" style="margin-top: 1.75rem;">
+                    <span class="callout-icon">🎓</span>
+                    <div>This project was completed as part of the <strong>Master of Computer Applications (MCA)</strong> curriculum, supported by a project report, college certification, and project approval documentation.</div>
+                </div>
+            </section>
+
+        </main>
+
+        <!-- FOOTER -->
+        <footer>
+            <p><strong>Tours and Travel Management System</strong> — Technical Documentation</p>
+            <p style="margin-top:.45rem;">Built by <a href="https://github.com/Aj-world">Abinash Nayak</a> &nbsp;·&nbsp; Java Backend Developer &nbsp;·&nbsp; Spring Boot &amp; Payment Integration</p>
+        </footer>
+
+    </div><!-- end main column -->
+</div><!-- end page-wrap -->
+
+</body>
+</html>

@@ -29,7 +29,22 @@ A **static preview of the UI (HTML templates)** is deployed for demonstration pu
 
 [https://tours-and-travel-management-system.netlify.app](https://tours-and-travel-management-system.netlify.app)
 
-> **Note:** The Netlify deployment is a **static UI preview only**. Backend functionality such as authentication, bookings, and payments require the Spring Boot server to run locally.
+ 
+
+---
+ 
+
+## Documentation
+
+Full technical documentation for this project is available here:
+
+### Live Documentation
+https://tours-travelproject-documentation.netlify.app/
+
+### Repository Version
+[View HTML Documentation](docs/project-documentation.html)
+
+---
 
 ---
 ## Documentation
@@ -325,6 +340,7 @@ This project was developed as part of the **Master of Computer Applications (MCA
 
 ---
 
+ 
 ## Development Notes
 
 This repository represents a **completed academic project demonstrating a full-stack Spring Boot MVC application with authentication and payment integration**.
@@ -338,6 +354,8 @@ The project showcases backend development practices including:
 - Database persistence with JPA/Hibernate
 - Server-side HTML rendering using Thymeleaf
 
+ 
+>>>>>>> 4ed91b9 (docs: finalize README documentation and formatting)
 ## Author
 
 **Abinash Nayak**  
@@ -351,3 +369,41 @@ GitHub: [https://github.com/Aj-world](https://github.com/Aj-world)
 
 This project is created for **educational and learning purposes**.
 
+ 
+---
+
+## Development Notes
+
+This repository represents a **completed academic project demonstrating a full-stack Spring Boot MVC application with authentication and payment integration**.
+
+The project showcases backend development practices including:
+
+=======
+## Development Notes
+
+This repository represents a **completed academic project demonstrating a full-stack Spring Boot MVC application with authentication and payment integration**.
+
+The project showcases backend development practices including:
+
+- Spring Boot architecture
+- MVC pattern implementation
+- Secure authentication with Spring Security
+- Payment gateway integration
+- Database persistence with JPA/Hibernate
+- Server-side HTML rendering using Thymeleaf
+
+---
+
+## Author
+
+**Abinash Nayak**  
+Java Backend Developer | Spring Boot | Backend Systems | Payment Integration
+
+GitHub: https://github.com/Aj-world
+
+---
+
+## License
+
+This project is created for **educational and learning purposes**.
+ 
