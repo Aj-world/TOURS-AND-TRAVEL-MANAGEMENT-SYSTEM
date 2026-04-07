@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
 
 <head>
 	<meta charset="UTF-8">
@@ -29,8 +29,8 @@
 		<nav class="navbar">
 			<a href="#">home</a>
 			<a href="/about_Page">about</a>
-			<a href="/Package_Page">package</a>
-			<a href="/Book_Page">Cart</a>
+			<a href="/packages">package</a>
+			<a href="/packages">Cart</a>
 			<a href="/User_about_Page"><img id="Aj" src="images/pic-2.png"></a>
 
 		</nav>
@@ -55,7 +55,7 @@
 						<h1>wellCome to Aj World Ms. <h1 th:text="${name}"></h1></h1>
 						<span>explore, discover, travel</span>
 						<h3>make your tour worthwhile</h3>
-						<a href="package.html" class="btn">discover more</a>
+						<a href="/packages" class="btn">discover more</a>
 					</div>
 				</div>
 
@@ -64,7 +64,7 @@
 						<h1>wellCome to Aj World Ms. <h1 th:text="${name}"></h1></h1>
 						<span>explore, discover, travel</span>
 						<h3>travel arround the world</h3>
-						<a href="package.html" class="btn">discover more</a>
+						<a href="/packages" class="btn">discover more</a>
 					</div>
 				</div>
 
@@ -73,7 +73,7 @@
 						<h1>wellCome to Aj World Ms. <h1 th:text="${name}"></h1></h1>
 						<span>explore, discover, travel</span>
 						<h3>discover the new places</h3>
-						<a href="package.html" class="btn">discover more</a>
+						<a href="/packages" class="btn">discover more</a>
 					</div>
 				</div>
 
@@ -163,43 +163,28 @@
 
 		<div class="box-container">
 
-			<div class="box">
+			<div class="box" th:if="${#lists.isEmpty(packages)}">
+				<div class="content">
+					<h3>No packages available</h3>
+					<p>Packages will appear here once they are added to the database.</p>
+				</div>
+			</div>
+
+			<div class="box" th:each="travelPackage : ${packages}">
 				<div class="image">
 					<img src="images/img-1.jpg" alt="">
 				</div>
 				<div class="content">
-					<h3>adventure & tour</h3>
-					<p>Lorem ipsum dolor sit, amet consectetur adipisicing elit. Eos, sint!</p>
-					<h2 id="AjColor">UPTO 50% OFF</h2> <a href="View1" class="btn">book now</a>
-				</div>
-			</div>
-
-			<div class="box">
-				<div class="image">
-					<img src="images/img-2.jpg" alt="">
-				</div>
-				<div class="content">
-					<h3>adventure & tour</h3>
-					<p>Lorem ipsum dolor sit, amet consectetur adipisicing elit. Eos, sint!</p>
-					<h2 id="AjColor">UPTO 50% OFF</h2> <a href="View2" class="btn">book now</a>
-				</div>
-			</div>
-
-			<div class="box">
-				<div class="image">
-					<img src="images/img-3.jpg" alt="">
-				</div>
-				<div class="content">
-					<h3>adventure & tour</h3>
-					<p>Lorem ipsum dolor sit, amet consectetur adipisicing elit. Eos, sint!</p>
-					<h2 id="AjColor">UPTO 50% OFF</h2>
-					<a href="View3" class="btn">book now</a>
+					<h3 th:text="${travelPackage.packageName}">Package Name</h3>
+					<p th:text="${travelPackage.packageType != null ? travelPackage.packageType : 'Travel Package'}">Package Type</p>
+					<h2 id="AjColor" th:text="'INR ' + ${travelPackage.price}">INR 0</h2>
+					<a th:href="@{/packages/{id}(id=${travelPackage.packageid})}" class="btn">book now</a>
 				</div>
 			</div>
 
 		</div>
 
-		<div class="load-more"> <a href="Package_Page" class="btn">load more</a> </div>
+		<div class="load-more"> <a href="/packages" class="btn">load more</a> </div>
 
 	</section>
 

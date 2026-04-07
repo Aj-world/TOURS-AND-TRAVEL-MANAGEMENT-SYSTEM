@@ -27,8 +27,8 @@
    <nav class="navbar">
       <a href="/home_Page">home</a>
       <a href="/about_Page">about</a>
-      <a href="#">package</a>
-      <a href="/Book_Page">Cart</a>
+      <a href="/packages">package</a>
+      <a href="/packages">Cart</a>
       <a href="/User_about_Page"><img id="Aj" src="images/pic-2.png"></a>
 
    </nav>
@@ -51,141 +51,42 @@
 
    <div class="box-container">
 
-      <div class="box">
+      <div class="box" th:if="${#lists.isEmpty(packages)}">
+         <div class="content">
+            <h3>No packages available</h3>
+            <p>Add travel packages to the database to make them visible here.</p>
+         </div>
+      </div>
+
+      <div class="box" th:each="travelPackage : ${packages}">
          <div class="image">
             <img src="images/img-1.jpg" alt="">
          </div>
          <div class="content">
-            <h3>adventure & tour</h3>
-            <p>Lorem ipsum dolor sit amet consectetur adipisicing elit. Perferendis, perspiciatis!</p>
-            <a href="View1" class="btn">book now</a>
-         </div>
-      </div>
-
-      <div class="box">
-         <div class="image">
-            <img src="images/img-2.jpg" alt="">
-         </div>
-         <div class="content">
-            <h3>adventure & tour</h3>
-            <p>Lorem ipsum dolor sit amet consectetur adipisicing elit. Perferendis, perspiciatis!</p>
-            <a href="View2" class="btn">book now</a>
-         </div>
-      </div>
-
-      <div class="box">
-         <div class="image">
-            <img src="images/img-3.jpg" alt="">
-         </div>
-         <div class="content">
-            <h3>adventure & tour</h3>
-            <p>Lorem ipsum dolor sit amet consectetur adipisicing elit. Perferendis, perspiciatis!</p>
-            <a href="View3" class="btn">book now</a>
-         </div>
-      </div>
-
-      <div class="box">
-         <div class="image">
-            <img src="images/img-4.jpg" alt="">
-         </div>
-         <div class="content">
-            <h3>adventure & tour</h3>
-            <p>Lorem ipsum dolor sit amet consectetur adipisicing elit. Perferendis, perspiciatis!</p>
-            <a href="View4" class="btn">book now</a>
-         </div>
-      </div>
-
-      <div class="box">
-         <div class="image">
-            <img src="images/img-5.jpg" alt="">
-         </div>
-         <div class="content">
-            <h3>adventure & tour</h3>
-            <p>Lorem ipsum dolor sit amet consectetur adipisicing elit. Perferendis, perspiciatis!</p>
-            <a href="View5" class="btn">book now</a>
-         </div>
-      </div>
-
-      <div class="box">
-         <div class="image">
-            <img src="images/img-6.jpg" alt="">
-         </div>
-         <div class="content">
-            <h3>adventure & tour</h3>
-            <p>Lorem ipsum dolor sit amet consectetur adipisicing elit. Perferendis, perspiciatis!</p>
-            <a href="View6" class="btn">book now</a>
-         </div>
-      </div>
-
-      <div class="box">
-         <div class="image">
-            <img src="images/img-7.jpg" alt="">
-         </div>
-         <div class="content">
-            <h3>adventure & tour</h3>
-            <p>Lorem ipsum dolor sit amet consectetur adipisicing elit. Perferendis, perspiciatis!</p>
-            <a href="View7" class="btn">book now</a>
-         </div>
-      </div>
-
-      <div class="box">
-         <div class="image">
-            <img src="images/img-8.jpg" alt="">
-         </div>
-         <div class="content">
-            <h3>adventure & tour</h3>
-            <p>Lorem ipsum dolor sit amet consectetur adipisicing elit. Perferendis, perspiciatis!</p>
-            <a href="View8" class="btn">book now</a>
-         </div>
-      </div>
-
-      <div class="box">
-         <div class="image">
-            <img src="images/img-9.jpg" alt="">
-         </div>
-         <div class="content">
-            <h3>adventure & tour</h3>
-            <p>Lorem ipsum dolor sit amet consectetur adipisicing elit. Perferendis, perspiciatis!</p>
-            <a href="View9" class="btn">book now</a>
-         </div>
-      </div>
-
-      <div class="box">
-         <div class="image">
-            <img src="images/img-10.jpg" alt="">
-         </div>
-         <div class="content">
-            <h3>adventure & tour</h3>
-            <p>Lorem ipsum dolor sit amet consectetur adipisicing elit. Perferendis, perspiciatis!</p>
-            <a href="View91" class="btn">book now</a>
-         </div>
-      </div>
-
-      <div class="box">
-         <div class="image">
-            <img src="images/img-11.jpg" alt="">
-         </div>
-         <div class="content">
-            <h3>adventure & tour</h3>
-            <p>Lorem ipsum dolor sit amet consectetur adipisicing elit. Perferendis, perspiciatis!</p>
-            <a href="View92" class="btn">book now</a>
-         </div>
-      </div>
-
-      <div class="box">
-         <div class="image">
-            <img src="images/img-12.jpg" alt="">
-         </div>
-         <div class="content">
-            <h3>adventure & tour</h3>
-            <p>Lorem ipsum dolor sit amet consectetur adipisicing elit. Perferendis, perspiciatis!</p>
-            <a href="View93" class="btn">book now</a>
+            <h3 th:text="${travelPackage.packageName}">Package Name</h3>
+            <p>
+               <span th:text="${travelPackage.packageType != null ? travelPackage.packageType : 'Travel Package'}">Package Type</span>
+               <span th:if="${travelPackage.journyData != null}">
+                  |
+                  <span th:text="${#dates.format(travelPackage.journyData, 'dd MMM yyyy')}">Date</span>
+               </span>
+            </p>
+            <p th:text="'Price: INR ' + ${travelPackage.price}">Price</p>
+            <a th:href="@{/packages/{id}(id=${travelPackage.packageid})}" class="btn">book now</a>
          </div>
       </div>
 
    </div>
 
-   <div class="load-more"><span class="btn">load more</span></div>
+   <div class="load-more" th:if="${packagePage != null and packagePage.totalPages > 1}">
+      <a class="btn"
+         th:if="${packagePage.hasPrevious()}"
+         th:href="@{/packages(page=${currentPage - 1},size=${pageSize})}">previous</a>
+      <span class="btn" th:text="'page ' + (${currentPage} + 1) + ' of ' + ${packagePage.totalPages}">page</span>
+      <a class="btn"
+         th:if="${packagePage.hasNext()}"
+         th:href="@{/packages(page=${currentPage + 1},size=${pageSize})}">next</a>
+   </div>
 
 </section>
 

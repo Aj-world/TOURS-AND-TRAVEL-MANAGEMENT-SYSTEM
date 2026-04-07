@@ -1,6 +1,6 @@
 # Tours and Travel Management System
 
-![Java](https://img.shields.io/badge/Java-21-orange)
+![Java](https://img.shields.io/badge/Java-17-orange)
 ![Spring Boot](https://img.shields.io/badge/SpringBoot-3.x-brightgreen)
 ![Spring Security](https://img.shields.io/badge/Spring%20Security-Authentication-blue)
 ![Database](https://img.shields.io/badge/Database-H2%20%7C%20MySQL-blue)
@@ -51,7 +51,7 @@ https://tours-and-travelproject-documentation.netlify.app/
 
 | Layer                 | Technologies                                                        |
 | --------------------- | ------------------------------------------------------------------- |
-| **Backend**           | Java 21, Spring Boot 3, Spring Security, Spring Data JPA, Hibernate |
+| **Backend**           | Java 17, Spring Boot 3, Spring Security, Spring Data JPA, Hibernate |
 | **Frontend**          | Thymeleaf, HTML5, CSS3, JavaScript                                  |
 | **Database**          | H2 (development), MySQL (production)                                |
 | **Payment Gateway**   | Razorpay                                                            |
@@ -201,7 +201,7 @@ src/main
 
 ### Prerequisites
 
-- Java 21+
+- Java 17+
 - Maven
 - MySQL (optional — H2 is used by default)
 - IntelliJ IDEA or Eclipse
@@ -342,8 +342,8 @@ The project showcases backend development practices including:
 - Database persistence with JPA/Hibernate
 - Server-side HTML rendering using Thymeleaf
 
- 
->>>>>>> 4ed91b9 (docs: finalize README documentation and formatting)
+---
+
 ## Author
 
 **Abinash Nayak**  
@@ -356,42 +356,3 @@ GitHub: [https://github.com/Aj-world](https://github.com/Aj-world)
 ## License
 
 This project is created for **educational and learning purposes**.
-
- 
----
-
-## Development Notes
-
-This repository represents a **completed academic project demonstrating a full-stack Spring Boot MVC application with authentication and payment integration**.
-
-The project showcases backend development practices including:
-
-=======
-## Development Notes
-
-This repository represents a **completed academic project demonstrating a full-stack Spring Boot MVC application with authentication and payment integration**.
-
-The project showcases backend development practices including:
-
-- Spring Boot architecture
-- MVC pattern implementation
-- Secure authentication with Spring Security
-- Payment gateway integration
-- Database persistence with JPA/Hibernate
-- Server-side HTML rendering using Thymeleaf
-
----
-
-## Author
-
-**Abinash Nayak**  
-Java Backend Developer | Spring Boot | Backend Systems | Payment Integration
-
-GitHub: https://github.com/Aj-world
-
----
-
-## License
-
-This project is created for **educational and learning purposes**.
- 

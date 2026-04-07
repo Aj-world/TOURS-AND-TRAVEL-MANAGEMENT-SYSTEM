@@ -27,8 +27,8 @@
    <nav class="navbar">
       <a href="/home_Page">home</a>
       <a href="/about_Page">about</a>
-      <a href="/Package_Page">package</a>
-      <a href="#">Cart</a>
+      <a href="/packages">package</a>
+      <a href="/packages">Cart</a>
       <a href="/User_about_Page"><img id="Aj" src="images/pic-2.png"></a>
 
    </nav>
@@ -42,6 +42,26 @@
 <div class="heading" style="background:url(images/header-bg-3.png) no-repeat">
    <h1>book now</h1>
 </div>
+
+<section class="about" th:if="${travelPackage != null}">
+
+   <div class="content">
+      <h3 th:text="${travelPackage.packageName}">Package Name</h3>
+      <p>
+         <strong>Package type:</strong>
+         <span th:text="${travelPackage.packageType != null ? travelPackage.packageType : 'Travel Package'}">Package Type</span>
+      </p>
+      <p th:if="${travelPackage.journyData != null}">
+         <strong>Journey date:</strong>
+         <span th:text="${#dates.format(travelPackage.journyData, 'dd MMM yyyy')}">01 Jan 2026</span>
+      </p>
+      <p>
+         <strong>Price:</strong>
+         <span th:text="'INR ' + ${travelPackage.price}">INR 0</span>
+      </p>
+   </div>
+
+</section>
 
 <!-- booking section starts  -->
 
@@ -70,7 +90,8 @@
          </div>
          <div class="inputBox">
             <span>where to :</span>
-            <input type="text" placeholder="place you want to visit" name="location">
+            <input type="text" placeholder="place you want to visit" name="location"
+                   th:value="${travelPackage != null ? travelPackage.packageName : ''}" readonly>
          </div>
          <div class="inputBox">
             <span>how many :</span>
@@ -86,7 +107,7 @@
          </div>
       </div>
 
-      <input type="hidden" value="5000" name="price">
+      <input type="hidden" th:value="${travelPackage != null ? travelPackage.price : 5000}" name="price">
       <input type="submit" value="submit" id="btn" name="send">
 
    </form>
