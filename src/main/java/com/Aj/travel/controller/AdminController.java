@@ -16,8 +16,8 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 
-import com.Aj.travel.Entity.User;
-import com.Aj.travel.Service.UserService;
+import com.aj.travel.entity.User;
+import com.aj.travel.service.UserService;
 
 @Controller
 @RequestMapping("/admin")
@@ -58,12 +58,12 @@ public class AdminController {
 		User existingUser = userService.updateUser(id);
 
 		existingUser.setUserId(id);
-		existingUser.setUserName1(updatedUser.getUserName1());
+		existingUser.setUserName(updatedUser.getUserName());
 		if (updatedUser.getUserPassword() != null && !updatedUser.getUserPassword().isBlank()) {
 			existingUser.setUserPassword(passwordEncoder.encode(updatedUser.getUserPassword()));
 		}
 		existingUser.setEmail(updatedUser.getEmail());
-		existingUser.setUserPhoneNO(updatedUser.getUserPhoneNO());
+		existingUser.setUserPhoneNo(updatedUser.getUserPhoneNo());
 
 		userService.saveUser(existingUser);
 		return "redirect:/admin/dashboard";

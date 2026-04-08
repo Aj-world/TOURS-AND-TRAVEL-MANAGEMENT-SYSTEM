@@ -1,4 +1,4 @@
-package com.Aj.travel.Service;
+package com.aj.travel.service;
 
 import java.util.Map;
 
@@ -7,15 +7,15 @@ import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
-import com.Aj.travel.DTO.BookingRequest;
-import com.Aj.travel.Entity.Booking;
-import com.Aj.travel.Entity.BookingStatus;
-import com.Aj.travel.Entity.Package;
-import com.Aj.travel.Entity.Payment;
-import com.Aj.travel.Entity.User;
-import com.Aj.travel.Exception.BadRequestException;
-import com.Aj.travel.Exception.ResourceNotFoundException;
-import com.Aj.travel.Repository.BookingRepository;
+import com.aj.travel.dto.BookingRequest;
+import com.aj.travel.entity.Booking;
+import com.aj.travel.entity.BookingStatus;
+import com.aj.travel.entity.Package;
+import com.aj.travel.entity.Payment;
+import com.aj.travel.entity.User;
+import com.aj.travel.exception.BadRequestException;
+import com.aj.travel.exception.ResourceNotFoundException;
+import com.aj.travel.repository.BookingRepository;
 
 @Service
 public class BookingService {
@@ -52,12 +52,12 @@ public class BookingService {
 
 		Booking booking = new Booking();
 		booking.setGuest(request.getGuests());
-		booking.setArivalDate(request.getArivalDate());
+		booking.setArrivalDate(request.getArivalDate());
 		booking.setLeavingDate(request.getLeavingDate());
 		booking.setTotalAmount(request.getPrice());
 		booking.setStatus(BookingStatus.PENDING_PAYMENT);
 		booking.setUser(user);
-		booking.setPackage1(travelPackage);
+		booking.setTravelPackage(travelPackage);
 		booking.setPayment(payment);
 		payment.setBooking(booking);
 
@@ -85,7 +85,7 @@ public class BookingService {
 		return Map.of(
 				"bookingId", booking.getBookId(),
 				"price", booking.getTotalAmount(),
-				"name", booking.getUser().getUserName1());
+				"name", booking.getUser().getUserName());
 	}
 }
 

@@ -1,11 +1,11 @@
-package com.Aj.travel.Service;
+package com.aj.travel.service;
 
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.stereotype.Service;
 
-import com.Aj.travel.Repository.UserRepository;
+import com.aj.travel.repository.UserRepository;
 
 @Service
 public class CustomUserDetailsService implements UserDetailsService {

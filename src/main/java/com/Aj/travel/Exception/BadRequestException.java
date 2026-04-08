@@ -1,4 +1,4 @@
-package com.Aj.travel.Exception;
+package com.aj.travel.exception;
 
 public class BadRequestException extends RuntimeException {
 	public BadRequestException(String message) {

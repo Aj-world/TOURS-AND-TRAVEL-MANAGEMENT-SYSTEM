@@ -66,13 +66,13 @@
             <h3 th:text="${travelPackage.packageName}">Package Name</h3>
             <p>
                <span th:text="${travelPackage.packageType != null ? travelPackage.packageType : 'Travel Package'}">Package Type</span>
-               <span th:if="${travelPackage.journyData != null}">
+                <span th:if="${travelPackage.journeyDate != null}">
                   |
-                  <span th:text="${#dates.format(travelPackage.journyData, 'dd MMM yyyy')}">Date</span>
+                <span th:text="${#dates.format(travelPackage.journeyDate, 'dd MMM yyyy')}">Date</span>
                </span>
             </p>
             <p th:text="'Price: INR ' + ${travelPackage.price}">Price</p>
-            <a th:href="@{/packages/{id}(id=${travelPackage.packageid})}" class="btn">book now</a>
+            <a th:href="@{/packages/{id}(id=${travelPackage.packageId})}" class="btn">book now</a>
          </div>
       </div>
 

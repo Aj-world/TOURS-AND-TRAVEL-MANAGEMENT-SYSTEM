@@ -1,4 +1,4 @@
-package com.Aj.travel.security;
+package com.aj.travel.security;
 
 import java.io.IOException;
 
@@ -9,8 +9,8 @@ import org.springframework.security.web.authentication.WebAuthenticationDetailsS
 import org.springframework.stereotype.Component;
 import org.springframework.web.filter.OncePerRequestFilter;
 
-import com.Aj.travel.Service.CustomUserDetailsService;
-import com.Aj.travel.Service.JwtService;
+import com.aj.travel.service.CustomUserDetailsService;
+import com.aj.travel.service.JwtService;
 
 import jakarta.servlet.FilterChain;
 import jakarta.servlet.ServletException;
@@ -60,4 +60,3 @@ public class JwtAuthenticationFilter extends OncePerRequestFilter {
 		filterChain.doFilter(request, response);
 	}
 }
-

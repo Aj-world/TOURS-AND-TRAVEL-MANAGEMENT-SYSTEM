@@ -1,13 +1,13 @@
-package com.Aj.travel.Service;
+package com.aj.travel.service;
 
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
-import com.Aj.travel.Entity.Package;
-import com.Aj.travel.Exception.ResourceNotFoundException;
-import com.Aj.travel.Repository.PackageRepository;
+import com.aj.travel.entity.Package;
+import com.aj.travel.exception.ResourceNotFoundException;
+import com.aj.travel.repository.PackageRepository;
 
 @Service
 public class PackageService {
@@ -29,4 +29,3 @@ public class PackageService {
 				.orElseThrow(() -> new ResourceNotFoundException("Package not found: " + id));
 	}
 }
-

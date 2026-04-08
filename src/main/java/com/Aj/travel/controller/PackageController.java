@@ -1,4 +1,4 @@
-package com.Aj.travel.controller;
+package com.aj.travel.controller;
 
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
@@ -11,8 +11,8 @@ import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 
-import com.Aj.travel.Entity.Package;
-import com.Aj.travel.Service.PackageService;
+import com.aj.travel.entity.Package;
+import com.aj.travel.service.PackageService;
 
 @Controller
 @RequestMapping("/packages")

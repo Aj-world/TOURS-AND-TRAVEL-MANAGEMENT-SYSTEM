@@ -1,4 +1,4 @@
-package com.Aj.travel.Service;
+package com.aj.travel.service;
 
 import java.security.Key;
 import java.util.Date;

@@ -1,4 +1,4 @@
-package com.Aj.travel.Entity;
+package com.aj.travel.entity;
 
 public enum BookingStatus {
 	PENDING_PAYMENT,

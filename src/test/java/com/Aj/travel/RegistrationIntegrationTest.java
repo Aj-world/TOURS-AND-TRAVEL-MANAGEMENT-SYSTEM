@@ -1,4 +1,4 @@
-package com.Aj.travel;
+package com.aj.travel;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertThrows;
@@ -11,10 +11,10 @@ import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.test.context.ActiveProfiles;
 import org.springframework.transaction.annotation.Transactional;
 
-import com.Aj.travel.Entity.User;
-import com.Aj.travel.Entity.UserRole;
-import com.Aj.travel.Exception.BadRequestException;
-import com.Aj.travel.Service.RegistrationService;
+import com.aj.travel.entity.User;
+import com.aj.travel.entity.UserRole;
+import com.aj.travel.exception.BadRequestException;
+import com.aj.travel.service.RegistrationService;
 
 @SpringBootTest
 @ActiveProfiles("test")
@@ -45,12 +45,11 @@ class RegistrationIntegrationTest {
 
 	private User user(String email) {
 		User user = new User();
-		user.setUserName1("Registration User");
+		user.setUserName("Registration User");
 		user.setEmail(email);
 		user.setUserPassword("Password123!");
-		user.setUserPhoneNO("9999999999");
-		user.setUserAddresh("Test Address");
+		user.setUserPhoneNo("9999999999");
+		user.setUserAddress("Test Address");
 		return user;
 	}
 }
-
