@@ -7,7 +7,7 @@
 </head>
 <body class="container mt-4">
 	<h2>Update User</h2>
-	<form method="post" th:action="@{/Aj1/Update{id}(id=${id})}">
+	<form method="post" th:action="@{/admin/users/{id}(id=${id})}">
 		<div class="form-group">
 			<label>Name</label>
 			<input class="form-control" type="text" name="UserName1" required>

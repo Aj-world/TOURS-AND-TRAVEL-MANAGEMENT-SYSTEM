@@ -1,4 +1,4 @@
-package com.aj.travel.Component;
+package com.Aj.travel.Component;
 
 import java.security.SecureRandom;
 
@@ -9,9 +9,9 @@ import org.springframework.boot.CommandLineRunner;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Component;
 
-import com.aj.travel.Entity.User;
-import com.aj.travel.Entity.UserRole;
-import com.aj.travel.Repository.UserRepository;
+import com.Aj.travel.Entity.User;
+import com.Aj.travel.Entity.UserRole;
+import com.Aj.travel.Repository.UserRepository;
 
 @Component
 public class AdminInitializer implements CommandLineRunner {

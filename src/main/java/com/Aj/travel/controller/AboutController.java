@@ -1,18 +1,17 @@
-package com.aj.travel.Controller;
+package com.Aj.travel.controller;
 
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.RequestMapping;
 
 @Controller
-
+@RequestMapping("/about")
+@PreAuthorize("hasRole('USER')")
 public class AboutController {
 
-	@PreAuthorize("hasAuthority('USER')")
-	@GetMapping("/about_Page")
-	public String h2() {
+	@GetMapping
+	public String showAboutPage() {
 		return "/User/about_Page";
 	}
-	
 }
-

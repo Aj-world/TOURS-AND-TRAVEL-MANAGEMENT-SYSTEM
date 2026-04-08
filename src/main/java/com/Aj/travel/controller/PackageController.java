@@ -1,4 +1,4 @@
-package com.aj.travel.Controller;
+package com.Aj.travel.controller;
 
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
@@ -8,14 +8,15 @@ import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 
-import com.aj.travel.Entity.Package;
-import com.aj.travel.Service.PackageService;
+import com.Aj.travel.Entity.Package;
+import com.Aj.travel.Service.PackageService;
 
 @Controller
 @RequestMapping("/packages")
+@PreAuthorize("hasRole('USER')")
 public class PackageController {
 
 	private final PackageService packageService;
@@ -24,7 +25,6 @@ public class PackageController {
 		this.packageService = packageService;
 	}
 
-	@PreAuthorize("hasAuthority('USER')")
 	@GetMapping
 	public String listPackages(
 			@RequestParam(defaultValue = "0") int page,
@@ -39,11 +39,9 @@ public class PackageController {
 		return "/User/Package_Page";
 	}
 
-	@PreAuthorize("hasAuthority('USER')")
 	@GetMapping("/{id}")
-	public String packageDetails(@PathVariable int id, Model model) {
+	public String getPackageDetails(@PathVariable int id, Model model) {
 		model.addAttribute("travelPackage", packageService.getPackageById(id));
 		return "/User/Book_Page";
 	}
 }
-

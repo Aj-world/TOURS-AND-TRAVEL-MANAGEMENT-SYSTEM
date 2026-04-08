@@ -1,4 +1,4 @@
-package com.aj.travel.security;
+package com.Aj.travel.security;
 
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
@@ -37,25 +37,23 @@ public class SecurityConfig {
 		http
 				.csrf(csrf -> csrf.ignoringRequestMatchers(
 						new AntPathRequestMatcher("/h2-console/**"),
-						new AntPathRequestMatcher("/createOrder", HttpMethod.POST.name()),
-						new AntPathRequestMatcher("/payment/**")
+						new AntPathRequestMatcher("/payments/orders", HttpMethod.POST.name()),
+						new AntPathRequestMatcher("/payments/**")
 				))
 
 				.headers(headers -> headers.frameOptions(frame -> frame.sameOrigin()))
 
 				.authorizeHttpRequests(auth -> auth
 						.requestMatchers(new AntPathRequestMatcher("/login")).permitAll()
-						.requestMatchers(new AntPathRequestMatcher("/Aj/Registion_User")).permitAll()
-						.requestMatchers(new AntPathRequestMatcher("/Aj/Resistation_process_User")).permitAll()
-						.requestMatchers(new AntPathRequestMatcher("/Aj11")).permitAll()
+						.requestMatchers(new AntPathRequestMatcher("/auth/login")).permitAll()
+						.requestMatchers(new AntPathRequestMatcher("/auth/register/user")).permitAll()
 						.requestMatchers(new AntPathRequestMatcher("/error")).permitAll()
 						.requestMatchers(new AntPathRequestMatcher("/css/**")).permitAll()
 						.requestMatchers(new AntPathRequestMatcher("/js/**")).permitAll()
 						.requestMatchers(new AntPathRequestMatcher("/images/**")).permitAll()
 						.requestMatchers(new AntPathRequestMatcher("/h2-console/**")).permitAll()
 
-						.requestMatchers(new AntPathRequestMatcher("/Aj/Registion_Admin")).hasAuthority("ADMIN")
-						.requestMatchers(new AntPathRequestMatcher("/Aj/Resistation_process_Admin")).hasAuthority("ADMIN")
+						.requestMatchers(new AntPathRequestMatcher("/auth/register/admin")).hasRole("ADMIN")
 
 						.anyRequest().authenticated()
 				)

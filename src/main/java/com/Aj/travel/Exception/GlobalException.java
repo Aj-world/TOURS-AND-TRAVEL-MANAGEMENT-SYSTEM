@@ -1,4 +1,4 @@
-package com.aj.travel.Exception;
+package com.Aj.travel.Exception;
 
 import java.time.OffsetDateTime;
 import java.util.LinkedHashMap;

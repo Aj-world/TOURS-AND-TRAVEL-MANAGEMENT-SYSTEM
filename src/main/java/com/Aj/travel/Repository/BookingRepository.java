@@ -1,4 +1,4 @@
-package com.aj.travel.Repository;
+package com.Aj.travel.Repository;
 
 import java.util.Optional;
 
@@ -7,7 +7,7 @@ import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.query.Param;
 
-import com.aj.travel.Entity.Booking;
+import com.Aj.travel.Entity.Booking;
 
 public interface BookingRepository extends JpaRepository<Booking, Integer> {
 	@EntityGraph(attributePaths = { "user", "payment", "package1" })

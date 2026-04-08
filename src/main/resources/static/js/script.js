@@ -96,7 +96,7 @@ const paymentStart = () => {
 	const bookingId = parseInt(bookingIdElement.value, 10);
 	const razorpayKey = keyElement && keyElement.value ? keyElement.value : "rzp_test_Obz1IQlDtOvh1b";
 
-	fetch(`Packge_process2?bookingId=${bookingId}`)
+	fetch(`/bookings/${bookingId}/price`)
 		.then(response => {
 			if (!response.ok) {
 				throw new Error('Network response was not ok');
@@ -108,7 +108,7 @@ const paymentStart = () => {
 			 
 			$.ajax(
 				{
-					url: '/createOrder',
+					url: '/payments/orders',
 					data: JSON.stringify({ bookingId: bookingId }),
 					contentType: "application/json",
 					type: "post",
@@ -127,7 +127,7 @@ const paymentStart = () => {
 								"order_id": response.id,
 								"handler": function(response) {
 									$.ajax({
-										url: '/payment/verify',
+										url: '/payments/verify',
 										data: JSON.stringify({
 											bookingId: bookingId,
 											razorpayOrderId: response.razorpay_order_id,
@@ -138,7 +138,7 @@ const paymentStart = () => {
 										type: "post",
 										dataType: "json",
 										success: function() {
-											window.location.href = `/Pament_Page_process?bookingId=${bookingId}`;
+											window.location.href = `/payments/success?bookingId=${bookingId}`;
 										},
 										error: function() {
 											alert("Payment verification failed");

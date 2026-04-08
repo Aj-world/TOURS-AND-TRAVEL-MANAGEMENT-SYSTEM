@@ -1,4 +1,4 @@
-package com.aj.travel;
+package com.Aj.travel;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertNotNull;
@@ -13,15 +13,15 @@ import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.test.context.ActiveProfiles;
 import org.springframework.transaction.annotation.Transactional;
 
-import com.aj.travel.DTO.BookingRequest;
-import com.aj.travel.Entity.Booking;
-import com.aj.travel.Entity.BookingStatus;
-import com.aj.travel.Entity.PaymentStatus;
-import com.aj.travel.Entity.User;
-import com.aj.travel.Entity.UserRole;
-import com.aj.travel.Exception.ResourceNotFoundException;
-import com.aj.travel.Service.BookingService;
-import com.aj.travel.Service.RegistrationService;
+import com.Aj.travel.DTO.BookingRequest;
+import com.Aj.travel.Entity.Booking;
+import com.Aj.travel.Entity.BookingStatus;
+import com.Aj.travel.Entity.PaymentStatus;
+import com.Aj.travel.Entity.User;
+import com.Aj.travel.Entity.UserRole;
+import com.Aj.travel.Exception.ResourceNotFoundException;
+import com.Aj.travel.Service.BookingService;
+import com.Aj.travel.Service.RegistrationService;
 
 @SpringBootTest
 @ActiveProfiles("test")

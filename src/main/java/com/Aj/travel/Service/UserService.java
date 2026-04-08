@@ -1,12 +1,12 @@
-package com.aj.travel.Service;
+package com.Aj.travel.Service;
 
 import java.util.List;
 
 import org.springframework.stereotype.Service;
 
-import com.aj.travel.Entity.User;
-import com.aj.travel.Exception.ResourceNotFoundException;
-import com.aj.travel.Repository.UserRepository;
+import com.Aj.travel.Entity.User;
+import com.Aj.travel.Exception.ResourceNotFoundException;
+import com.Aj.travel.Repository.UserRepository;
 
 @Service
 public class UserService {

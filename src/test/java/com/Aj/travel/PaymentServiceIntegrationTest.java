@@ -1,4 +1,4 @@
-package com.aj.travel;
+package com.Aj.travel;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertThrows;
@@ -16,20 +16,20 @@ import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.test.context.ActiveProfiles;
 import org.springframework.transaction.annotation.Transactional;
 
-import com.aj.travel.DTO.BookingRequest;
-import com.aj.travel.DTO.PaymentVerifyRequest;
-import com.aj.travel.Entity.Booking;
-import com.aj.travel.Entity.BookingStatus;
-import com.aj.travel.Entity.Payment;
-import com.aj.travel.Entity.PaymentStatus;
-import com.aj.travel.Entity.User;
-import com.aj.travel.Entity.UserRole;
-import com.aj.travel.Exception.BadRequestException;
-import com.aj.travel.Repository.BookingRepository;
-import com.aj.travel.Repository.PaymentRepository;
-import com.aj.travel.Service.BookingService;
-import com.aj.travel.Service.PaymentService;
-import com.aj.travel.Service.RegistrationService;
+import com.Aj.travel.DTO.BookingRequest;
+import com.Aj.travel.DTO.PaymentVerifyRequest;
+import com.Aj.travel.Entity.Booking;
+import com.Aj.travel.Entity.BookingStatus;
+import com.Aj.travel.Entity.Payment;
+import com.Aj.travel.Entity.PaymentStatus;
+import com.Aj.travel.Entity.User;
+import com.Aj.travel.Entity.UserRole;
+import com.Aj.travel.Exception.BadRequestException;
+import com.Aj.travel.Repository.BookingRepository;
+import com.Aj.travel.Repository.PaymentRepository;
+import com.Aj.travel.Service.BookingService;
+import com.Aj.travel.Service.PaymentService;
+import com.Aj.travel.Service.RegistrationService;
 
 @SpringBootTest
 @ActiveProfiles("test")
