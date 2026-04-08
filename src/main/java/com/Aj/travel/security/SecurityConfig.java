@@ -1,5 +1,20 @@
 package com.aj.travel.security;
 
+import static com.aj.travel.constants.ApiPaths.AUTH_LOGIN;
+import static com.aj.travel.constants.ApiPaths.AUTH_REGISTER_ADMIN;
+import static com.aj.travel.constants.ApiPaths.AUTH_REGISTER_USER;
+import static com.aj.travel.constants.ApiPaths.CSS_ALL;
+import static com.aj.travel.constants.ApiPaths.ERROR;
+import static com.aj.travel.constants.ApiPaths.H2_CONSOLE;
+import static com.aj.travel.constants.ApiPaths.IMAGES_ALL;
+import static com.aj.travel.constants.ApiPaths.JS_ALL;
+import static com.aj.travel.constants.ApiPaths.LOGIN;
+import static com.aj.travel.constants.ApiPaths.LOGOUT;
+import static com.aj.travel.constants.ApiPaths.PAYMENTS_ALL;
+import static com.aj.travel.constants.ApiPaths.PAYMENT_ORDERS_FULL;
+import static com.aj.travel.constants.ApiPaths.ROOT;
+import static com.aj.travel.constants.SecurityConstants.ADMIN;
+
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.http.HttpMethod;
@@ -36,37 +51,37 @@ public class SecurityConfig {
 
 		http
 				.csrf(csrf -> csrf.ignoringRequestMatchers(
-						new AntPathRequestMatcher("/h2-console/**"),
-						new AntPathRequestMatcher("/payments/orders", HttpMethod.POST.name()),
-						new AntPathRequestMatcher("/payments/**")
+						new AntPathRequestMatcher(H2_CONSOLE),
+						new AntPathRequestMatcher(PAYMENT_ORDERS_FULL, HttpMethod.POST.name()),
+						new AntPathRequestMatcher(PAYMENTS_ALL)
 				))
 
 				.headers(headers -> headers.frameOptions(frame -> frame.sameOrigin()))
 
 				.authorizeHttpRequests(auth -> auth
-						.requestMatchers(new AntPathRequestMatcher("/login")).permitAll()
-						.requestMatchers(new AntPathRequestMatcher("/auth/login")).permitAll()
-						.requestMatchers(new AntPathRequestMatcher("/auth/register/user")).permitAll()
-						.requestMatchers(new AntPathRequestMatcher("/error")).permitAll()
-						.requestMatchers(new AntPathRequestMatcher("/css/**")).permitAll()
-						.requestMatchers(new AntPathRequestMatcher("/js/**")).permitAll()
-						.requestMatchers(new AntPathRequestMatcher("/images/**")).permitAll()
-						.requestMatchers(new AntPathRequestMatcher("/h2-console/**")).permitAll()
+						.requestMatchers(new AntPathRequestMatcher(LOGIN)).permitAll()
+						.requestMatchers(new AntPathRequestMatcher(AUTH_LOGIN)).permitAll()
+						.requestMatchers(new AntPathRequestMatcher(AUTH_REGISTER_USER)).permitAll()
+						.requestMatchers(new AntPathRequestMatcher(ERROR)).permitAll()
+						.requestMatchers(new AntPathRequestMatcher(CSS_ALL)).permitAll()
+						.requestMatchers(new AntPathRequestMatcher(JS_ALL)).permitAll()
+						.requestMatchers(new AntPathRequestMatcher(IMAGES_ALL)).permitAll()
+						.requestMatchers(new AntPathRequestMatcher(H2_CONSOLE)).permitAll()
 
-						.requestMatchers(new AntPathRequestMatcher("/auth/register/admin")).hasRole("ADMIN")
+						.requestMatchers(new AntPathRequestMatcher(AUTH_REGISTER_ADMIN)).hasRole(ADMIN)
 
 						.anyRequest().authenticated()
 				)
 
 				.formLogin(form -> form
-						.loginPage("/login")
-						.loginProcessingUrl("/login")
-						.defaultSuccessUrl("/", true)
+						.loginPage(LOGIN)
+						.loginProcessingUrl(LOGIN)
+						.defaultSuccessUrl(ROOT, true)
 						.permitAll()
 				)
 
 				.logout(logout -> logout
-						.logoutRequestMatcher(new AntPathRequestMatcher("/logout"))
+						.logoutRequestMatcher(new AntPathRequestMatcher(LOGOUT))
 						.permitAll()
 				)
 

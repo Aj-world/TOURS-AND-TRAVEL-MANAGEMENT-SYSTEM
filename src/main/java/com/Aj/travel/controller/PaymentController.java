@@ -1,5 +1,11 @@
 package com.aj.travel.controller;
 
+import static com.aj.travel.constants.ApiPaths.PAYMENTS;
+import static com.aj.travel.constants.ApiPaths.PAYMENT_ORDERS;
+import static com.aj.travel.constants.ApiPaths.PAYMENT_SUCCESS;
+import static com.aj.travel.constants.ApiPaths.PAYMENT_VERIFY;
+import static com.aj.travel.constants.SecurityConstants.HAS_ROLE_USER;
+
 import java.security.Principal;
 import java.util.Map;
 
@@ -25,8 +31,8 @@ import com.aj.travel.service.PaymentService;
 import jakarta.validation.Valid;
 
 @Controller
-@RequestMapping("/payments")
-@PreAuthorize("hasRole('USER')")
+@RequestMapping(PAYMENTS)
+@PreAuthorize(HAS_ROLE_USER)
 public class PaymentController {
 
 	private static final Logger log = LoggerFactory.getLogger(PaymentController.class);
@@ -40,7 +46,7 @@ public class PaymentController {
 	}
 
 	@ResponseBody
-	@PostMapping("/orders")
+	@PostMapping(PAYMENT_ORDERS)
 	public ResponseEntity<String> createOrder(@Valid @RequestBody CreateOrderRequest request, Principal principal)
 			throws Exception {
 		log.info("Creating payment order for bookingId={} and user={}", request.getBookingId(), principal.getName());
@@ -50,7 +56,7 @@ public class PaymentController {
 	}
 
 	@ResponseBody
-	@PostMapping("/verify")
+	@PostMapping(PAYMENT_VERIFY)
 	public ResponseEntity<Map<String, Object>> verifyPayment(
 			@Valid @RequestBody PaymentVerifyRequest request,
 			Principal principal) throws Exception {
@@ -59,7 +65,7 @@ public class PaymentController {
 		return ResponseEntity.ok(Map.of("status", "verified", "bookingId", request.getBookingId()));
 	}
 
-	@GetMapping("/success")
+	@GetMapping(PAYMENT_SUCCESS)
 	public String showPaymentSuccessPage(@RequestParam("bookingId") int bookingId, Principal principal, Model model) {
 		Map<String, Object> data = bookingService.paymentPageData(bookingId, principal.getName());
 		model.addAttribute("name", data.get("name"));

@@ -1,5 +1,8 @@
 package com.aj.travel.controller;
 
+import static com.aj.travel.constants.ApiPaths.AUTH;
+import static com.aj.travel.constants.ApiPaths.LOGIN;
+
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.http.HttpStatus;
@@ -17,7 +20,7 @@ import com.aj.travel.dto.LoginRequest;
 import com.aj.travel.service.JwtService;
 
 @RestController
-@RequestMapping("/auth")
+@RequestMapping(AUTH)
 public class JwtController {
 
 	private static final Logger log = LoggerFactory.getLogger(JwtController.class);
@@ -30,7 +33,7 @@ public class JwtController {
 		this.authenticationManager = authenticationManager;
 	}
 
-	@PostMapping("/login")
+	@PostMapping(LOGIN)
 	public ResponseEntity<String> login(@RequestBody LoginRequest loginRequest) {
 		try {
 			Authentication authentication = authenticationManager.authenticate(

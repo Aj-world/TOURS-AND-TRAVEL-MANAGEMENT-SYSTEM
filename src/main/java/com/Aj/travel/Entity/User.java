@@ -1,5 +1,7 @@
 package com.aj.travel.entity;
 
+import static com.aj.travel.constants.SecurityConstants.ROLE_PREFIX;
+
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.List;
@@ -123,7 +125,7 @@ public class User implements UserDetails {
 	@Override
 	public Collection<? extends GrantedAuthority> getAuthorities() {
 
-		SimpleGrantedAuthority simpleGrantedAuthority = new SimpleGrantedAuthority("ROLE_" + userRole.name());
+		SimpleGrantedAuthority simpleGrantedAuthority = new SimpleGrantedAuthority(ROLE_PREFIX + userRole.name());
 
 		return List.of(simpleGrantedAuthority);
 	}

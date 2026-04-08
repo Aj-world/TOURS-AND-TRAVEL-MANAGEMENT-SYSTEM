@@ -1,5 +1,8 @@
 package com.aj.travel.controller;
 
+import static com.aj.travel.constants.ApiPaths.HOME;
+import static com.aj.travel.constants.SecurityConstants.HAS_ROLE_USER;
+
 import java.security.Principal;
 
 import org.springframework.data.domain.PageRequest;
@@ -14,8 +17,8 @@ import com.aj.travel.service.PackageService;
 import com.aj.travel.service.RegistrationService;
 
 @Controller
-@RequestMapping("/home")
-@PreAuthorize("hasRole('USER')")
+@RequestMapping(HOME)
+@PreAuthorize(HAS_ROLE_USER)
 public class HomeController {
 
 	private final RegistrationService registrationService;

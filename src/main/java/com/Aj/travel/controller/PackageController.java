@@ -1,5 +1,9 @@
 package com.aj.travel.controller;
 
+import static com.aj.travel.constants.ApiPaths.PACKAGES;
+import static com.aj.travel.constants.ApiPaths.PACKAGE_BY_ID;
+import static com.aj.travel.constants.SecurityConstants.HAS_ROLE_USER;
+
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
@@ -15,8 +19,8 @@ import com.aj.travel.entity.Package;
 import com.aj.travel.service.PackageService;
 
 @Controller
-@RequestMapping("/packages")
-@PreAuthorize("hasRole('USER')")
+@RequestMapping(PACKAGES)
+@PreAuthorize(HAS_ROLE_USER)
 public class PackageController {
 
 	private final PackageService packageService;
@@ -39,7 +43,7 @@ public class PackageController {
 		return "/User/Package_Page";
 	}
 
-	@GetMapping("/{id}")
+	@GetMapping(PACKAGE_BY_ID)
 	public String getPackageDetails(@PathVariable int id, Model model) {
 		model.addAttribute("travelPackage", packageService.getPackageById(id));
 		return "/User/Book_Page";

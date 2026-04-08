@@ -1,5 +1,9 @@
 package com.aj.travel.controller;
 
+import static com.aj.travel.constants.ApiPaths.BOOKINGS;
+import static com.aj.travel.constants.ApiPaths.BOOKING_PRICE;
+import static com.aj.travel.constants.SecurityConstants.HAS_ROLE_USER;
+
 import java.security.Principal;
 import java.util.Map;
 
@@ -21,8 +25,8 @@ import com.aj.travel.service.BookingService;
 import com.aj.travel.service.PaymentService;
 
 @Controller
-@RequestMapping("/bookings")
-@PreAuthorize("hasRole('USER')")
+@RequestMapping(BOOKINGS)
+@PreAuthorize(HAS_ROLE_USER)
 public class BookingController {
 
 	private static final Logger log = LoggerFactory.getLogger(BookingController.class);
@@ -46,7 +50,7 @@ public class BookingController {
 		return "/User/Pament_Page";
 	}
 
-	@GetMapping("/{bookingId}/price")
+	@GetMapping(BOOKING_PRICE)
 	public ResponseEntity<Map<String, Object>> getBookingPrice(@PathVariable int bookingId, Principal principal) {
 		return ResponseEntity.ok(Map.of("price", bookingService.getBookingPrice(bookingId, principal.getName())));
 	}
