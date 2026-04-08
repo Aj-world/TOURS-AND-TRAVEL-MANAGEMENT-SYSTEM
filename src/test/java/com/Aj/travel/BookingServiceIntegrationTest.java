@@ -1,4 +1,4 @@
-package com.Aj.travel;
+package com.aj.travel;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertNotNull;
@@ -13,15 +13,15 @@ import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.test.context.ActiveProfiles;
 import org.springframework.transaction.annotation.Transactional;
 
-import com.Aj.travel.DTO.BookingRequest;
-import com.Aj.travel.Entity.Booking;
-import com.Aj.travel.Entity.BookingStatus;
-import com.Aj.travel.Entity.PaymentStatus;
-import com.Aj.travel.Entity.User;
-import com.Aj.travel.Entity.UserRole;
-import com.Aj.travel.Exception.ResourceNotFoundException;
-import com.Aj.travel.Service.BookingService;
-import com.Aj.travel.Service.RegistrationService;
+import com.aj.travel.dto.BookingRequest;
+import com.aj.travel.entity.Booking;
+import com.aj.travel.entity.BookingStatus;
+import com.aj.travel.entity.PaymentStatus;
+import com.aj.travel.entity.User;
+import com.aj.travel.entity.UserRole;
+import com.aj.travel.exception.ResourceNotFoundException;
+import com.aj.travel.service.BookingService;
+import com.aj.travel.service.RegistrationService;
 
 @SpringBootTest
 @ActiveProfiles("test")
@@ -44,8 +44,8 @@ class BookingServiceIntegrationTest {
 		assertTrue(booking.getBookId() > 0);
 		assertEquals(BookingStatus.PENDING_PAYMENT, booking.getStatus());
 		assertEquals(7500, booking.getTotalAmount());
-		assertEquals("Goa", booking.getPackage1().getPackageName());
-		assertEquals("CUSTOM", booking.getPackage1().getPackageType());
+		assertEquals("Goa", booking.getTravelPackage().getPackageName());
+		assertEquals("CUSTOM", booking.getTravelPackage().getPackageType());
 		assertEquals(user.getEmail(), booking.getUser().getEmail());
 		assertNotNull(booking.getPayment());
 		assertEquals(PaymentStatus.CREATED, booking.getPayment().getStatus());
@@ -64,11 +64,11 @@ class BookingServiceIntegrationTest {
 
 	private User registerUser(String email) {
 		User user = new User();
-		user.setUserName1("Test User");
+		user.setUserName("Test User");
 		user.setEmail(email);
 		user.setUserPassword("Password123!");
-		user.setUserPhoneNO("9999999999");
-		user.setUserAddresh("Test Address");
+		user.setUserPhoneNo("9999999999");
+		user.setUserAddress("Test Address");
 		return registrationService.register(user, UserRole.USER);
 	}
 
@@ -86,4 +86,3 @@ class BookingServiceIntegrationTest {
 		return request;
 	}
 }
-

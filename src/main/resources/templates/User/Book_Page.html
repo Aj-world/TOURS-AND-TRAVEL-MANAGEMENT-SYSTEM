@@ -51,9 +51,9 @@
          <strong>Package type:</strong>
          <span th:text="${travelPackage.packageType != null ? travelPackage.packageType : 'Travel Package'}">Package Type</span>
       </p>
-      <p th:if="${travelPackage.journyData != null}">
+      <p th:if="${travelPackage.journeyDate != null}">
          <strong>Journey date:</strong>
-         <span th:text="${#dates.format(travelPackage.journyData, 'dd MMM yyyy')}">01 Jan 2026</span>
+         <span th:text="${#dates.format(travelPackage.journeyDate, 'dd MMM yyyy')}">01 Jan 2026</span>
       </p>
       <p>
          <strong>Price:</strong>

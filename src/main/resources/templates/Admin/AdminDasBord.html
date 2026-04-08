@@ -28,20 +28,20 @@
 				<tbody>
 					<tr th:each="u: ${user}">
 						
-						<td th:text="${u.UserId}"></td>
+						<td th:text="${u.userId}"></td>
 						<td><a href="#" th:text="${u.email}"></a></td>
 						 
-						<td th:text="${u.UserName1}"></td>
-						<td th:text="${u.UserRole}"></td>
-						<td th:text="${u.UserPhoneNO}"></td>
+						<td th:text="${u.userName}"></td>
+						<td th:text="${u.userRole}"></td>
+						<td th:text="${u.userPhoneNo}"></td>
 
 						<td>
-							<a th:href="@{/admin/users/{id}/edit(id=${u.UserId})}">
+							<a th:href="@{/admin/users/{id}/edit(id=${u.userId})}">
 								<button class="btn btn-primary">Update</button>
 
 							</a>
 
-							<form method="post" th:action="@{/admin/users/{id}/delete(id=${u.UserId})}" style="display:inline;">
+							<form method="post" th:action="@{/admin/users/{id}/delete(id=${u.userId})}" style="display:inline;">
 								<button class="btn btn-danger" type="submit">Delete</button>
 							</form>
 						</td>

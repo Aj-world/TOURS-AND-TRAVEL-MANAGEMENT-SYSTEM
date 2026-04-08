@@ -1,4 +1,4 @@
-package com.Aj.travel.controller;
+package com.aj.travel.controller;
 
 import java.security.Principal;
 
@@ -9,9 +9,9 @@ import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 
-import com.Aj.travel.Entity.User;
-import com.Aj.travel.Service.PackageService;
-import com.Aj.travel.Service.RegistrationService;
+import com.aj.travel.entity.User;
+import com.aj.travel.service.PackageService;
+import com.aj.travel.service.RegistrationService;
 
 @Controller
 @RequestMapping("/home")
@@ -29,7 +29,7 @@ public class HomeController {
 	@GetMapping
 	public String showHomePage(Principal principal, Model model) {
 		User user = registrationService.findByEmail(principal.getName());
-		model.addAttribute("name", user.getUserName1());
+		model.addAttribute("name", user.getUserName());
 		model.addAttribute("packages", packageService.getAllPackages(PageRequest.of(0, 3)).getContent());
 		return "/User/home_Page";
 	}

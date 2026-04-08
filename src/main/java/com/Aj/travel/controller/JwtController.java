@@ -1,4 +1,4 @@
-package com.Aj.travel.controller;
+package com.aj.travel.controller;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -13,8 +13,8 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
-import com.Aj.travel.DTO.LoginRequest;
-import com.Aj.travel.Service.JwtService;
+import com.aj.travel.dto.LoginRequest;
+import com.aj.travel.service.JwtService;
 
 @RestController
 @RequestMapping("/auth")

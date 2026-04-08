@@ -1,4 +1,4 @@
-package com.Aj.travel;
+package com.aj.travel;
 
 import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.ArgumentMatchers.eq;
@@ -25,8 +25,8 @@ import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.test.context.ActiveProfiles;
 import org.springframework.test.web.servlet.MockMvc;
 
-import com.Aj.travel.Repository.UserRepository;
-import com.Aj.travel.Service.PaymentService;
+import com.aj.travel.repository.UserRepository;
+import com.aj.travel.service.PaymentService;
 
 @SpringBootTest
 @AutoConfigureMockMvc
@@ -46,8 +46,8 @@ class WebSecurityAndControllerIntegrationTest {
 	void createOrderAllowsAuthenticatedUserAndDelegatesToService() throws Exception {
 		when(paymentService.createOrder(12, "traveler@example.com")).thenReturn("{\"id\":\"order_123\"}");
 
-		mockMvc.perform(post("/createOrder")
-				.with(user("traveler@example.com").authorities(new SimpleGrantedAuthority("USER")))
+		mockMvc.perform(post("/payments/orders")
+				.with(user("traveler@example.com").authorities(new SimpleGrantedAuthority("ROLE_USER")))
 				.with(csrf())
 				.contentType("application/json")
 				.content("{\"bookingId\":12}"))
@@ -61,8 +61,8 @@ class WebSecurityAndControllerIntegrationTest {
 	void verifyPaymentReturnsConfirmationPayloadForAuthenticatedUser() throws Exception {
 		doNothing().when(paymentService).verifyAndConfirm(any(), eq("traveler@example.com"));
 
-		mockMvc.perform(post("/payment/verify")
-				.with(user("traveler@example.com").authorities(new SimpleGrantedAuthority("USER")))
+		mockMvc.perform(post("/payments/verify")
+				.with(user("traveler@example.com").authorities(new SimpleGrantedAuthority("ROLE_USER")))
 				.with(csrf())
 				.contentType("application/json")
 				.content("""
@@ -80,13 +80,13 @@ class WebSecurityAndControllerIntegrationTest {
 
 	@Test
 	void userRegistrationEndpointCreatesUserAndRedirectsToLogin() throws Exception {
-		mockMvc.perform(post("/Aj/Resistation_process_User")
+		mockMvc.perform(post("/auth/register/user")
 				.with(csrf())
-				.param("userName1", "New User")
+				.param("userName", "New User")
 				.param("email", "registered@example.com")
 				.param("userPassword", "Password123!")
-				.param("userPhoneNO", "9999999999")
-				.param("userAddresh", "Test Address"))
+				.param("userPhoneNo", "9999999999")
+				.param("userAddress", "Test Address"))
 				.andExpect(status().is3xxRedirection())
 				.andExpect(redirectedUrl("/login"));
 
@@ -102,19 +102,19 @@ class WebSecurityAndControllerIntegrationTest {
 
 	@Test
 	void regularUserCannotAccessAdminDashboard() throws Exception {
-		mockMvc.perform(get("/Admin_login")
-				.with(user("traveler@example.com").authorities(new SimpleGrantedAuthority("USER"))))
+		mockMvc.perform(get("/admin/login-success")
+				.with(user("traveler@example.com").authorities(new SimpleGrantedAuthority("ROLE_USER"))))
 				.andExpect(status().isForbidden())
 				.andExpect(jsonPath("$.status").value(403))
 				.andExpect(jsonPath("$.error").value("Forbidden"))
 				.andExpect(jsonPath("$.message").value("Access Denied"))
-				.andExpect(jsonPath("$.path").value("/Admin_login"));
+				.andExpect(jsonPath("$.path").value("/admin/login-success"));
 	}
 
 	@Test
 	void adminCannotAccessUserOnlyPackagesPage() throws Exception {
 		mockMvc.perform(get("/packages")
-				.with(user("admin@example.com").authorities(new SimpleGrantedAuthority("ADMIN"))))
+				.with(user("admin@example.com").authorities(new SimpleGrantedAuthority("ROLE_ADMIN"))))
 				.andExpect(status().isForbidden())
 				.andExpect(jsonPath("$.status").value(403))
 				.andExpect(jsonPath("$.error").value("Forbidden"))
@@ -124,10 +124,9 @@ class WebSecurityAndControllerIntegrationTest {
 
 	@Test
 	void adminCanAccessAdminDashboard() throws Exception {
-		mockMvc.perform(get("/Admin_login")
-				.with(user("admin@example.com").authorities(new SimpleGrantedAuthority("ADMIN"))))
+		mockMvc.perform(get("/admin/login-success")
+				.with(user("admin@example.com").authorities(new SimpleGrantedAuthority("ROLE_ADMIN"))))
 				.andExpect(status().isOk())
 				.andExpect(view().name("/Admin/LoginSuccess"));
 	}
 }
-

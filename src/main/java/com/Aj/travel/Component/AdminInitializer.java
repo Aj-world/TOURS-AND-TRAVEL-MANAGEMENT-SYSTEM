@@ -1,4 +1,4 @@
-package com.Aj.travel.Component;
+package com.aj.travel.component;
 
 import java.security.SecureRandom;
 
@@ -9,9 +9,9 @@ import org.springframework.boot.CommandLineRunner;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Component;
 
-import com.Aj.travel.Entity.User;
-import com.Aj.travel.Entity.UserRole;
-import com.Aj.travel.Repository.UserRepository;
+import com.aj.travel.entity.User;
+import com.aj.travel.entity.UserRole;
+import com.aj.travel.repository.UserRepository;
 
 @Component
 public class AdminInitializer implements CommandLineRunner {
@@ -47,12 +47,12 @@ public class AdminInitializer implements CommandLineRunner {
 		String rawPassword = hasText(adminPassword) ? adminPassword : generatePassword(16);
 
 		User admin = new User();
-		admin.setUserName1(adminName);
+		admin.setUserName(adminName);
 		admin.setEmail(adminEmail);
 		admin.setUserPassword(passwordEncoder.encode(rawPassword));
 		admin.setUserRole(UserRole.ADMIN);
-		admin.setUserPhoneNO("N/A");
-		admin.setUserAddresh("Bootstrap Admin");
+		admin.setUserPhoneNo("N/A");
+		admin.setUserAddress("Bootstrap Admin");
 
 		userRepository.save(admin);
 
@@ -76,4 +76,3 @@ public class AdminInitializer implements CommandLineRunner {
 		return password.toString();
 	}
 }
-

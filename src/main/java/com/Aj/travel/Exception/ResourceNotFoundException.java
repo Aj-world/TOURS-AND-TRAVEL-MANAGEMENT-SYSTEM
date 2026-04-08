@@ -1,4 +1,4 @@
-package com.Aj.travel.Exception;
+package com.aj.travel.exception;
 
 public class ResourceNotFoundException extends RuntimeException {
 	public ResourceNotFoundException(String message) {

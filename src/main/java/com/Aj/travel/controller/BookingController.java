@@ -1,4 +1,4 @@
-package com.Aj.travel.controller;
+package com.aj.travel.controller;
 
 import java.security.Principal;
 import java.util.Map;
@@ -15,10 +15,10 @@ import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 
-import com.Aj.travel.DTO.BookingRequest;
-import com.Aj.travel.Entity.Booking;
-import com.Aj.travel.Service.BookingService;
-import com.Aj.travel.Service.PaymentService;
+import com.aj.travel.dto.BookingRequest;
+import com.aj.travel.entity.Booking;
+import com.aj.travel.service.BookingService;
+import com.aj.travel.service.PaymentService;
 
 @Controller
 @RequestMapping("/bookings")
@@ -39,7 +39,7 @@ public class BookingController {
 	public String createBooking(@ModelAttribute BookingRequest bookingRequest, Model model, Principal principal) {
 		Booking booking = bookingService.createPendingBooking(principal.getName(), bookingRequest);
 		log.info("Created pending booking with id={} for user={}", booking.getBookId(), principal.getName());
-		model.addAttribute("name", booking.getUser().getUserName1());
+		model.addAttribute("name", booking.getUser().getUserName());
 		model.addAttribute("bookingId", booking.getBookId());
 		model.addAttribute("price", booking.getTotalAmount());
 		model.addAttribute("razorpayKeyId", paymentService.getRazorpayKeyId());

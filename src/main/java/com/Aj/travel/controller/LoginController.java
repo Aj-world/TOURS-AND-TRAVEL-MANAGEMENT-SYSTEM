@@ -1,4 +1,4 @@
-package com.Aj.travel.controller;
+package com.aj.travel.controller;
 
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.stereotype.Controller;

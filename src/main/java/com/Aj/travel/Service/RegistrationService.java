@@ -1,4 +1,4 @@
-package com.Aj.travel.Service;
+package com.aj.travel.service;
 
 import java.util.List;
 
@@ -9,11 +9,11 @@ import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
-import com.Aj.travel.Entity.User;
-import com.Aj.travel.Entity.UserRole;
-import com.Aj.travel.Exception.BadRequestException;
-import com.Aj.travel.Exception.ResourceNotFoundException;
-import com.Aj.travel.Repository.UserRepository;
+import com.aj.travel.entity.User;
+import com.aj.travel.entity.UserRole;
+import com.aj.travel.exception.BadRequestException;
+import com.aj.travel.exception.ResourceNotFoundException;
+import com.aj.travel.repository.UserRepository;
 
 @Service
 public class RegistrationService {
@@ -37,10 +37,10 @@ public class RegistrationService {
 		});
 
 		User user = new User();
-		user.setUserName1(inputUser.getUserName1());
+		user.setUserName(inputUser.getUserName());
 		user.setEmail(inputUser.getEmail());
-		user.setUserPhoneNO(inputUser.getUserPhoneNO());
-		user.setUserAddresh(inputUser.getUserAddresh());
+		user.setUserPhoneNo(inputUser.getUserPhoneNo());
+		user.setUserAddress(inputUser.getUserAddress());
 		user.setUserPassword(passwordEncoder.encode(inputUser.getUserPassword()));
 		user.setUserRole(role);
 		User savedUser = userRepository.save(user);
@@ -78,4 +78,3 @@ public class RegistrationService {
 		userRepository.deleteById(id);
 	}
 }
-

@@ -1,4 +1,4 @@
-package com.Aj.travel.Service;
+package com.aj.travel.service;
 
 import java.util.Map;
 
@@ -9,13 +9,13 @@ import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
-import com.Aj.travel.DTO.PaymentVerifyRequest;
-import com.Aj.travel.Entity.Booking;
-import com.Aj.travel.Entity.BookingStatus;
-import com.Aj.travel.Entity.Payment;
-import com.Aj.travel.Entity.PaymentStatus;
-import com.Aj.travel.Exception.BadRequestException;
-import com.Aj.travel.Repository.PaymentRepository;
+import com.aj.travel.dto.PaymentVerifyRequest;
+import com.aj.travel.entity.Booking;
+import com.aj.travel.entity.BookingStatus;
+import com.aj.travel.entity.Payment;
+import com.aj.travel.entity.PaymentStatus;
+import com.aj.travel.exception.BadRequestException;
+import com.aj.travel.repository.PaymentRepository;
 import com.razorpay.Order;
 import com.razorpay.RazorpayClient;
 import com.razorpay.Utils;
@@ -116,4 +116,3 @@ public class PaymentService {
 		return razorpayKeyId;
 	}
 }
-

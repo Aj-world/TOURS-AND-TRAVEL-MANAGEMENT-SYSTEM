@@ -1,4 +1,4 @@
-package com.Aj.travel.Exception;
+package com.aj.travel.exception;
 
 import java.time.OffsetDateTime;
 import java.util.LinkedHashMap;
@@ -61,4 +61,3 @@ public class GlobalException {
 		return ResponseEntity.status(status).body(body);
 	}
 }
-

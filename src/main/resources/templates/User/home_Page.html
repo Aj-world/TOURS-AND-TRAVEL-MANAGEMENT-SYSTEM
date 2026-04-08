@@ -178,7 +178,7 @@
 					<h3 th:text="${travelPackage.packageName}">Package Name</h3>
 					<p th:text="${travelPackage.packageType != null ? travelPackage.packageType : 'Travel Package'}">Package Type</p>
 					<h2 id="AjColor" th:text="'INR ' + ${travelPackage.price}">INR 0</h2>
-					<a th:href="@{/packages/{id}(id=${travelPackage.packageid})}" class="btn">book now</a>
+         <a th:href="@{/packages/{id}(id=${travelPackage.packageId})}" class="btn">book now</a>
 				</div>
 			</div>
 

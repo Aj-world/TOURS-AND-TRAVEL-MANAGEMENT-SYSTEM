@@ -1,4 +1,4 @@
-package com.Aj.travel.controller;
+package com.aj.travel.controller;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -10,9 +10,9 @@ import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 
-import com.Aj.travel.Entity.User;
-import com.Aj.travel.Entity.UserRole;
-import com.Aj.travel.Service.RegistrationService;
+import com.aj.travel.entity.User;
+import com.aj.travel.entity.UserRole;
+import com.aj.travel.service.RegistrationService;
 
 @Controller
 @RequestMapping("/auth/register")

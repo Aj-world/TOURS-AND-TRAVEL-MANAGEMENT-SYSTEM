@@ -1,4 +1,4 @@
-package com.Aj.travel.controller;
+package com.aj.travel.controller;
 
 import java.security.Principal;
 import java.util.Map;
@@ -17,10 +17,10 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 
-import com.Aj.travel.DTO.CreateOrderRequest;
-import com.Aj.travel.DTO.PaymentVerifyRequest;
-import com.Aj.travel.Service.BookingService;
-import com.Aj.travel.Service.PaymentService;
+import com.aj.travel.dto.CreateOrderRequest;
+import com.aj.travel.dto.PaymentVerifyRequest;
+import com.aj.travel.service.BookingService;
+import com.aj.travel.service.PaymentService;
 
 import jakarta.validation.Valid;
 
