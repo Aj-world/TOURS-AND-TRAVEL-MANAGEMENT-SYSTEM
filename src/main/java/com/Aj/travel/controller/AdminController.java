@@ -1,5 +1,15 @@
 package com.aj.travel.controller;
 
+import static com.aj.travel.constants.ApiPaths.ADMIN;
+import static com.aj.travel.constants.ApiPaths.DASHBOARD;
+import static com.aj.travel.constants.ApiPaths.LOGIN_SUCCESS;
+import static com.aj.travel.constants.ApiPaths.REDIRECT_PREFIX;
+import static com.aj.travel.constants.ApiPaths.USER_BY_ID;
+import static com.aj.travel.constants.ApiPaths.USER_DELETE;
+import static com.aj.travel.constants.ApiPaths.USER_EDIT;
+import static com.aj.travel.constants.ApiPaths.USERS;
+import static com.aj.travel.constants.SecurityConstants.HAS_ROLE_ADMIN;
+
 import java.util.List;
 
 import org.slf4j.Logger;
@@ -20,8 +30,8 @@ import com.aj.travel.entity.User;
 import com.aj.travel.service.UserService;
 
 @Controller
-@RequestMapping("/admin")
-@PreAuthorize("hasRole('ADMIN')")
+@RequestMapping(ADMIN)
+@PreAuthorize(HAS_ROLE_ADMIN)
 public class AdminController {
 
 	private static final Logger log = LoggerFactory.getLogger(AdminController.class);
@@ -34,25 +44,25 @@ public class AdminController {
 		this.passwordEncoder = passwordEncoder;
 	}
 
-	@GetMapping("/login-success")
+	@GetMapping(LOGIN_SUCCESS)
 	public String showAdminLoginSuccessPage() {
 		return "/Admin/LoginSuccess";
 	}
 
-	@GetMapping({"/dashboard", "/users"})
+	@GetMapping({DASHBOARD, USERS})
 	public String getAdminDashboard(Model model) {
 		List<User> users = userService.getAllUser();
 		model.addAttribute("user", users);
 		return "/Admin/AdminDasBord";
 	}
 
-	@GetMapping("/users/{id}/edit")
+	@GetMapping(USER_EDIT)
 	public String showUpdateUserForm(@PathVariable int id, Model model) {
 		model.addAttribute("id", id);
 		return "/Admin/UpdateAdmin";
 	}
 
-	@PutMapping("/users/{id}")
+	@PutMapping(USER_BY_ID)
 	public String updateUser(@PathVariable int id, @ModelAttribute User updatedUser) {
 		log.info("Updating user with id={}", id);
 		User existingUser = userService.updateUser(id);
@@ -66,22 +76,22 @@ public class AdminController {
 		existingUser.setUserPhoneNo(updatedUser.getUserPhoneNo());
 
 		userService.saveUser(existingUser);
-		return "redirect:/admin/dashboard";
+		return REDIRECT_PREFIX + ADMIN + DASHBOARD;
 	}
 
-	@PostMapping("/users/{id}")
+	@PostMapping(USER_BY_ID)
 	public String updateUserFromForm(@PathVariable int id, @ModelAttribute User updatedUser) {
 		return updateUser(id, updatedUser);
 	}
 
-	@DeleteMapping("/users/{id}")
+	@DeleteMapping(USER_BY_ID)
 	public String deleteUser(@PathVariable int id) {
 		log.info("Deleting user with id={}", id);
 		userService.deleteUser(id);
-		return "redirect:/admin/dashboard";
+		return REDIRECT_PREFIX + ADMIN + DASHBOARD;
 	}
 
-	@PostMapping("/users/{id}/delete")
+	@PostMapping(USER_DELETE)
 	public String deleteUserFromForm(@PathVariable int id) {
 		return deleteUser(id);
 	}

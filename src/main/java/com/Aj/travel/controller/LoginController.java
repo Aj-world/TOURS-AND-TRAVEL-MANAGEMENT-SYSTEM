@@ -1,5 +1,12 @@
 package com.aj.travel.controller;
 
+import static com.aj.travel.constants.ApiPaths.HOME;
+import static com.aj.travel.constants.ApiPaths.LOGIN;
+import static com.aj.travel.constants.ApiPaths.PROFILE_ABOUT;
+import static com.aj.travel.constants.ApiPaths.REDIRECT_PREFIX;
+import static com.aj.travel.constants.ApiPaths.ROOT;
+import static com.aj.travel.constants.SecurityConstants.HAS_ROLE_USER;
+
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -9,18 +16,18 @@ import org.springframework.web.bind.annotation.RequestMapping;
 @RequestMapping
 public class LoginController {
 
-	@GetMapping("/login")
+	@GetMapping(LOGIN)
 	public String showLoginPage() {
 		return "/Authentication/Login_Page";
 	}
 
-	@GetMapping("/")
+	@GetMapping(ROOT)
 	public String redirectToHomePage() {
-		return "redirect:/home";
+		return REDIRECT_PREFIX + HOME;
 	}
 
-	@PreAuthorize("hasRole('USER')")
-	@GetMapping("/profile/about")
+	@PreAuthorize(HAS_ROLE_USER)
+	@GetMapping(PROFILE_ABOUT)
 	public String showUserProfileAboutPage() {
 		return "/User/User_about_Page";
 	}
