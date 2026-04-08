@@ -1,4 +1,4 @@
-package com.aj.travel.DTO;
+package com.Aj.travel.DTO;
 
 import jakarta.validation.constraints.Min;
 import lombok.Data;

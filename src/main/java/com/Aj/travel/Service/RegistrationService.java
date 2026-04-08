@@ -1,4 +1,4 @@
-package com.aj.travel.Service;
+package com.Aj.travel.Service;
 
 import java.util.List;
 
@@ -9,11 +9,11 @@ import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
-import com.aj.travel.Entity.User;
-import com.aj.travel.Entity.UserRole;
-import com.aj.travel.Exception.BadRequestException;
-import com.aj.travel.Exception.ResourceNotFoundException;
-import com.aj.travel.Repository.UserRepository;
+import com.Aj.travel.Entity.User;
+import com.Aj.travel.Entity.UserRole;
+import com.Aj.travel.Exception.BadRequestException;
+import com.Aj.travel.Exception.ResourceNotFoundException;
+import com.Aj.travel.Repository.UserRepository;
 
 @Service
 public class RegistrationService {

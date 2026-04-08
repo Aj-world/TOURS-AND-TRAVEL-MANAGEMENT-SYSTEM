@@ -1,4 +1,4 @@
-package com.aj.travel.Service;
+package com.Aj.travel.Service;
 
 import java.util.Map;
 
@@ -7,15 +7,15 @@ import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
-import com.aj.travel.DTO.BookingRequest;
-import com.aj.travel.Entity.Booking;
-import com.aj.travel.Entity.BookingStatus;
-import com.aj.travel.Entity.Package;
-import com.aj.travel.Entity.Payment;
-import com.aj.travel.Entity.User;
-import com.aj.travel.Exception.BadRequestException;
-import com.aj.travel.Exception.ResourceNotFoundException;
-import com.aj.travel.Repository.BookingRepository;
+import com.Aj.travel.DTO.BookingRequest;
+import com.Aj.travel.Entity.Booking;
+import com.Aj.travel.Entity.BookingStatus;
+import com.Aj.travel.Entity.Package;
+import com.Aj.travel.Entity.Payment;
+import com.Aj.travel.Entity.User;
+import com.Aj.travel.Exception.BadRequestException;
+import com.Aj.travel.Exception.ResourceNotFoundException;
+import com.Aj.travel.Repository.BookingRepository;
 
 @Service
 public class BookingService {

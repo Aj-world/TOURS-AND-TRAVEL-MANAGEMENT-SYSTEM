@@ -1,4 +1,4 @@
-package com.aj.travel.security;
+package com.Aj.travel.security;
 
 import java.io.IOException;
 
@@ -9,8 +9,8 @@ import org.springframework.security.web.authentication.WebAuthenticationDetailsS
 import org.springframework.stereotype.Component;
 import org.springframework.web.filter.OncePerRequestFilter;
 
-import com.aj.travel.Service.CustomUserDetailsService;
-import com.aj.travel.Service.JwtService;
+import com.Aj.travel.Service.CustomUserDetailsService;
+import com.Aj.travel.Service.JwtService;
 
 import jakarta.servlet.FilterChain;
 import jakarta.servlet.ServletException;

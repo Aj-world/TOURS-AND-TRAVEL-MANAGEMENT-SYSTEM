@@ -1,4 +1,4 @@
-package com.aj.travel.Entity;
+package com.Aj.travel.Entity;
 
 public enum UserRole {
 	USER,

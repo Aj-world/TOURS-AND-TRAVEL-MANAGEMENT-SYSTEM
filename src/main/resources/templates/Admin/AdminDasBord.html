@@ -36,17 +36,14 @@
 						<td th:text="${u.UserPhoneNO}"></td>
 
 						<td>
-							<a th:href="@{/Aj/Update{id}(id=${u.UserId})}">
+							<a th:href="@{/admin/users/{id}/edit(id=${u.UserId})}">
 								<button class="btn btn-primary">Update</button>
 
 							</a>
 
-							<a th:href="@{/Aj/Delete{id}(id=${u.UserId})}">
-								<button class="btn btn-danger">Delete</button>
-							</a>
-							<a th:href="@{/Aj/Delete{id}(id=${u.UserId})}">
-								<button class="btn btn-danger">views</button>
-							</a>
+							<form method="post" th:action="@{/admin/users/{id}/delete(id=${u.UserId})}" style="display:inline;">
+								<button class="btn btn-danger" type="submit">Delete</button>
+							</form>
 						</td>
 
 					</tr>

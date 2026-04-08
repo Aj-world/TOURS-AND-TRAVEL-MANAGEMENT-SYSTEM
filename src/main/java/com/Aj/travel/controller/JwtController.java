@@ -1,0 +1,49 @@
+package com.Aj.travel.controller;
+
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
+import org.springframework.security.authentication.AuthenticationManager;
+import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
+import org.springframework.security.core.Authentication;
+import org.springframework.security.core.AuthenticationException;
+import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestBody;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RestController;
+
+import com.Aj.travel.DTO.LoginRequest;
+import com.Aj.travel.Service.JwtService;
+
+@RestController
+@RequestMapping("/auth")
+public class JwtController {
+
+	private static final Logger log = LoggerFactory.getLogger(JwtController.class);
+
+	private final JwtService jwtService;
+	private final AuthenticationManager authenticationManager;
+
+	public JwtController(JwtService jwtService, AuthenticationManager authenticationManager) {
+		this.jwtService = jwtService;
+		this.authenticationManager = authenticationManager;
+	}
+
+	@PostMapping("/login")
+	public ResponseEntity<String> login(@RequestBody LoginRequest loginRequest) {
+		try {
+			Authentication authentication = authenticationManager.authenticate(
+					new UsernamePasswordAuthenticationToken(loginRequest.getEmail(), loginRequest.getPassword()));
+			if (authentication.isAuthenticated()) {
+				log.info("JWT login succeeded for email={}", loginRequest.getEmail());
+				return ResponseEntity.ok(jwtService.generateToken(loginRequest.getEmail()));
+			}
+			log.warn("JWT login rejected for email={}", loginRequest.getEmail());
+			return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body("Invalid credentials");
+		} catch (AuthenticationException ex) {
+			log.warn("JWT login failed for email={}", loginRequest.getEmail());
+			return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body("Invalid credentials");
+		}
+	}
+}

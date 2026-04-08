@@ -1,4 +1,4 @@
-package com.aj.travel.Entity;
+package com.Aj.travel.Entity;
 
 import java.util.ArrayList;
 import java.util.Collection;
@@ -53,7 +53,7 @@ public class User implements UserDetails {
 	@Override
 	public Collection<? extends GrantedAuthority> getAuthorities() {
 
-		SimpleGrantedAuthority simpleGrantedAuthority = new SimpleGrantedAuthority(UserRole.name());
+		SimpleGrantedAuthority simpleGrantedAuthority = new SimpleGrantedAuthority("ROLE_" + UserRole.name());
 
 		return List.of(simpleGrantedAuthority);
 	}

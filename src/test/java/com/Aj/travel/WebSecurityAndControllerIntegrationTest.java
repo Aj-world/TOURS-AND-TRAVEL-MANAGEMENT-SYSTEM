@@ -1,4 +1,4 @@
-package com.aj.travel;
+package com.Aj.travel;
 
 import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.ArgumentMatchers.eq;
@@ -25,8 +25,8 @@ import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.test.context.ActiveProfiles;
 import org.springframework.test.web.servlet.MockMvc;
 
-import com.aj.travel.Repository.UserRepository;
-import com.aj.travel.Service.PaymentService;
+import com.Aj.travel.Repository.UserRepository;
+import com.Aj.travel.Service.PaymentService;
 
 @SpringBootTest
 @AutoConfigureMockMvc

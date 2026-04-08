@@ -1,4 +1,4 @@
-package com.aj.travel;
+package com.Aj.travel;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertThrows;
@@ -11,10 +11,10 @@ import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.test.context.ActiveProfiles;
 import org.springframework.transaction.annotation.Transactional;
 
-import com.aj.travel.Entity.User;
-import com.aj.travel.Entity.UserRole;
-import com.aj.travel.Exception.BadRequestException;
-import com.aj.travel.Service.RegistrationService;
+import com.Aj.travel.Entity.User;
+import com.Aj.travel.Entity.UserRole;
+import com.Aj.travel.Exception.BadRequestException;
+import com.Aj.travel.Service.RegistrationService;
 
 @SpringBootTest
 @ActiveProfiles("test")
