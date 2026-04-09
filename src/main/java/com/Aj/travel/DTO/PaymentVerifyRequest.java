@@ -2,9 +2,11 @@ package com.aj.travel.dto;
 
 import jakarta.validation.constraints.Min;
 import jakarta.validation.constraints.NotBlank;
+import jakarta.validation.constraints.NotNull;
 public class PaymentVerifyRequest {
+	@NotNull
 	@Min(1)
-	private int bookingId;
+	private Integer bookingId;
 
 	@NotBlank
 	private String razorpayOrderId;
@@ -15,11 +17,11 @@ public class PaymentVerifyRequest {
 	@NotBlank
 	private String razorpaySignature;
 
-	public int getBookingId() {
+	public Integer getBookingId() {
 		return bookingId;
 	}
 
-	public void setBookingId(int bookingId) {
+	public void setBookingId(Integer bookingId) {
 		this.bookingId = bookingId;
 	}
 

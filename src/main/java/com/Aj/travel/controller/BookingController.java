@@ -24,6 +24,8 @@ import com.aj.travel.entity.Booking;
 import com.aj.travel.service.BookingService;
 import com.aj.travel.service.PaymentService;
 
+import jakarta.validation.Valid;
+
 @Controller
 @RequestMapping(BOOKINGS)
 @PreAuthorize(HAS_ROLE_USER)
@@ -40,7 +42,7 @@ public class BookingController {
 	}
 
 	@PostMapping
-	public String createBooking(@ModelAttribute BookingRequest bookingRequest, Model model, Principal principal) {
+	public String createBooking(@Valid @ModelAttribute BookingRequest bookingRequest, Model model, Principal principal) {
 		Booking booking = bookingService.createPendingBooking(principal.getName(), bookingRequest);
 		log.info("Created pending booking with id={} for user={}", booking.getBookId(), principal.getName());
 		model.addAttribute("name", booking.getUser().getUserName());

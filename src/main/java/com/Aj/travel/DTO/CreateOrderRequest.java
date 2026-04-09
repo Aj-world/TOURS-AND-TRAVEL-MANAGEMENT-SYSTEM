@@ -1,15 +1,17 @@
 package com.aj.travel.dto;
 
+import jakarta.validation.constraints.NotNull;
 import jakarta.validation.constraints.Min;
 public class CreateOrderRequest {
+	@NotNull
 	@Min(1)
-	private int bookingId;
+	private Integer bookingId;
 
-	public int getBookingId() {
+	public Integer getBookingId() {
 		return bookingId;
 	}
 
-	public void setBookingId(int bookingId) {
+	public void setBookingId(Integer bookingId) {
 		this.bookingId = bookingId;
 	}
 }
