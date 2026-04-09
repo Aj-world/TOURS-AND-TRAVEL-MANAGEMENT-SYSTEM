@@ -19,6 +19,8 @@ import org.springframework.web.bind.annotation.RestController;
 import com.aj.travel.dto.LoginRequest;
 import com.aj.travel.service.JwtService;
 
+import jakarta.validation.Valid;
+
 @RestController
 @RequestMapping(AUTH)
 public class JwtController {
@@ -34,7 +36,7 @@ public class JwtController {
 	}
 
 	@PostMapping(LOGIN)
-	public ResponseEntity<String> login(@RequestBody LoginRequest loginRequest) {
+	public ResponseEntity<String> login(@Valid @RequestBody LoginRequest loginRequest) {
 		try {
 			Authentication authentication = authenticationManager.authenticate(
 					new UsernamePasswordAuthenticationToken(loginRequest.getEmail(), loginRequest.getPassword()));
