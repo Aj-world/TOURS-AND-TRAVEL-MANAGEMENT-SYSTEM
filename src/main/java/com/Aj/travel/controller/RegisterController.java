@@ -9,8 +9,6 @@ import static com.aj.travel.constants.ApiPaths.REGISTER_ADMIN;
 import static com.aj.travel.constants.ApiPaths.REGISTER_USER;
 import static com.aj.travel.constants.SecurityConstants.HAS_ROLE_ADMIN;
 
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -23,11 +21,12 @@ import com.aj.travel.entity.User;
 import com.aj.travel.entity.UserRole;
 import com.aj.travel.service.RegistrationService;
 
+import lombok.extern.slf4j.Slf4j;
+
 @Controller
 @RequestMapping(AUTH_REGISTER)
+@Slf4j
 public class RegisterController {
-
-	private static final Logger log = LoggerFactory.getLogger(RegisterController.class);
 
 	private final RegistrationService registrationService;
 
@@ -44,8 +43,10 @@ public class RegisterController {
 	@PreAuthorize(HAS_ROLE_ADMIN)
 	@PostMapping(REGISTER_ADMIN)
 	public String registerAdmin(@ModelAttribute User admin, Model model) {
+		log.info("MVC request: register admin | email={}", admin.getEmail());
 		User createdAdmin = registrationService.register(admin, UserRole.ADMIN);
-		log.info("Registered admin account with id={} and email={}", createdAdmin.getUserId(), createdAdmin.getEmail());
+		log.info("MVC response: admin registered | userId={} | email={}",
+				createdAdmin.getUserId(), createdAdmin.getEmail());
 		model.addAttribute("user", createdAdmin);
 		return REDIRECT_PREFIX + ADMIN + LOGIN_SUCCESS;
 	}
@@ -57,8 +58,10 @@ public class RegisterController {
 
 	@PostMapping(REGISTER_USER)
 	public String registerUser(@ModelAttribute User user, Model model) {
+		log.info("MVC request: register user | email={}", user.getEmail());
 		User createdUser = registrationService.register(user, UserRole.USER);
-		log.info("Registered user account with id={} and email={}", createdUser.getUserId(), createdUser.getEmail());
+		log.info("MVC response: user registered | userId={} | email={}",
+				createdUser.getUserId(), createdUser.getEmail());
 		model.addAttribute("user", createdUser);
 		return REDIRECT_PREFIX + LOGIN;
 	}

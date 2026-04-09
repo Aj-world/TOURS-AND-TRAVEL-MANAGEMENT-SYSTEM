@@ -3,8 +3,6 @@ package com.aj.travel.controller;
 import static com.aj.travel.constants.ApiPaths.AUTH;
 import static com.aj.travel.constants.ApiPaths.LOGIN;
 
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.authentication.AuthenticationManager;
@@ -21,12 +19,12 @@ import com.aj.travel.dto.LoginRequest;
 import com.aj.travel.service.JwtService;
 
 import jakarta.validation.Valid;
+import lombok.extern.slf4j.Slf4j;
 
 @RestController
 @RequestMapping(AUTH)
+@Slf4j
 public class JwtController {
-
-	private static final Logger log = LoggerFactory.getLogger(JwtController.class);
 
 	private final JwtService jwtService;
 	private final AuthenticationManager authenticationManager;
@@ -38,19 +36,21 @@ public class JwtController {
 
 	@PostMapping(LOGIN)
 	public ResponseEntity<ApiResponse<String>> login(@Valid @RequestBody LoginRequest loginRequest) {
+		log.info("API request: login | email={}", loginRequest.getEmail());
 		try {
 			Authentication authentication = authenticationManager.authenticate(
 					new UsernamePasswordAuthenticationToken(loginRequest.getEmail(), loginRequest.getPassword()));
 			if (authentication.isAuthenticated()) {
-				log.info("JWT login succeeded for email={}", loginRequest.getEmail());
+				log.info("API response: login succeeded | email={}", loginRequest.getEmail());
 				return ResponseEntity.ok(ApiResponse.success(
 						"Login successful",
 						jwtService.generateToken(loginRequest.getEmail())));
 			}
-			log.warn("JWT login rejected for email={}", loginRequest.getEmail());
+			log.warn("API response: login rejected | email={}", loginRequest.getEmail());
 			return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body(ApiResponse.error("Invalid credentials"));
 		} catch (AuthenticationException ex) {
-			log.warn("JWT login failed for email={}", loginRequest.getEmail());
+			log.error("API response: login failed | email={} | error={}",
+					loginRequest.getEmail(), ex.getMessage(), ex);
 			return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body(ApiResponse.error("Invalid credentials"));
 		}
 	}

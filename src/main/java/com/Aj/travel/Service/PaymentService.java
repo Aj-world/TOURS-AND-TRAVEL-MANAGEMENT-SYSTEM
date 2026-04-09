@@ -3,8 +3,6 @@ package com.aj.travel.service;
 import java.util.Map;
 
 import org.json.JSONObject;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -20,10 +18,11 @@ import com.razorpay.Order;
 import com.razorpay.RazorpayClient;
 import com.razorpay.Utils;
 
-@Service
-public class PaymentService {
+import lombok.extern.slf4j.Slf4j;
 
-	private static final Logger log = LoggerFactory.getLogger(PaymentService.class);
+@Service
+@Slf4j
+public class PaymentService {
 
 	private final BookingService bookingService;
 	private final PaymentRepository paymentRepository;
@@ -42,16 +41,17 @@ public class PaymentService {
 
 	@Transactional
 	public String createOrder(int bookingId, String email) throws Exception {
+		log.info("Payment order creation started | bookingId={} | user={}", bookingId, email);
 		Booking booking = bookingService.findOwnedBooking(bookingId, email);
 		if (booking.getStatus() != BookingStatus.PENDING_PAYMENT) {
-			log.warn("Rejected order creation for booking id={} email={} because status={}",
+			log.warn("Payment order creation rejected | bookingId={} | user={} | status={} | reason=invalid-booking-status",
 					bookingId, email, booking.getStatus());
 			throw new BadRequestException("Booking is not eligible for payment");
 		}
 
 		Payment payment = booking.getPayment();
 		if (payment == null) {
-			log.warn("Rejected order creation for booking id={} email={} because payment record is missing",
+			log.warn("Payment order creation rejected | bookingId={} | user={} | reason=missing-payment-record",
 					bookingId, email);
 			throw new BadRequestException("Payment record missing for booking");
 		}
@@ -67,7 +67,7 @@ public class PaymentService {
 		payment.setRazorpayOrderId(order.get("id"));
 		payment.setStatus(PaymentStatus.CREATED);
 		paymentRepository.save(payment);
-		log.info("Created Razorpay order for booking id={} email={} orderId={}",
+		log.info("Payment order created | bookingId={} | user={} | orderId={}",
 				bookingId, email, payment.getRazorpayOrderId());
 
 		return order.toString();
@@ -75,15 +75,17 @@ public class PaymentService {
 
 	@Transactional
 	public void verifyAndConfirm(PaymentVerifyRequest request, String email) throws Exception {
+		log.info("Payment verification started | bookingId={} | user={} | orderId={}",
+				request.getBookingId(), email, request.getRazorpayOrderId());
 		Booking booking = bookingService.findOwnedBooking(request.getBookingId(), email);
 		Payment payment = booking.getPayment();
 		if (payment == null) {
-			log.warn("Rejected payment verification for booking id={} email={} because payment record is missing",
+			log.warn("Payment verification rejected | bookingId={} | user={} | reason=missing-payment-record",
 					request.getBookingId(), email);
 			throw new BadRequestException("Payment record missing for booking");
 		}
 		if (!request.getRazorpayOrderId().equals(payment.getRazorpayOrderId())) {
-			log.warn("Rejected payment verification for booking id={} email={} because order id mismatched",
+			log.warn("Payment verification rejected | bookingId={} | user={} | reason=order-id-mismatch",
 					request.getBookingId(), email);
 			throw new BadRequestException("Order id mismatch");
 		}
@@ -97,7 +99,7 @@ public class PaymentService {
 		if (!valid) {
 			payment.setStatus(PaymentStatus.FAILED);
 			paymentRepository.save(payment);
-			log.warn("Payment verification failed for booking id={} email={} orderId={}",
+			log.warn("Payment verification failed | bookingId={} | user={} | orderId={} | reason=invalid-signature",
 					request.getBookingId(), email, request.getRazorpayOrderId());
 			throw new BadRequestException("Payment signature verification failed");
 		}
@@ -108,7 +110,7 @@ public class PaymentService {
 		booking.setStatus(BookingStatus.CONFIRMED);
 
 		paymentRepository.save(payment);
-		log.info("Payment verified for booking id={} email={} paymentId={}",
+		log.info("Booking confirmed | bookingId={} | user={} | paymentId={}",
 				request.getBookingId(), email, request.getRazorpayPaymentId());
 	}
 
