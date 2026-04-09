@@ -2,8 +2,6 @@ package com.aj.travel.service;
 
 import java.util.Map;
 
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -17,10 +15,11 @@ import com.aj.travel.exception.BadRequestException;
 import com.aj.travel.exception.ResourceNotFoundException;
 import com.aj.travel.repository.BookingRepository;
 
-@Service
-public class BookingService {
+import lombok.extern.slf4j.Slf4j;
 
-	private static final Logger log = LoggerFactory.getLogger(BookingService.class);
+@Service
+@Slf4j
+public class BookingService {
 
 	private final BookingRepository bookingRepository;
 	private final RegistrationService registrationService;
@@ -32,9 +31,11 @@ public class BookingService {
 
 	@Transactional
 	public Booking createPendingBooking(String email, BookingRequest request) {
+		log.info("Creating booking | user={} | location={} | guests={} | amount={}",
+				email, request.getLocation(), request.getGuests(), request.getPrice());
 		if (request.getLeavingDate().isBefore(request.getArivalDate())) {
-			log.warn("Rejected booking creation for email={} because leaving date {} is before arrival date {}",
-					email, request.getLeavingDate(), request.getArivalDate());
+			log.warn("Booking creation rejected | user={} | arrivalDate={} | leavingDate={} | reason=invalid-date-range",
+					email, request.getArivalDate(), request.getLeavingDate());
 			throw new BadRequestException("Leaving date cannot be before arrival date");
 		}
 
@@ -62,25 +63,27 @@ public class BookingService {
 		payment.setBooking(booking);
 
 		Booking savedBooking = bookingRepository.save(booking);
-		log.info("Created booking id={} for email={} location={} guests={} amount={}",
+		log.info("Booking confirmed | bookingId={} | user={} | location={} | guests={} | amount={}",
 				savedBooking.getBookId(), email, request.getLocation(), request.getGuests(), request.getPrice());
 		return savedBooking;
 	}
 
 	@Transactional(readOnly = true)
 	public int getBookingPrice(int bookingId, String email) {
+		log.debug("Fetching booking price | bookingId={} | user={}", bookingId, email);
 		return findOwnedBooking(bookingId, email).getTotalAmount();
 	}
 
 	@Transactional(readOnly = true)
 	public Booking findOwnedBooking(int bookingId, String email) {
-		log.debug("Looking up booking id={} for email={}", bookingId, email);
+		log.debug("Looking up booking | bookingId={} | user={}", bookingId, email);
 		return bookingRepository.findOwnedBooking(bookingId, email)
 				.orElseThrow(() -> new ResourceNotFoundException("Booking not found: " + bookingId));
 	}
 
 	@Transactional(readOnly = true)
 	public Map<String, Object> paymentPageData(int bookingId, String email) {
+		log.debug("Preparing payment page data | bookingId={} | user={}", bookingId, email);
 		Booking booking = findOwnedBooking(bookingId, email);
 		return Map.of(
 				"bookingId", booking.getBookId(),

@@ -12,8 +12,6 @@ import static com.aj.travel.constants.SecurityConstants.HAS_ROLE_ADMIN;
 
 import java.util.List;
 
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Controller;
@@ -29,12 +27,13 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import com.aj.travel.entity.User;
 import com.aj.travel.service.UserService;
 
+import lombok.extern.slf4j.Slf4j;
+
 @Controller
 @RequestMapping(ADMIN)
 @PreAuthorize(HAS_ROLE_ADMIN)
+@Slf4j
 public class AdminController {
-
-	private static final Logger log = LoggerFactory.getLogger(AdminController.class);
 
 	private final UserService userService;
 	private final PasswordEncoder passwordEncoder;
@@ -46,25 +45,29 @@ public class AdminController {
 
 	@GetMapping(LOGIN_SUCCESS)
 	public String showAdminLoginSuccessPage() {
+		log.debug("MVC response: admin login success page");
 		return "/Admin/LoginSuccess";
 	}
 
 	@GetMapping({DASHBOARD, USERS})
 	public String getAdminDashboard(Model model) {
+		log.info("MVC request: load admin dashboard");
 		List<User> users = userService.getAllUser();
 		model.addAttribute("user", users);
+		log.info("MVC response: admin dashboard loaded | userCount={}", users.size());
 		return "/Admin/AdminDasBord";
 	}
 
 	@GetMapping(USER_EDIT)
 	public String showUpdateUserForm(@PathVariable int id, Model model) {
+		log.info("MVC request: show update user form | userId={}", id);
 		model.addAttribute("id", id);
 		return "/Admin/UpdateAdmin";
 	}
 
 	@PutMapping(USER_BY_ID)
 	public String updateUser(@PathVariable int id, @ModelAttribute User updatedUser) {
-		log.info("Updating user with id={}", id);
+		log.info("MVC request: update user | userId={}", id);
 		User existingUser = userService.updateUser(id);
 
 		existingUser.setUserId(id);
@@ -76,6 +79,7 @@ public class AdminController {
 		existingUser.setUserPhoneNo(updatedUser.getUserPhoneNo());
 
 		userService.saveUser(existingUser);
+		log.info("MVC response: user updated | userId={}", id);
 		return REDIRECT_PREFIX + ADMIN + DASHBOARD;
 	}
 
@@ -86,8 +90,9 @@ public class AdminController {
 
 	@DeleteMapping(USER_BY_ID)
 	public String deleteUser(@PathVariable int id) {
-		log.info("Deleting user with id={}", id);
+		log.info("MVC request: delete user | userId={}", id);
 		userService.deleteUser(id);
+		log.info("MVC response: user deleted | userId={}", id);
 		return REDIRECT_PREFIX + ADMIN + DASHBOARD;
 	}
 

@@ -18,9 +18,12 @@ import org.springframework.web.bind.annotation.RequestParam;
 import com.aj.travel.entity.Package;
 import com.aj.travel.service.PackageService;
 
+import lombok.extern.slf4j.Slf4j;
+
 @Controller
 @RequestMapping(PACKAGES)
 @PreAuthorize(HAS_ROLE_USER)
+@Slf4j
 public class PackageController {
 
 	private final PackageService packageService;
@@ -34,18 +37,23 @@ public class PackageController {
 			@RequestParam(defaultValue = "0") int page,
 			@RequestParam(defaultValue = "10") int size,
 			Model model) {
+		log.info("MVC request: list packages | page={} | size={}", page, size);
 		Pageable pageable = PageRequest.of(Math.max(page, 0), Math.max(size, 1));
 		Page<Package> packagePage = packageService.getAllPackages(pageable);
 		model.addAttribute("packagePage", packagePage);
 		model.addAttribute("packages", packagePage.getContent());
 		model.addAttribute("currentPage", packagePage.getNumber());
 		model.addAttribute("pageSize", packagePage.getSize());
+		log.info("MVC response: packages listed | page={} | returned={}",
+				packagePage.getNumber(), packagePage.getNumberOfElements());
 		return "/User/Package_Page";
 	}
 
 	@GetMapping(PACKAGE_BY_ID)
 	public String getPackageDetails(@PathVariable int id, Model model) {
+		log.info("MVC request: package details | packageId={}", id);
 		model.addAttribute("travelPackage", packageService.getPackageById(id));
+		log.debug("MVC response: package details loaded | packageId={}", id);
 		return "/User/Book_Page";
 	}
 }

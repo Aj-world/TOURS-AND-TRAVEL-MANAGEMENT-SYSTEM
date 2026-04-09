@@ -7,8 +7,6 @@ import static com.aj.travel.constants.SecurityConstants.HAS_ROLE_USER;
 import java.security.Principal;
 import java.util.Map;
 
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.stereotype.Controller;
@@ -26,13 +24,13 @@ import com.aj.travel.service.BookingService;
 import com.aj.travel.service.PaymentService;
 
 import jakarta.validation.Valid;
+import lombok.extern.slf4j.Slf4j;
 
 @Controller
 @RequestMapping(BOOKINGS)
 @PreAuthorize(HAS_ROLE_USER)
+@Slf4j
 public class BookingController {
-
-	private static final Logger log = LoggerFactory.getLogger(BookingController.class);
 
 	private final BookingService bookingService;
 	private final PaymentService paymentService;
@@ -44,8 +42,11 @@ public class BookingController {
 
 	@PostMapping
 	public String createBooking(@Valid @ModelAttribute BookingRequest bookingRequest, Model model, Principal principal) {
+		log.info("API request: create booking | user={} | location={} | guests={}",
+				principal.getName(), bookingRequest.getLocation(), bookingRequest.getGuests());
 		Booking booking = bookingService.createPendingBooking(principal.getName(), bookingRequest);
-		log.info("Created pending booking with id={} for user={}", booking.getBookId(), principal.getName());
+		log.info("API response: booking created | user={} | bookingId={}",
+				principal.getName(), booking.getBookId());
 		model.addAttribute("name", booking.getUser().getUserName());
 		model.addAttribute("bookingId", booking.getBookId());
 		model.addAttribute("price", booking.getTotalAmount());
@@ -55,6 +56,7 @@ public class BookingController {
 
 	@GetMapping(BOOKING_PRICE)
 	public ResponseEntity<ApiResponse<Map<String, Object>>> getBookingPrice(@PathVariable int bookingId, Principal principal) {
+		log.info("API request: fetch booking price | user={} | bookingId={}", principal.getName(), bookingId);
 		return ResponseEntity.ok(ApiResponse.success(
 				"Booking price fetched",
 				Map.of("price", bookingService.getBookingPrice(bookingId, principal.getName()))));

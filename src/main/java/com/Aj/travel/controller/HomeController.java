@@ -16,9 +16,12 @@ import com.aj.travel.entity.User;
 import com.aj.travel.service.PackageService;
 import com.aj.travel.service.RegistrationService;
 
+import lombok.extern.slf4j.Slf4j;
+
 @Controller
 @RequestMapping(HOME)
 @PreAuthorize(HAS_ROLE_USER)
+@Slf4j
 public class HomeController {
 
 	private final RegistrationService registrationService;
@@ -31,9 +34,11 @@ public class HomeController {
 
 	@GetMapping
 	public String showHomePage(Principal principal, Model model) {
+		log.info("MVC request: load home page | user={}", principal.getName());
 		User user = registrationService.findByEmail(principal.getName());
 		model.addAttribute("name", user.getUserName());
 		model.addAttribute("packages", packageService.getAllPackages(PageRequest.of(0, 3)).getContent());
+		log.debug("MVC response: home page loaded | user={} | featuredPackages=3", principal.getName());
 		return "/User/home_Page";
 	}
 }

@@ -59,7 +59,7 @@ public class AdminInitializer implements CommandLineRunner {
 		if (hasText(adminPassword)) {
 			log.warn("No ADMIN user found. Created bootstrap admin with email '{}'.", adminEmail);
 		} else {
-			log.warn("No ADMIN user found. Created bootstrap admin with email '{}' and generated password '{}'. Set BOOTSTRAP_ADMIN_PASSWORD to override it.", adminEmail, rawPassword);
+			log.warn("No ADMIN user found. Created bootstrap admin with email '{}'. Set BOOTSTRAP_ADMIN_PASSWORD to override the generated password.", adminEmail);
 		}
 	}
 

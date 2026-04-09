@@ -9,8 +9,6 @@ import static com.aj.travel.constants.SecurityConstants.HAS_ROLE_USER;
 import java.security.Principal;
 import java.util.Map;
 
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.prepost.PreAuthorize;
@@ -30,13 +28,13 @@ import com.aj.travel.service.BookingService;
 import com.aj.travel.service.PaymentService;
 
 import jakarta.validation.Valid;
+import lombok.extern.slf4j.Slf4j;
 
 @Controller
 @RequestMapping(PAYMENTS)
 @PreAuthorize(HAS_ROLE_USER)
+@Slf4j
 public class PaymentController {
-
-	private static final Logger log = LoggerFactory.getLogger(PaymentController.class);
 
 	private final PaymentService paymentService;
 	private final BookingService bookingService;
@@ -50,7 +48,8 @@ public class PaymentController {
 	@PostMapping(PAYMENT_ORDERS)
 	public ResponseEntity<ApiResponse<String>> createOrder(@Valid @RequestBody CreateOrderRequest request, Principal principal)
 			throws Exception {
-		log.info("Creating payment order for bookingId={} and user={}", request.getBookingId(), principal.getName());
+		log.info("API request: create payment order | user={} | bookingId={}",
+				principal.getName(), request.getBookingId());
 		return ResponseEntity.ok()
 				.contentType(MediaType.APPLICATION_JSON)
 				.body(ApiResponse.success(
@@ -63,8 +62,11 @@ public class PaymentController {
 	public ResponseEntity<ApiResponse<Map<String, Object>>> verifyPayment(
 			@Valid @RequestBody PaymentVerifyRequest request,
 			Principal principal) throws Exception {
+		log.info("API request: verify payment | user={} | bookingId={} | orderId={}",
+				principal.getName(), request.getBookingId(), request.getRazorpayOrderId());
 		paymentService.verifyAndConfirm(request, principal.getName());
-		log.info("Verified payment for bookingId={} and user={}", request.getBookingId(), principal.getName());
+		log.info("API response: payment verified | user={} | bookingId={} | orderId={}",
+				principal.getName(), request.getBookingId(), request.getRazorpayOrderId());
 		return ResponseEntity.ok(ApiResponse.success(
 				"Payment verified",
 				Map.of("status", "verified", "bookingId", request.getBookingId())));
