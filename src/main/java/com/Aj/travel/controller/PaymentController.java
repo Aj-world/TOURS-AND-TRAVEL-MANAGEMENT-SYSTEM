@@ -23,6 +23,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 
+import com.aj.travel.dto.ApiResponse;
 import com.aj.travel.dto.CreateOrderRequest;
 import com.aj.travel.dto.PaymentVerifyRequest;
 import com.aj.travel.service.BookingService;
@@ -47,22 +48,26 @@ public class PaymentController {
 
 	@ResponseBody
 	@PostMapping(PAYMENT_ORDERS)
-	public ResponseEntity<String> createOrder(@Valid @RequestBody CreateOrderRequest request, Principal principal)
+	public ResponseEntity<ApiResponse<String>> createOrder(@Valid @RequestBody CreateOrderRequest request, Principal principal)
 			throws Exception {
 		log.info("Creating payment order for bookingId={} and user={}", request.getBookingId(), principal.getName());
 		return ResponseEntity.ok()
 				.contentType(MediaType.APPLICATION_JSON)
-				.body(paymentService.createOrder(request.getBookingId(), principal.getName()));
+				.body(ApiResponse.success(
+						"Payment order created",
+						paymentService.createOrder(request.getBookingId(), principal.getName())));
 	}
 
 	@ResponseBody
 	@PostMapping(PAYMENT_VERIFY)
-	public ResponseEntity<Map<String, Object>> verifyPayment(
+	public ResponseEntity<ApiResponse<Map<String, Object>>> verifyPayment(
 			@Valid @RequestBody PaymentVerifyRequest request,
 			Principal principal) throws Exception {
 		paymentService.verifyAndConfirm(request, principal.getName());
 		log.info("Verified payment for bookingId={} and user={}", request.getBookingId(), principal.getName());
-		return ResponseEntity.ok(Map.of("status", "verified", "bookingId", request.getBookingId()));
+		return ResponseEntity.ok(ApiResponse.success(
+				"Payment verified",
+				Map.of("status", "verified", "bookingId", request.getBookingId())));
 	}
 
 	@GetMapping(PAYMENT_SUCCESS)
