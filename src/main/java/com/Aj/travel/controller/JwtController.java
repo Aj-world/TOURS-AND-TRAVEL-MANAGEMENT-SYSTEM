@@ -16,6 +16,7 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
+import com.aj.travel.dto.ApiResponse;
 import com.aj.travel.dto.LoginRequest;
 import com.aj.travel.service.JwtService;
 
@@ -36,19 +37,21 @@ public class JwtController {
 	}
 
 	@PostMapping(LOGIN)
-	public ResponseEntity<String> login(@Valid @RequestBody LoginRequest loginRequest) {
+	public ResponseEntity<ApiResponse<String>> login(@Valid @RequestBody LoginRequest loginRequest) {
 		try {
 			Authentication authentication = authenticationManager.authenticate(
 					new UsernamePasswordAuthenticationToken(loginRequest.getEmail(), loginRequest.getPassword()));
 			if (authentication.isAuthenticated()) {
 				log.info("JWT login succeeded for email={}", loginRequest.getEmail());
-				return ResponseEntity.ok(jwtService.generateToken(loginRequest.getEmail()));
+				return ResponseEntity.ok(ApiResponse.success(
+						"Login successful",
+						jwtService.generateToken(loginRequest.getEmail())));
 			}
 			log.warn("JWT login rejected for email={}", loginRequest.getEmail());
-			return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body("Invalid credentials");
+			return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body(ApiResponse.error("Invalid credentials"));
 		} catch (AuthenticationException ex) {
 			log.warn("JWT login failed for email={}", loginRequest.getEmail());
-			return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body("Invalid credentials");
+			return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body(ApiResponse.error("Invalid credentials"));
 		}
 	}
 }

@@ -19,6 +19,7 @@ import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 
+import com.aj.travel.dto.ApiResponse;
 import com.aj.travel.dto.BookingRequest;
 import com.aj.travel.entity.Booking;
 import com.aj.travel.service.BookingService;
@@ -53,7 +54,9 @@ public class BookingController {
 	}
 
 	@GetMapping(BOOKING_PRICE)
-	public ResponseEntity<Map<String, Object>> getBookingPrice(@PathVariable int bookingId, Principal principal) {
-		return ResponseEntity.ok(Map.of("price", bookingService.getBookingPrice(bookingId, principal.getName())));
+	public ResponseEntity<ApiResponse<Map<String, Object>>> getBookingPrice(@PathVariable int bookingId, Principal principal) {
+		return ResponseEntity.ok(ApiResponse.success(
+				"Booking price fetched",
+				Map.of("price", bookingService.getBookingPrice(bookingId, principal.getName()))));
 	}
 }
