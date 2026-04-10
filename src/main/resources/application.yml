@@ -1,0 +1,43 @@
+spring:
+  datasource:
+    url: jdbc:h2:mem:testdb
+    driver-class-name: org.h2.Driver
+    username: sa
+    password: ""
+    hikari:
+      maximum-pool-size: 5
+
+  jpa:
+    database-platform: org.hibernate.dialect.H2Dialect
+    hibernate:
+      ddl-auto: update
+    open-in-view: false
+    show-sql: true
+
+  h2:
+    console:
+      enabled: true
+      path: /h2-console
+
+server:
+  port: 8081
+
+jwt:
+  secret: ${JWT_SECRET}
+
+razorpay:
+  key: ${RAZORPAY_KEY}
+  secret: ${RAZORPAY_SECRET}
+
+bootstrap:
+  admin:
+    name: ${BOOTSTRAP_ADMIN_NAME:Default Admin}
+    email: ${BOOTSTRAP_ADMIN_EMAIL:admin@travel.local}
+    password: ${BOOTSTRAP_ADMIN_PASSWORD:}
+
+logging:
+  level:
+    root: INFO
+    com.aj.travel: DEBUG
+  pattern:
+    level: "requestId=%X{requestId:-N/A} %5p"
