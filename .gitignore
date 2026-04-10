@@ -31,3 +31,9 @@ build/
 
 ### VS Code ###
 .vscode/
+
+### Runtime logs ###
+spring-boot-run.log
+spring-boot-run.err.log
+spring-boot-war.log
+spring-boot-war.err.log
