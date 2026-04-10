@@ -12,14 +12,12 @@ import java.util.Map;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.prepost.PreAuthorize;
-import org.springframework.stereotype.Controller;
-import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
-import org.springframework.web.bind.annotation.ResponseBody;
+import org.springframework.web.bind.annotation.RestController;
 
 import com.aj.travel.dto.ApiResponse;
 import com.aj.travel.dto.CreateOrderRequest;
@@ -30,7 +28,7 @@ import com.aj.travel.service.PaymentService;
 import jakarta.validation.Valid;
 import lombok.extern.slf4j.Slf4j;
 
-@Controller
+@RestController
 @RequestMapping(PAYMENTS)
 @PreAuthorize(HAS_ROLE_USER)
 @Slf4j
@@ -44,7 +42,6 @@ public class PaymentController {
 		this.bookingService = bookingService;
 	}
 
-	@ResponseBody
 	@PostMapping(PAYMENT_ORDERS)
 	public ResponseEntity<ApiResponse<String>> createOrder(@Valid @RequestBody CreateOrderRequest request, Principal principal)
 			throws Exception {
@@ -57,7 +54,6 @@ public class PaymentController {
 						paymentService.createOrder(request.getBookingId(), principal.getName())));
 	}
 
-	@ResponseBody
 	@PostMapping(PAYMENT_VERIFY)
 	public ResponseEntity<ApiResponse<Map<String, Object>>> verifyPayment(
 			@Valid @RequestBody PaymentVerifyRequest request,
@@ -73,9 +69,10 @@ public class PaymentController {
 	}
 
 	@GetMapping(PAYMENT_SUCCESS)
-	public String showPaymentSuccessPage(@RequestParam("bookingId") int bookingId, Principal principal, Model model) {
+	public ResponseEntity<ApiResponse<Map<String, Object>>> showPaymentSuccessPage(
+			@RequestParam("bookingId") int bookingId,
+			Principal principal) {
 		Map<String, Object> data = bookingService.paymentPageData(bookingId, principal.getName());
-		model.addAttribute("name", data.get("name"));
-		return "/Authentication/Sucess_page";
+		return ResponseEntity.ok(ApiResponse.success("Payment success data fetched", data));
 	}
 }

@@ -2,34 +2,32 @@ package com.aj.travel.controller;
 
 import static com.aj.travel.constants.ApiPaths.ADMIN;
 import static com.aj.travel.constants.ApiPaths.DASHBOARD;
-import static com.aj.travel.constants.ApiPaths.LOGIN_SUCCESS;
-import static com.aj.travel.constants.ApiPaths.REDIRECT_PREFIX;
 import static com.aj.travel.constants.ApiPaths.USER_BY_ID;
-import static com.aj.travel.constants.ApiPaths.USER_DELETE;
-import static com.aj.travel.constants.ApiPaths.USER_EDIT;
 import static com.aj.travel.constants.ApiPaths.USERS;
 import static com.aj.travel.constants.SecurityConstants.HAS_ROLE_ADMIN;
 
 import java.util.List;
+import java.util.Map;
 
+import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.security.crypto.password.PasswordEncoder;
-import org.springframework.stereotype.Controller;
-import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.PutMapping;
+import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RestController;
 
+import com.aj.travel.dto.ApiResponse;
 import com.aj.travel.entity.User;
 import com.aj.travel.service.UserService;
 
+import jakarta.validation.Valid;
 import lombok.extern.slf4j.Slf4j;
 
-@Controller
+@RestController
 @RequestMapping(ADMIN)
 @PreAuthorize(HAS_ROLE_ADMIN)
 @Slf4j
@@ -43,31 +41,21 @@ public class AdminController {
 		this.passwordEncoder = passwordEncoder;
 	}
 
-	@GetMapping(LOGIN_SUCCESS)
-	public String showAdminLoginSuccessPage() {
-		log.debug("MVC response: admin login success page");
-		return "/Admin/LoginSuccess";
-	}
-
 	@GetMapping({DASHBOARD, USERS})
-	public String getAdminDashboard(Model model) {
-		log.info("MVC request: load admin dashboard");
+	public ResponseEntity<ApiResponse<List<Map<String, Object>>>> getAdminDashboard() {
+		log.info("API request: load admin dashboard");
 		List<User> users = userService.getAllUser();
-		model.addAttribute("user", users);
-		log.info("MVC response: admin dashboard loaded | userCount={}", users.size());
-		return "/Admin/AdminDasBord";
-	}
-
-	@GetMapping(USER_EDIT)
-	public String showUpdateUserForm(@PathVariable int id, Model model) {
-		log.info("MVC request: show update user form | userId={}", id);
-		model.addAttribute("id", id);
-		return "/Admin/UpdateAdmin";
+		log.info("API response: admin dashboard loaded | userCount={}", users.size());
+		return ResponseEntity.ok(ApiResponse.success(
+				"Users fetched",
+				users.stream().map(this::toUserPayload).toList()));
 	}
 
 	@PutMapping(USER_BY_ID)
-	public String updateUser(@PathVariable int id, @ModelAttribute User updatedUser) {
-		log.info("MVC request: update user | userId={}", id);
+	public ResponseEntity<ApiResponse<Map<String, Object>>> updateUser(
+			@PathVariable int id,
+			@Valid @RequestBody User updatedUser) {
+		log.info("API request: update user | userId={}", id);
 		User existingUser = userService.updateUser(id);
 
 		existingUser.setUserId(id);
@@ -78,26 +66,28 @@ public class AdminController {
 		existingUser.setEmail(updatedUser.getEmail());
 		existingUser.setUserPhoneNo(updatedUser.getUserPhoneNo());
 
-		userService.saveUser(existingUser);
-		log.info("MVC response: user updated | userId={}", id);
-		return REDIRECT_PREFIX + ADMIN + DASHBOARD;
-	}
-
-	@PostMapping(USER_BY_ID)
-	public String updateUserFromForm(@PathVariable int id, @ModelAttribute User updatedUser) {
-		return updateUser(id, updatedUser);
+		User savedUser = userService.saveUser(existingUser);
+		log.info("API response: user updated | userId={}", id);
+		return ResponseEntity.ok(ApiResponse.success("User updated", toUserPayload(savedUser)));
 	}
 
 	@DeleteMapping(USER_BY_ID)
-	public String deleteUser(@PathVariable int id) {
-		log.info("MVC request: delete user | userId={}", id);
+	public ResponseEntity<ApiResponse<Map<String, Object>>> deleteUser(@PathVariable int id) {
+		log.info("API request: delete user | userId={}", id);
 		userService.deleteUser(id);
-		log.info("MVC response: user deleted | userId={}", id);
-		return REDIRECT_PREFIX + ADMIN + DASHBOARD;
+		log.info("API response: user deleted | userId={}", id);
+		return ResponseEntity.ok(ApiResponse.success(
+				"User deleted",
+				Map.of("userId", id, "deleted", true)));
 	}
 
-	@PostMapping(USER_DELETE)
-	public String deleteUserFromForm(@PathVariable int id) {
-		return deleteUser(id);
+	private Map<String, Object> toUserPayload(User user) {
+		return Map.of(
+				"userId", user.getUserId(),
+				"userName", user.getUserName(),
+				"email", user.getEmail(),
+				"userAddress", user.getUserAddress() == null ? "" : user.getUserAddress(),
+				"userPhoneNo", user.getUserPhoneNo() == null ? "" : user.getUserPhoneNo(),
+				"userRole", user.getUserRole().name());
 	}
 }
