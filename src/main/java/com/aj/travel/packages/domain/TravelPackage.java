@@ -1,10 +1,13 @@
 package com.aj.travel.packages.domain;
 
 import jakarta.persistence.*;
+import lombok.Data;
+
 import java.math.BigDecimal;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
 
+@Data
 @Entity
 @Table(name = "travel_packages")
 public class TravelPackage {
@@ -33,4 +36,8 @@ public class TravelPackage {
 
     private LocalDateTime createdAt;
 
+    @PrePersist
+    public void prePersist() {
+        this.createdAt = LocalDateTime.now();
+    }
 }

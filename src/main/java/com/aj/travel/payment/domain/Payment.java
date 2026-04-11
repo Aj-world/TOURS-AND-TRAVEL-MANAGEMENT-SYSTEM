@@ -1,9 +1,12 @@
 package com.aj.travel.payment.domain;
 
 import jakarta.persistence.*;
+import lombok.Data;
+
 import java.math.BigDecimal;
 import java.time.LocalDateTime;
 
+@Data
 @Entity
 @Table(name = "payments")
 public class Payment {
@@ -27,4 +30,8 @@ public class Payment {
 
     private LocalDateTime paidAt;
 
+    @PrePersist
+    public void prePersist() {
+        this.paidAt = LocalDateTime.now();
+    }
 }

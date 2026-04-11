@@ -1,8 +1,11 @@
 package com.aj.travel.user.domain;
 
 import jakarta.persistence.*;
+import lombok.Data;
+
 import java.time.LocalDateTime;
 
+@Data
 @Entity
 @Table(name = "users")
 public class User {
@@ -25,4 +28,8 @@ public class User {
 
     private LocalDateTime createdAt;
 
+    @PrePersist
+    public void prePersist() {
+        this.createdAt = LocalDateTime.now();
+    }
 }
