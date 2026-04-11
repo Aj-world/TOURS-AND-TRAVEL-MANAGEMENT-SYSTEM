@@ -1,4 +1,10 @@
 package com.aj.travel.booking.domain;
 
-public class BookingStatus {
+public enum BookingStatus {
+
+    PENDING_PAYMENT,
+    CONFIRMED,
+    COMPLETED,
+    CANCELLED
+
 }

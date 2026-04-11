@@ -1,9 +1,12 @@
 package com.aj.travel.booking.domain;
 
 import jakarta.persistence.*;
+import lombok.Data;
+
 import java.math.BigDecimal;
 import java.time.LocalDateTime;
 
+@Data
 @Entity
 @Table(name = "bookings")
 public class Booking {
