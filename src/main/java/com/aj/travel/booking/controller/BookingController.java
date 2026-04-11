@@ -1,7 +1,9 @@
 package com.aj.travel.booking.controller;
 
-import com.aj.travel.booking.domain.Booking;
+import com.aj.travel.booking.dto.BookingResponse;
+import com.aj.travel.booking.dto.CreateBookingRequest;
 import com.aj.travel.booking.service.BookingService;
+import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import org.springframework.web.bind.annotation.*;
 
@@ -15,16 +17,13 @@ public class BookingController {
     private final BookingService bookingService;
 
     @PostMapping
-    public Booking createBooking(
-            @RequestParam Long userId,
-            @RequestParam Long packageId
-    ) {
+    public BookingResponse createBooking(@Valid @RequestBody CreateBookingRequest request) {
 
-        return bookingService.createBooking(userId, packageId);
+        return bookingService.createBooking(request);
     }
 
     @GetMapping("/user/{userId}")
-    public List<Booking> getUserBookings(@PathVariable Long userId) {
+    public List<BookingResponse> getUserBookings(@PathVariable Long userId) {
 
         return bookingService.getUserBookings(userId);
     }
