@@ -5,6 +5,7 @@ import com.aj.travel.booking.domain.BookingStatus;
 import com.aj.travel.booking.dto.BookingResponse;
 import com.aj.travel.booking.dto.CreateBookingRequest;
 import com.aj.travel.booking.repository.BookingRepository;
+import com.aj.travel.common.exception.ResourceNotFoundException;
 import com.aj.travel.packages.domain.TravelPackage;
 import com.aj.travel.packages.repository.TravelPackageRepository;
 import lombok.RequiredArgsConstructor;
@@ -25,7 +26,7 @@ public class BookingService {
 
         TravelPackage travelPackage =
                 packageRepository.findById(request.getPackageId())
-                        .orElseThrow(() -> new RuntimeException("Package not found"));
+                        .orElseThrow(() -> new ResourceNotFoundException("Package not found"));
 
         Booking booking = new Booking();
 

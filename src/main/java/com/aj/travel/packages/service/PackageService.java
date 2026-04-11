@@ -1,5 +1,6 @@
 package com.aj.travel.packages.service;
 
+import com.aj.travel.common.exception.ResourceNotFoundException;
 import com.aj.travel.packages.domain.PackageStatus;
 import com.aj.travel.packages.domain.TravelPackage;
 import com.aj.travel.packages.dto.CreateTravelPackageRequest;
@@ -43,7 +44,7 @@ public class PackageService {
     @Transactional(readOnly = true)
     public TravelPackageResponse getPackage(Long id) {
         TravelPackage travelPackage = packageRepository.findById(id)
-                .orElseThrow(() -> new RuntimeException("Package not found"));
+                .orElseThrow(() -> new ResourceNotFoundException("Package not found"));
 
         return mapToResponse(travelPackage);
     }

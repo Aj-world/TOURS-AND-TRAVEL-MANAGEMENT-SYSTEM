@@ -1,5 +1,6 @@
 package com.aj.travel.user.service;
 
+import com.aj.travel.common.exception.ResourceNotFoundException;
 import com.aj.travel.user.domain.User;
 import com.aj.travel.user.dto.CreateUserRequest;
 import com.aj.travel.user.dto.UserResponse;
@@ -35,7 +36,7 @@ public class UserService {
     public UserResponse getUser(Long id) {
 
         User user = userRepository.findById(id)
-                .orElseThrow(() -> new RuntimeException("User not found"));
+                .orElseThrow(() -> new ResourceNotFoundException("User not found"));
 
         return mapToResponse(user);
     }

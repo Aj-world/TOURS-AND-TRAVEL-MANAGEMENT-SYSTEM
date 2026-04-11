@@ -3,6 +3,7 @@ package com.aj.travel.payment.service;
 import com.aj.travel.booking.domain.Booking;
 import com.aj.travel.booking.domain.BookingStatus;
 import com.aj.travel.booking.repository.BookingRepository;
+import com.aj.travel.common.exception.ResourceNotFoundException;
 import com.aj.travel.payment.domain.Payment;
 import com.aj.travel.payment.domain.PaymentStatus;
 import com.aj.travel.payment.dto.CreatePaymentRequest;
@@ -23,7 +24,7 @@ public class PaymentService {
     public PaymentResponse createPayment(CreatePaymentRequest request) {
 
         Booking booking = bookingRepository.findById(request.getBookingId())
-                .orElseThrow(() -> new RuntimeException("Booking not found"));
+                .orElseThrow(() -> new ResourceNotFoundException("Booking not found"));
 
         Payment payment = new Payment();
 
@@ -38,7 +39,7 @@ public class PaymentService {
     public void confirmPayment(Long bookingId) {
 
         Booking booking = bookingRepository.findById(bookingId)
-                .orElseThrow(() -> new RuntimeException("Booking not found"));
+                .orElseThrow(() -> new ResourceNotFoundException("Booking not found"));
 
         booking.setStatus(BookingStatus.CONFIRMED);
 
