@@ -1,5 +1,6 @@
 package com.aj.travel.packages.controller;
 
+import com.aj.travel.common.api.ApiResponse;
 import com.aj.travel.packages.dto.TravelPackageResponse;
 import com.aj.travel.packages.service.PackageService;
 import lombok.RequiredArgsConstructor;
@@ -15,15 +16,23 @@ public class PackageController {
     private final PackageService packageService;
 
     @GetMapping
-    public List<TravelPackageResponse> getPackages() {
+    public ApiResponse<List<TravelPackageResponse>> getPackages() {
 
-        return packageService.getActivePackages();
+        return new ApiResponse<>(
+                true,
+                "Packages retrieved successfully",
+                packageService.getActivePackages()
+        );
     }
 
     @GetMapping("/{id}")
-    public TravelPackageResponse getPackage(@PathVariable Long id) {
+    public ApiResponse<TravelPackageResponse> getPackage(@PathVariable Long id) {
 
-        return packageService.getPackage(id);
+        return new ApiResponse<>(
+                true,
+                "Package retrieved successfully",
+                packageService.getPackage(id)
+        );
     }
 
 }

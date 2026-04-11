@@ -1,5 +1,6 @@
 package com.aj.travel.user.controller;
 
+import com.aj.travel.common.api.ApiResponse;
 import com.aj.travel.user.dto.UserResponse;
 import com.aj.travel.user.service.UserService;
 import lombok.RequiredArgsConstructor;
@@ -13,8 +14,12 @@ public class UserController {
     private final UserService userService;
 
     @GetMapping("/{id}")
-    public UserResponse getUser(@PathVariable Long id) {
+    public ApiResponse<UserResponse> getUser(@PathVariable Long id) {
 
-        return userService.getUser(id);
+        return new ApiResponse<>(
+                true,
+                "User retrieved successfully",
+                userService.getUser(id)
+        );
     }
 }
