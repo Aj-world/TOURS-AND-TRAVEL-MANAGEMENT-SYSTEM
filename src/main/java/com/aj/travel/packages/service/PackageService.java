@@ -5,6 +5,7 @@ import com.aj.travel.packages.domain.PackageStatus;
 import com.aj.travel.packages.domain.TravelPackage;
 import com.aj.travel.packages.dto.CreateTravelPackageRequest;
 import com.aj.travel.packages.dto.TravelPackageResponse;
+import com.aj.travel.packages.mapper.PackageMapper;
 import com.aj.travel.packages.repository.TravelPackageRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
@@ -18,26 +19,19 @@ import java.util.List;
 public class PackageService {
 
     private final TravelPackageRepository packageRepository;
+    private final PackageMapper packageMapper;
 
     public TravelPackageResponse createPackage(CreateTravelPackageRequest request) {
-        TravelPackage travelPackage = new TravelPackage();
-        travelPackage.setTitle(request.getTitle());
-        travelPackage.setDescription(request.getDescription());
-        travelPackage.setLocation(request.getLocation());
-        travelPackage.setPrice(request.getPrice());
-        travelPackage.setCapacity(request.getCapacity());
-        travelPackage.setStartDate(request.getStartDate());
-        travelPackage.setEndDate(request.getEndDate());
-        travelPackage.setStatus(request.getStatus());
+        TravelPackage travelPackage = packageMapper.toEntity(request);
 
-        return mapToResponse(packageRepository.save(travelPackage));
+        return packageMapper.toResponse(packageRepository.save(travelPackage));
     }
 
     @Transactional(readOnly = true)
     public List<TravelPackageResponse> getActivePackages() {
         return packageRepository.findByStatus(PackageStatus.ACTIVE)
                 .stream()
-                .map(this::mapToResponse)
+                .map(packageMapper::toResponse)
                 .toList();
     }
 
@@ -46,21 +40,6 @@ public class PackageService {
         TravelPackage travelPackage = packageRepository.findById(id)
                 .orElseThrow(() -> new ResourceNotFoundException("Package not found"));
 
-        return mapToResponse(travelPackage);
-    }
-
-    public TravelPackageResponse mapToResponse(TravelPackage travelPackage) {
-        return new TravelPackageResponse(
-                travelPackage.getId(),
-                travelPackage.getTitle(),
-                travelPackage.getDescription(),
-                travelPackage.getLocation(),
-                travelPackage.getPrice(),
-                travelPackage.getCapacity(),
-                travelPackage.getStartDate(),
-                travelPackage.getEndDate(),
-                travelPackage.getStatus() != null ? travelPackage.getStatus().name() : null,
-                travelPackage.getCreatedAt()
-        );
+        return packageMapper.toResponse(travelPackage);
     }
 }

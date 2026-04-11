@@ -4,10 +4,12 @@ import com.aj.travel.booking.domain.Booking;
 import com.aj.travel.booking.domain.BookingStatus;
 import com.aj.travel.booking.dto.BookingResponse;
 import com.aj.travel.booking.dto.CreateBookingRequest;
+import com.aj.travel.booking.mapper.BookingMapper;
 import com.aj.travel.booking.repository.BookingRepository;
 import com.aj.travel.common.exception.ResourceNotFoundException;
 import com.aj.travel.packages.domain.TravelPackage;
 import com.aj.travel.packages.repository.TravelPackageRepository;
+import com.aj.travel.user.domain.User;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -21,6 +23,7 @@ public class BookingService {
 
     private final BookingRepository bookingRepository;
     private final TravelPackageRepository packageRepository;
+    private final BookingMapper bookingMapper;
 
     public BookingResponse createBooking(CreateBookingRequest request) {
 
@@ -28,34 +31,20 @@ public class BookingService {
                 packageRepository.findById(request.getPackageId())
                         .orElseThrow(() -> new ResourceNotFoundException("Package not found"));
 
-        Booking booking = new Booking();
+        User user = new User();
+        user.setId(request.getUserId());
 
-        booking.setUserId(request.getUserId());
-        booking.setPackageId(request.getPackageId());
-        booking.setGuestCount(request.getGuestCount());
-        booking.setTotalPrice(travelPackage.getPrice());
+        Booking booking = bookingMapper.toEntity(request, user, travelPackage);
         booking.setStatus(BookingStatus.PENDING_PAYMENT);
 
-        return mapToResponse(bookingRepository.save(booking));
+        return bookingMapper.toResponse(bookingRepository.save(booking));
     }
 
     @Transactional(readOnly = true)
     public List<BookingResponse> getUserBookings(Long userId) {
         return bookingRepository.findByUserId(userId)
                 .stream()
-                .map(this::mapToResponse)
+                .map(bookingMapper::toResponse)
                 .toList();
-    }
-
-    public BookingResponse mapToResponse(Booking booking) {
-        return new BookingResponse(
-                booking.getId(),
-                booking.getUserId(),
-                booking.getPackageId(),
-                booking.getGuestCount(),
-                booking.getTotalPrice(),
-                booking.getStatus() != null ? booking.getStatus().name() : null,
-                booking.getBookingDate()
-        );
     }
 }
