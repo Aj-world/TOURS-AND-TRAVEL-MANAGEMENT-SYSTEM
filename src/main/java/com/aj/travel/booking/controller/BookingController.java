@@ -1,7 +1,10 @@
 package com.aj.travel.booking.controller;
 
-import com.aj.travel.booking.domain.Booking;
+import com.aj.travel.booking.dto.BookingResponse;
+import com.aj.travel.booking.dto.CreateBookingRequest;
 import com.aj.travel.booking.service.BookingService;
+import com.aj.travel.common.api.ApiResponse;
+import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import org.springframework.web.bind.annotation.*;
 
@@ -15,18 +18,23 @@ public class BookingController {
     private final BookingService bookingService;
 
     @PostMapping
-    public Booking createBooking(
-            @RequestParam Long userId,
-            @RequestParam Long packageId
-    ) {
+    public ApiResponse<BookingResponse> createBooking(@Valid @RequestBody CreateBookingRequest request) {
 
-        return bookingService.createBooking(userId, packageId);
+        return new ApiResponse<>(
+                true,
+                "Booking created successfully",
+                bookingService.createBooking(request)
+        );
     }
 
     @GetMapping("/user/{userId}")
-    public List<Booking> getUserBookings(@PathVariable Long userId) {
+    public ApiResponse<List<BookingResponse>> getUserBookings(@PathVariable Long userId) {
 
-        return bookingService.getUserBookings(userId);
+        return new ApiResponse<>(
+                true,
+                "Bookings retrieved successfully",
+                bookingService.getUserBookings(userId)
+        );
     }
 
 }
