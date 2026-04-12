@@ -10,6 +10,11 @@ public class PackageMapper {
 
     public TravelPackage toEntity(CreateTravelPackageRequest request) {
         TravelPackage travelPackage = new TravelPackage();
+        updateEntity(travelPackage, request);
+        return travelPackage;
+    }
+
+    public void updateEntity(TravelPackage travelPackage, CreateTravelPackageRequest request) {
         travelPackage.setTitle(request.getTitle());
         travelPackage.setDescription(request.getDescription());
         travelPackage.setLocation(request.getLocation());
@@ -18,7 +23,6 @@ public class PackageMapper {
         travelPackage.setStartDate(request.getStartDate());
         travelPackage.setEndDate(request.getEndDate());
         travelPackage.setStatus(request.getStatus());
-        return travelPackage;
     }
 
     public TravelPackageResponse toResponse(TravelPackage travelPackage) {

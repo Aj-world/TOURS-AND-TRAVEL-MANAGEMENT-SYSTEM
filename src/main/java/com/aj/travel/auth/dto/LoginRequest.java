@@ -1,6 +1,5 @@
-package com.aj.travel.user.dto;
+package com.aj.travel.auth.dto;
 
-import com.aj.travel.user.domain.UserRole;
 import jakarta.validation.constraints.Email;
 import jakarta.validation.constraints.NotBlank;
 import lombok.AllArgsConstructor;
@@ -10,20 +9,12 @@ import lombok.NoArgsConstructor;
 @Data
 @NoArgsConstructor
 @AllArgsConstructor
-public class CreateUserRequest {
+public class LoginRequest {
 
     @NotBlank
-    private String name;
-
     @Email
-    @NotBlank
     private String email;
 
     @NotBlank
     private String password;
-
-    @NotBlank
-    private String phone;
-
-    private UserRole role;
 }
