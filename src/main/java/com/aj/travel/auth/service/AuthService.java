@@ -2,10 +2,11 @@ package com.aj.travel.auth.service;
 
 import com.aj.travel.auth.dto.LoginRequest;
 import com.aj.travel.auth.dto.LoginResponse;
-import com.aj.travel.common.exception.ResourceNotFoundException;
-import com.aj.travel.user.domain.User;
-import com.aj.travel.user.repository.UserRepository;
+import com.aj.travel.common.security.JwtTokenProvider;
 import lombok.RequiredArgsConstructor;
+import org.springframework.security.authentication.AuthenticationManager;
+import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
+import org.springframework.security.core.Authentication;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -14,21 +15,16 @@ import org.springframework.transaction.annotation.Transactional;
 @Transactional(readOnly = true)
 public class AuthService {
 
-    private final UserRepository userRepository;
+    private final AuthenticationManager authenticationManager;
+    private final JwtTokenProvider jwtTokenProvider;
 
     public LoginResponse login(LoginRequest request) {
-        User user = userRepository.findByEmail(request.getEmail())
-                .orElseThrow(() -> new ResourceNotFoundException("Invalid credentials"));
-
-        if (!user.getPassword().equals(request.getPassword())) {
-            throw new RuntimeException("Invalid credentials");
-        }
-
-        return new LoginResponse(
-                user.getId(),
-                user.getName(),
-                user.getEmail(),
-                user.getRole() != null ? user.getRole().name() : null
+        Authentication authentication = authenticationManager.authenticate(
+                new UsernamePasswordAuthenticationToken(request.getEmail(), request.getPassword())
         );
+
+        String token = jwtTokenProvider.generateToken(authentication.getName());
+
+        return new LoginResponse(token);
     }
 }

@@ -2,11 +2,13 @@ package com.aj.travel.user.service;
 
 import com.aj.travel.common.exception.ResourceNotFoundException;
 import com.aj.travel.user.domain.User;
+import com.aj.travel.user.domain.UserRole;
 import com.aj.travel.user.dto.CreateUserRequest;
 import com.aj.travel.user.dto.UserResponse;
 import com.aj.travel.user.mapper.UserMapper;
 import com.aj.travel.user.repository.UserRepository;
 import lombok.RequiredArgsConstructor;
+import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -17,24 +19,39 @@ public class UserService {
 
     private final UserRepository userRepository;
     private final UserMapper userMapper;
+    private final PasswordEncoder passwordEncoder;
 
     public UserResponse register(CreateUserRequest request) {
-
-        if (userRepository.existsByEmail(request.getEmail())) {
-            throw new RuntimeException("Email already registered");
-        }
+        validateUniqueEmail(request.getEmail());
 
         User user = userMapper.toEntity(request);
+        user.setRole(UserRole.USER);
+        user.setPassword(passwordEncoder.encode(request.getPassword()));
+
+        return userMapper.toResponse(userRepository.save(user));
+    }
+
+    public UserResponse createAdmin(CreateUserRequest request) {
+        validateUniqueEmail(request.getEmail());
+
+        User user = userMapper.toEntity(request);
+        user.setRole(UserRole.ADMIN);
+        user.setPassword(passwordEncoder.encode(request.getPassword()));
 
         return userMapper.toResponse(userRepository.save(user));
     }
 
     @Transactional(readOnly = true)
-    public UserResponse getUser(Long id) {
+    public java.util.List<UserResponse> getUsers() {
+        return userRepository.findAll()
+                .stream()
+                .map(userMapper::toResponse)
+                .toList();
+    }
 
-        User user = userRepository.findById(id)
-                .orElseThrow(() -> new ResourceNotFoundException("User not found"));
-
-        return userMapper.toResponse(user);
+    private void validateUniqueEmail(String email) {
+        if (userRepository.existsByEmail(email)) {
+            throw new IllegalArgumentException("Email already registered");
+        }
     }
 }

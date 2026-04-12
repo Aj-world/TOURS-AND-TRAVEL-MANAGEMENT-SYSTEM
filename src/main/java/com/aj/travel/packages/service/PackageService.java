@@ -27,6 +27,22 @@ public class PackageService {
         return packageMapper.toResponse(packageRepository.save(travelPackage));
     }
 
+    public TravelPackageResponse updatePackage(Long id, CreateTravelPackageRequest request) {
+        TravelPackage travelPackage = packageRepository.findById(id)
+                .orElseThrow(() -> new ResourceNotFoundException("Package not found"));
+
+        packageMapper.updateEntity(travelPackage, request);
+
+        return packageMapper.toResponse(packageRepository.save(travelPackage));
+    }
+
+    public void deletePackage(Long id) {
+        TravelPackage travelPackage = packageRepository.findById(id)
+                .orElseThrow(() -> new ResourceNotFoundException("Package not found"));
+
+        packageRepository.delete(travelPackage);
+    }
+
     @Transactional(readOnly = true)
     public List<TravelPackageResponse> getActivePackages() {
         return packageRepository.findByStatus(PackageStatus.ACTIVE)

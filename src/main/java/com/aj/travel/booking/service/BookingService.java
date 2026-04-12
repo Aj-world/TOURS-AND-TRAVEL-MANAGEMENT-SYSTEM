@@ -7,9 +7,9 @@ import com.aj.travel.booking.dto.CreateBookingRequest;
 import com.aj.travel.booking.mapper.BookingMapper;
 import com.aj.travel.booking.repository.BookingRepository;
 import com.aj.travel.common.exception.ResourceNotFoundException;
+import com.aj.travel.common.security.SecurityUtils;
 import com.aj.travel.packages.domain.TravelPackage;
 import com.aj.travel.packages.repository.TravelPackageRepository;
-import com.aj.travel.user.domain.User;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -26,23 +26,31 @@ public class BookingService {
     private final BookingMapper bookingMapper;
 
     public BookingResponse createBooking(CreateBookingRequest request) {
+        Long currentUserId = SecurityUtils.getCurrentUserId();
 
         TravelPackage travelPackage =
                 packageRepository.findById(request.getPackageId())
                         .orElseThrow(() -> new ResourceNotFoundException("Package not found"));
 
-        User user = new User();
-        user.setId(request.getUserId());
-
-        Booking booking = bookingMapper.toEntity(request, user, travelPackage);
+        Booking booking = bookingMapper.toEntity(request, currentUserId, travelPackage);
         booking.setStatus(BookingStatus.PENDING_PAYMENT);
 
         return bookingMapper.toResponse(bookingRepository.save(booking));
     }
 
     @Transactional(readOnly = true)
-    public List<BookingResponse> getUserBookings(Long userId) {
-        return bookingRepository.findByUserId(userId)
+    public List<BookingResponse> getMyBookings() {
+        Long currentUserId = SecurityUtils.getCurrentUserId();
+
+        return bookingRepository.findByUserId(currentUserId)
+                .stream()
+                .map(bookingMapper::toResponse)
+                .toList();
+    }
+
+    @Transactional(readOnly = true)
+    public List<BookingResponse> getAllBookings() {
+        return bookingRepository.findAll()
                 .stream()
                 .map(bookingMapper::toResponse)
                 .toList();

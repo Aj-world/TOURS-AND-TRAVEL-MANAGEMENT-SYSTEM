@@ -12,9 +12,6 @@ import lombok.NoArgsConstructor;
 public class CreateBookingRequest {
 
     @NotNull
-    private Long userId;
-
-    @NotNull
     private Long packageId;
 
     @NotNull

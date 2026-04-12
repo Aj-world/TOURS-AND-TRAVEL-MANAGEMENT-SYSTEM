@@ -4,6 +4,7 @@ import com.aj.travel.booking.domain.Booking;
 import com.aj.travel.booking.domain.BookingStatus;
 import com.aj.travel.booking.repository.BookingRepository;
 import com.aj.travel.common.exception.ResourceNotFoundException;
+import com.aj.travel.common.security.SecurityUtils;
 import com.aj.travel.payment.domain.Payment;
 import com.aj.travel.payment.domain.PaymentStatus;
 import com.aj.travel.payment.dto.CreatePaymentRequest;
@@ -24,9 +25,12 @@ public class PaymentService {
     private final PaymentMapper paymentMapper;
 
     public PaymentResponse createPayment(CreatePaymentRequest request) {
+        Long currentUserId = SecurityUtils.getCurrentUserId();
 
         Booking booking = bookingRepository.findById(request.getBookingId())
                 .orElseThrow(() -> new ResourceNotFoundException("Booking not found"));
+
+        validateBookingOwnership(booking, currentUserId);
 
         Payment payment = paymentMapper.toEntity(request, booking);
         payment.setStatus(PaymentStatus.CREATED);
@@ -42,5 +46,13 @@ public class PaymentService {
         booking.setStatus(BookingStatus.CONFIRMED);
 
         bookingRepository.save(booking);
+    }
+
+    private void validateBookingOwnership(Booking booking, Long currentUserId) {
+        if (!currentUserId.equals(booking.getUserId())) {
+            throw new org.springframework.security.access.AccessDeniedException(
+                    "You are not allowed to access this booking"
+            );
+        }
     }
 }
