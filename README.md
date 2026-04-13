@@ -1,63 +1,150 @@
 # Tours and Travel Management System
 
-![Java](https://img.shields.io/badge/Java-17-orange)
-![Spring Boot](https://img.shields.io/badge/SpringBoot-3.x-brightgreen)
-![Spring Security](https://img.shields.io/badge/Spring%20Security-Authentication-blue)
-![Database](https://img.shields.io/badge/Database-H2%20%7C%20MySQL-blue)
-![Build Tool](https://img.shields.io/badge/Build-Maven-red)
-![Payment](https://img.shields.io/badge/Payment-Razorpay-purple)
-![Architecture](https://img.shields.io/badge/Architecture-Server--Side--Rendering-yellow)
-
-![GitHub Repo stars](https://img.shields.io/github/stars/Aj-world/TOURS-AND-TRAVEL-MANAGEMENT-SYSTEM)
-![GitHub forks](https://img.shields.io/github/forks/Aj-world/TOURS-AND-TRAVEL-MANAGEMENT-SYSTEM)
-![GitHub issues](https://img.shields.io/github/issues/Aj-world/TOURS-AND-TRAVEL-MANAGEMENT-SYSTEM)
-![GitHub license](https://img.shields.io/github/license/Aj-world/TOURS-AND-TRAVEL-MANAGEMENT-SYSTEM)
+![Java](https://img.shields.io/badge/Java-21-orange?style=for-the-badge&logo=openjdk)
+![Spring Boot](https://img.shields.io/badge/Spring_Boot-3-brightgreen?style=for-the-badge&logo=springboot)
+![Spring Security](https://img.shields.io/badge/Spring_Security-Secured-6DB33F?style=for-the-badge&logo=springsecurity)
+![JWT](https://img.shields.io/badge/Auth-JWT-blue?style=for-the-badge&logo=jsonwebtokens)
+![RBAC](https://img.shields.io/badge/Authorization-RBAC-darkgreen?style=for-the-badge)
+![Database](https://img.shields.io/badge/Database-MySQL-4479A1?style=for-the-badge&logo=mysql)
+![Build](https://img.shields.io/badge/Build-Maven-C71A36?style=for-the-badge&logo=apachemaven)
+![API Docs](https://img.shields.io/badge/API-Swagger%20%2F%20OpenAPI-85EA2D?style=for-the-badge&logo=swagger)
+![Testing](https://img.shields.io/badge/Tests-JUnit5%20%7C%20Mockito%20%7C%20MockMvc-25A162?style=for-the-badge)
+![CI](https://img.shields.io/badge/CI-GitHub_Actions-2088FF?style=for-the-badge&logo=githubactions)
+![License](https://img.shields.io/badge/License-MIT-black?style=for-the-badge)
 
 ---
 
 ## About
 
-The **Tours and Travel Management System** is a full-stack travel booking web application built using **Spring Boot, Spring Security, Razorpay, JPA/Hibernate, and Thymeleaf**.
+**Tours and Travel Management System** is a modern Spring Boot backend built for travel agencies and booking platforms. It provides APIs for travel package management, booking workflows, secure authentication, authorization, and payment handling.
 
-The application allows users to explore travel packages, make bookings, and complete secure online payments. Administrators can manage packages, users, bookings, and payment records through an admin dashboard.
-
-This project demonstrates a **complete backend-driven web application using Spring Boot MVC with Server-Side Rendering (SSR)**.
-
-### Frontend UI Preview
-
-A **static preview of the UI (HTML templates)** is deployed for demonstration purposes:
-
-[https://tours-and-travel-management-system.netlify.app](https://tours-and-travel-management-system.netlify.app)
-
- 
-
----
- 
-
-## Documentation
-
-Full technical documentation for this project is available here:
-
-### Live Documentation
-https://tours-and-travelproject-documentation.netlify.app/
-
-### Repository Version
-[View HTML Documentation](docs/project-documentation.html)
+The project originally began as a traditional **Spring MVC + Thymeleaf** application and has since been rebuilt into a **REST-first backend** using a **modular monolith architecture**. The current design emphasizes maintainability, clear module boundaries, API-driven development, and production-oriented backend practices.
 
 ---
 
- 
+## Architecture Overview
+
+The application is structured as a **modular monolith**, where business capabilities are separated into well-defined modules while remaining part of a single deployable Spring Boot application.
+
+### Core Architectural Principles
+
+- Clear separation of business domains
+- Layered architecture across all modules
+- Shared common infrastructure for security, configuration, and exception handling
+- REST-based communication model
+- Centralized authentication and role-based authorization
+
+### Layered Structure
+
+`Controller -> Service -> Repository -> Database`
+
+- `Controller` handles HTTP requests and response mapping
+- `Service` contains business logic and workflow orchestration
+- `Repository` manages persistence via Spring Data JPA
+- `Database` stores domain data in MySQL
+
+---
+
+## Domain Modules
+
+| Module | Responsibility |
+| --- | --- |
+| `user` | User registration, login, profile management, and identity-related operations |
+| `packages` | Travel package creation, updates, retrieval, and package catalog management |
+| `booking` | Booking lifecycle management, booking creation, status tracking, and related workflows |
+| `payment` | Payment processing flow, payment status handling, and payment-related integration points |
+| `common` | Shared infrastructure including security, JWT handling, exceptions, configuration, and reusable utilities |
+
+---
+
+## System Architecture Diagram
+
+```text
+                          +------------------------------+
+                          |         Client Apps          |
+                          |  Web / Mobile / Postman      |
+                          +--------------+---------------+
+                                         |
+                                         v
+                          +------------------------------+
+                          |      REST API Controllers    |
+                          +--------------+---------------+
+                                         |
+                                         v
+        +-------------------------------------------------------------------+
+        |                         Service Layer                             |
+        |   user   |   packages   |   booking   |   payment   |   common    |
+        +-------------------------+-------------+-------------+--------------+
+                                  |
+                                  v
+                        +-------------------------+
+                        |    Repository Layer     |
+                        |   Spring Data JPA       |
+                        +------------+------------+
+                                     |
+                                     v
+                        +-------------------------+
+                        |      MySQL Database     |
+                        +-------------------------+
+```
+
+---
+
+## Request Flow Example
+
+### Booking Request Flow
+
+```text
+Client
+  |
+  v
+JWT Authenticated Request
+  |
+  v
+Booking Controller
+  |
+  v
+Booking Service
+  |
+  +--> Validate User
+  |
+  +--> Validate Travel Package
+  |
+  +--> Create Booking
+  |
+  +--> Trigger Payment Workflow
+  |
+  v
+Booking Repository
+  |
+  v
+MySQL Database
+  |
+  v
+API Response
+```
+
+### Authentication Flow
+
+```text
+User Login -> Credentials Validation -> JWT Generation -> Secured API Access -> RBAC Enforcement
+```
+
+---
+
 ## Tech Stack
 
-| Layer                 | Technologies                                                        |
-| --------------------- | ------------------------------------------------------------------- |
-| **Backend**           | Java 17, Spring Boot 3, Spring Security, Spring Data JPA, Hibernate |
-| **Frontend**          | Thymeleaf, HTML5, CSS3, JavaScript                                  |
-| **Database**          | H2 (development), MySQL (production)                                |
-| **Payment Gateway**   | Razorpay                                                            |
-| **Build Tool**        | Maven                                                               |
-| **Development Tools** | Lombok, Spring Boot DevTools                                        |
-| **IDE**               | IntelliJ IDEA / Eclipse                                             |
+| Category | Technologies |
+| --- | --- |
+| Language | Java 21 |
+| Framework | Spring Boot 3 |
+| Security | Spring Security, JWT Authentication, RBAC Authorization |
+| Persistence | Spring Data JPA, Hibernate |
+| Database | MySQL |
+| Build Tool | Maven |
+| API Documentation | Swagger / OpenAPI |
+| Testing | JUnit 5, Mockito, MockMvc |
+| CI/CD | GitHub Actions CI |
 
 ---
 
@@ -65,134 +152,59 @@ https://tours-and-travelproject-documentation.netlify.app/
 
 ### User Features
 
-- Secure user registration and login
-- Browse available travel packages
-- View package details
-- Book travel packages
-- Secure payment via Razorpay
-- Track booking status
+- User registration and login
+- JWT-based authentication
+- Access to protected backend APIs
+- Browse and view travel packages
+- Create and manage bookings
+- Payment workflow support
 
 ### Admin Features
 
-- Manage travel packages
-- Manage registered users
-- Monitor bookings
-- Monitor payments
-- Role-based access control
+- Role-based access control with `ADMIN` and `USER`
+- Travel package management
+- Booking management
+- Payment monitoring and workflow control
+- Administrative access to secured management APIs
+- API documentation access for integration and testing
 
 ---
 
-## System Architecture
+## API Documentation
 
-The application follows a **layered Spring Boot architecture** with **Model-View-Controller (MVC)** design.
+Swagger UI is available at:
 
-Server-side rendering is implemented using **Thymeleaf templates**, which allows the backend to generate dynamic HTML pages.
+`http://localhost:8080/swagger-ui/index.html`
 
-**Architecture flow:**
-
-```
-Browser
-   │
-   ▼
-Spring MVC Controller
-   │
-   ▼
-Service Layer (Business Logic)
-   │
-   ▼
-Repository Layer (Spring Data JPA)
-   │
-   ▼
-Database (H2 / MySQL)
-```
-
-### Key Design Principles
-
-- Clear separation of concerns between layers
-- Secure authentication with Spring Security
-- Payment integration using Razorpay
-- Server-side rendering using Thymeleaf
-- Clean layered architecture
-
----
-
-## Payment Flow
-
-```
-User selects travel package
-        ↓
-Application creates Razorpay order
-        ↓
-User completes payment
-        ↓
-Backend verifies payment
-        ↓
-Booking confirmed and stored in database
-```
-
----
-
-## Database Design
-
-### Main Entities
-
-**User**
-- id
-- name
-- email
-- password
-- role
-
-**TravelPackage**
-- id
-- destination
-- description
-- price
-
-**Booking**
-- id
-- user_id
-- package_id
-- booking_date
-- status
-
-**Payment**
-- id
-- booking_id
-- payment_id
-- payment_status
-
-### Relationships
-
-```
-User (1) ---- (N) Booking
-Booking (N) ---- (1) TravelPackage
-Booking (1) ---- (1) Payment
-```
+OpenAPI documentation helps developers explore and test the available endpoints interactively.
 
 ---
 
 ## Project Structure
 
-```
-src/main
-├── java/com/aj
-│   ├── controller
-│   ├── service
-│   ├── repository
-│   ├── entity
-│   ├── dto
-│   ├── security
-│   └── exception
-└── resources
-    ├── static
-    │   ├── css
-    │   ├── js
-    │   └── images
-    ├── templates
-    │   ├── admin
-    │   └── user
-    └── application.properties
+```text
+TOURS-AND-TRAVEL-MANAGEMENT-SYSTEM/
+|-- .github/
+|   |-- workflows/
+|   |   `-- backend-ci.yml
+|-- .mvn/
+|-- src/
+|   |-- main/
+|   |   |-- java/
+|   |   |   `-- com/
+|   |   |       `-- ...
+|   |   |           |-- user/
+|   |   |           |-- packages/
+|   |   |           |-- booking/
+|   |   |           |-- payment/
+|   |   |           `-- common/
+|   |   `-- resources/
+|   |       `-- application.properties
+|   `-- test/
+|-- pom.xml
+|-- mvnw
+|-- mvnw.cmd
+`-- README.md
 ```
 
 ---
@@ -201,158 +213,111 @@ src/main
 
 ### Prerequisites
 
-- Java 17+
+- Java 21
 - Maven
-- MySQL (optional — H2 is used by default)
-- IntelliJ IDEA or Eclipse
+- MySQL
+- Git
 
----
-
-### Clone the Repository
+### Clone Repository
 
 ```bash
-git clone https://github.com/Aj-world/TOURS-AND-TRAVEL-MANAGEMENT-SYSTEM.git
+git clone <repository-url>
 cd TOURS-AND-TRAVEL-MANAGEMENT-SYSTEM
 ```
 
----
+### Build the Project
+
+```bash
+mvn clean install
+```
 
 ### Run the Application
 
 ```bash
-mvn clean install
 mvn spring-boot:run
 ```
 
-Application runs at:
-
-```
-http://localhost:8081
-```
+After startup, the backend will be available locally and the Swagger UI can be accessed from the documentation URL above.
 
 ---
 
-## H2 Database Console
+## Branch Strategy
 
-For development, the project uses an **H2 in-memory database**.
+The project follows a clean branch strategy for stability and ongoing development.
 
-| Setting     | Value                          |
-| ----------- | ------------------------------ |
-| Console URL | http://localhost:8081/h2-console |
-| JDBC URL    | jdbc:h2:mem:testdb             |
-| Username    | sa                             |
-| Password    | *(leave blank)*                |
-
----
-
-## Developer Setup
-
-### Razorpay Configuration
-
-Add your Razorpay credentials in **`application.properties`**:
-
-```properties
-razorpay.key_id=YOUR_RAZORPAY_KEY
-razorpay.key_secret=YOUR_RAZORPAY_SECRET
-```
+| Branch | Purpose |
+| --- | --- |
+| `main` | Production-ready code |
+| `dev` | Integration branch for active development |
+| `feature/*` | Feature-specific branches for new work |
+| `architecture-rebuild` | Frozen branch representing the architecture migration from MVC to REST |
 
 ---
 
-### MySQL Configuration (Optional)
+## Project Evolution
 
-To switch to MySQL:
+This project has gone through a significant architectural transition:
 
-```properties
-spring.datasource.url=jdbc:mysql://localhost:3306/travel_db
-spring.datasource.username=root
-spring.datasource.password=yourpassword
+```text
+Spring MVC + Thymeleaf
+          |
+          v
+Layered Backend Refactoring
+          |
+          v
+REST API Rebuild
+          |
+          v
+JWT Authentication + RBAC
+          |
+          v
+Modular Monolith Spring Boot Backend
 ```
 
----
+### Evolution Summary
 
-## Screenshots
-
-| Home Page | Travel Packages |
-| --------- | --------------- |
-| ![Home](screenshots/home.png) | ![Packages](screenshots/packages.png) |
-
-| Booking Page | Admin Dashboard |
-| ------------ | --------------- |
-| ![Booking](screenshots/booking.png) | ![Admin](screenshots/admin-dashboard.png) |
+- Started as a server-rendered MVC application using Thymeleaf
+- Reworked into a REST-oriented backend for API-driven clients
+- Introduced JWT-based security for stateless authentication
+- Added role-based authorization for administrative and user access paths
+- Reorganized the codebase into domain-focused modules
 
 ---
 
-## Recent Updates
+## CI Pipeline
 
-- Fixed Spring Security configuration issues
-- Resolved application startup problems
-- Updated dependencies for Spring Boot 3
-- Improved layered architecture
-- Enhanced payment verification logic
-- Added global exception handling
+GitHub Actions is used to automate backend validation on every relevant change.
 
----
+### CI Responsibilities
 
-## Roadmap
+- Build verification with Maven
+- Automated test execution
+- Early feedback for integration issues
+- Consistent validation across branches
 
-- [ ] REST API support
-- [ ] Docker containerization
-- [ ] Pagination and sorting
-- [ ] Email notifications for booking confirmation
-- [ ] Swagger API documentation
-- [ ] Cloud deployment
+The pipeline helps maintain code quality and keeps the main integration path stable for contributors.
 
 ---
 
-## Learning Outcomes
+## Future Improvements
 
-This project helped develop practical experience with:
-
-- Spring Boot backend development
-- MVC architecture implementation
-- Authentication using Spring Security
-- Payment gateway integration
-- Server-side rendering with Thymeleaf
-- Database persistence using JPA/Hibernate
-- Structuring scalable backend applications
-
----
-
-## Academic Certification
-
-This project was developed as part of the **Master of Computer Applications (MCA)** curriculum and is supported by academic documentation including:
-
-- Project report
-- College certification
-- Project approval documentation
-
----
-
- 
-## Development Notes
-
-This repository represents a **completed academic project demonstrating a full-stack Spring Boot MVC application with authentication and payment integration**.
-
-The project showcases backend development practices including:
-
-- Spring Boot architecture
-- MVC pattern implementation
-- Secure authentication with Spring Security
-- Payment gateway integration
-- Database persistence with JPA/Hibernate
-- Server-side HTML rendering using Thymeleaf
+- Docker-based deployment
+- Redis caching for high-read endpoints
+- Database indexing and query optimization
+- Performance and stress testing
+- Load balancing for horizontal scalability
+- Environment-specific deployment profiles
 
 ---
 
 ## Author
 
 **Abinash Nayak**  
-Java Backend Developer | Spring Boot | Backend Systems | Payment Integration
-
-GitHub: [https://github.com/Aj-world](https://github.com/Aj-world)
+Java Backend Developer  
+GitHub: [Aj-world](https://github.com/Aj-world)
 
 ---
 
 ## License
 
-This project is created for **educational and learning purposes**.
+This project is licensed under the **MIT License**. See the [LICENSE](LICENSE) file for details.
