@@ -97,9 +97,9 @@ class PaymentControllerTest {
     void confirmPayment_adminOnly() throws Exception {
         // Arrange Act Assert
         mockMvc.perform(post("/payments/confirm/1"))
-                .andExpect(status().isInternalServerError())
-                .andExpect(jsonPath("$.status").value(500))
-                .andExpect(jsonPath("$.message").value("Internal server error"))
+                .andExpect(status().isForbidden())
+                .andExpect(jsonPath("$.status").value(403))
+                .andExpect(jsonPath("$.message").value("Access denied"))
                 .andExpect(jsonPath("$.path").value("/payments/confirm/1"));
 
         verify(paymentService, never()).confirmPayment(any());

@@ -111,9 +111,9 @@ class PackageControllerTest {
         mockMvc.perform(post("/packages")
                         .contentType(MediaType.APPLICATION_JSON)
                         .content(requestJson))
-                .andExpect(status().isInternalServerError())
-                .andExpect(jsonPath("$.status").value(500))
-                .andExpect(jsonPath("$.message").value("Internal server error"));
+                .andExpect(status().isForbidden())
+                .andExpect(jsonPath("$.status").value(403))
+                .andExpect(jsonPath("$.message").value("Access denied"));
 
         verify(packageService, never()).createPackage(any());
     }
@@ -139,9 +139,9 @@ class PackageControllerTest {
         mockMvc.perform(put("/packages/1")
                         .contentType(MediaType.APPLICATION_JSON)
                         .content(requestJson))
-                .andExpect(status().isInternalServerError())
-                .andExpect(jsonPath("$.status").value(500))
-                .andExpect(jsonPath("$.message").value("Internal server error"));
+                .andExpect(status().isForbidden())
+                .andExpect(jsonPath("$.status").value(403))
+                .andExpect(jsonPath("$.message").value("Access denied"));
 
         verify(packageService, never()).updatePackage(any(), any());
     }
