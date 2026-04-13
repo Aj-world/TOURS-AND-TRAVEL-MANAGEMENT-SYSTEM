@@ -121,10 +121,10 @@ class BookingControllerTest {
     void getAllBookings_adminOnly() throws Exception {
         // Arrange Act Assert
         mockMvc.perform(get("/bookings/all"))
-                .andExpect(status().isInternalServerError())
-                .andExpect(jsonPath("$.status").value(500))
-                .andExpect(jsonPath("$.error").value("INTERNAL_SERVER_ERROR"))
-                .andExpect(jsonPath("$.message").value("Internal server error"))
+                .andExpect(status().isForbidden())
+                .andExpect(jsonPath("$.status").value(403))
+                .andExpect(jsonPath("$.error").value("FORBIDDEN"))
+                .andExpect(jsonPath("$.message").value("Access denied"))
                 .andExpect(jsonPath("$.path").value("/bookings/all"));
 
         verify(bookingService, never()).getAllBookings();
