@@ -1,5 +1,20 @@
+# Maven build
 target/
+
+# IntelliJ
 .idea/
+*.iml
+
+# Logs
 *.log
+
+# Java compiled
 *.class
-node_modules/
+
+# Environment variables
+.env
+
+
+# OS files
+.DS_Store
+Thumbs.db
