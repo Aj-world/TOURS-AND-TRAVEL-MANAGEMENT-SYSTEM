@@ -5,7 +5,7 @@
 ![Spring Security](https://img.shields.io/badge/Spring_Security-Secured-6DB33F?style=for-the-badge&logo=springsecurity)
 ![JWT](https://img.shields.io/badge/Auth-JWT-blue?style=for-the-badge&logo=jsonwebtokens)
 ![RBAC](https://img.shields.io/badge/Authorization-RBAC-darkgreen?style=for-the-badge)
-![Database](https://img.shields.io/badge/Database-MySQL-4479A1?style=for-the-badge&logo=mysql)
+![Database](https://img.shields.io/badge/Database-PostgreSQL-4169E1?style=for-the-badge&logo=postgresql)
 ![Build](https://img.shields.io/badge/Build-Maven-C71A36?style=for-the-badge&logo=apachemaven)
 ![API Docs](https://img.shields.io/badge/API-Swagger%20%2F%20OpenAPI-85EA2D?style=for-the-badge&logo=swagger)
 ![Testing](https://img.shields.io/badge/Tests-JUnit5%20%7C%20Mockito%20%7C%20MockMvc-25A162?style=for-the-badge)
@@ -41,7 +41,7 @@ The application is structured as a **modular monolith**, where business capabili
 - `Controller` handles HTTP requests and response mapping
 - `Service` contains business logic and workflow orchestration
 - `Repository` manages persistence via Spring Data JPA
-- `Database` stores domain data in MySQL
+- `Database` stores domain data in PostgreSQL
 
 ---
 
@@ -84,7 +84,7 @@ The application is structured as a **modular monolith**, where business capabili
                                      |
                                      v
                         +-------------------------+
-                        |      MySQL Database     |
+                        |   PostgreSQL Database   |
                         +-------------------------+
 ```
 
@@ -118,7 +118,7 @@ Booking Service
 Booking Repository
   |
   v
-MySQL Database
+PostgreSQL Database
   |
   v
 API Response
@@ -140,7 +140,7 @@ User Login -> Credentials Validation -> JWT Generation -> Secured API Access -> 
 | Framework | Spring Boot 3 |
 | Security | Spring Security, JWT Authentication, RBAC Authorization |
 | Persistence | Spring Data JPA, Hibernate |
-| Database | MySQL |
+| Database | PostgreSQL |
 | Build Tool | Maven |
 | API Documentation | Swagger / OpenAPI |
 | Testing | JUnit 5, Mockito, MockMvc |
@@ -199,8 +199,11 @@ TOURS-AND-TRAVEL-MANAGEMENT-SYSTEM/
 |   |   |           |-- payment/
 |   |   |           `-- common/
 |   |   `-- resources/
-|   |       `-- application.properties
+|   |       `-- application.yml
 |   `-- test/
+|-- .dockerignore
+|-- Dockerfile
+|-- docker-compose.yml
 |-- pom.xml
 |-- mvnw
 |-- mvnw.cmd
@@ -215,8 +218,9 @@ TOURS-AND-TRAVEL-MANAGEMENT-SYSTEM/
 
 - Java 21
 - Maven
-- MySQL
+- PostgreSQL
 - Git
+- Docker Desktop or Docker Engine
 
 ### Clone Repository
 
@@ -238,6 +242,53 @@ mvn spring-boot:run
 ```
 
 After startup, the backend will be available locally and the Swagger UI can be accessed from the documentation URL above.
+
+---
+
+## Configuration
+
+The application uses environment variables for runtime configuration. Default local values are provided for development.
+
+| Variable | Default |
+| --- | --- |
+| `DB_URL` | `jdbc:postgresql://localhost:5432/travel_db` |
+| `DB_USERNAME` | `postgres` |
+| `DB_PASSWORD` | `postgres` |
+| `JPA_DDL_AUTO` | `update` |
+| `JPA_SHOW_SQL` | `true` |
+| `SERVER_PORT` | `8080` |
+| `JWT_SECRET` | `change-this-jwt-secret-key-before-production-use` |
+| `RAZORPAY_KEY` | empty |
+| `RAZORPAY_SECRET` | empty |
+| `BOOTSTRAP_ADMIN_NAME` | `Default Admin` |
+| `BOOTSTRAP_ADMIN_EMAIL` | `admin@travel.local` |
+| `BOOTSTRAP_ADMIN_PASSWORD` | empty |
+
+---
+
+## Docker
+
+Build and run the backend with PostgreSQL:
+
+```bash
+docker compose up --build
+```
+
+Access the API:
+
+`http://localhost:8080`
+
+Swagger UI:
+
+`http://localhost:8080/swagger-ui/index.html`
+
+Stop containers:
+
+```bash
+docker compose down
+```
+
+The compose stack injects database and application settings through environment variables so the same image can be promoted across environments.
 
 ---
 
@@ -301,7 +352,6 @@ The pipeline helps maintain code quality and keeps the main integration path sta
 
 ## Future Improvements
 
-- Docker-based deployment
 - Redis caching for high-read endpoints
 - Database indexing and query optimization
 - Performance and stress testing
