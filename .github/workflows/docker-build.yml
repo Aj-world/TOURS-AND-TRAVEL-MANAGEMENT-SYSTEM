@@ -37,3 +37,6 @@ jobs:
             ${{ secrets.DOCKER_USERNAME }}/tours-travel-api:${{ github.sha }}
           cache-from: type=gha
           cache-to: type=gha,mode=max
+
+      - name: Trigger Render Deploy
+        run: curl -X POST ${{ secrets.RENDER_DEPLOY_HOOK }}
