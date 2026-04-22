@@ -3,11 +3,17 @@ package com.aj.travel.common.controller;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RestController;
 
+import java.util.Map;
+
 @RestController
 public class HealthController {
 
     @GetMapping("/")
-    public String health() {
-        return "Tours & Travel API is running";
+    public Map<String, String> apiInfo() {
+        return Map.of(
+                "health", "/api/system/health",
+                "message", "Tours & Travel Backend API is running",
+                "swagger", "/swagger-ui/index.html"
+        );
     }
 }
