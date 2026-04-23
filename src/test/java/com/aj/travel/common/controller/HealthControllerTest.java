@@ -14,8 +14,7 @@ import org.springframework.test.web.servlet.MockMvc;
 import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.Mockito.doAnswer;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
-import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.content;
-import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
+import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.*;
 
 @WebMvcTest(HealthController.class)
 @Import(SecurityConfig.class)
@@ -45,6 +44,9 @@ class HealthControllerTest {
     void rootEndpoint_isPublicAndReturnsStatusMessage() throws Exception {
         mockMvc.perform(get("/"))
                 .andExpect(status().isOk())
-                .andExpect(content().string("Tours & Travel API is running"));
+                .andExpect(content().contentTypeCompatibleWith("application/json"))
+                .andExpect(jsonPath("$.message").value("Tours & Travel Backend API is running"))
+                .andExpect(jsonPath("$.health").value("/api/system/health"))
+                .andExpect(jsonPath("$.swagger").value("/swagger-ui/index.html"));
     }
 }
