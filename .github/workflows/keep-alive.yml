@@ -12,14 +12,20 @@ jobs:
     steps:
       - name: Ping Health Endpoint
         run: |
-          echo "Pinging backend..."
-
+          echo "Warming up backend..."
+          
+          # Warm-up request (ignore failure)
+          curl -s https://tours-travel-ph6y.onrender.com/api/system/health || true
+          sleep 20
+          
+          echo "Running main health check..."
+          
           curl --location --request GET 'https://tours-travel-ph6y.onrender.com/api/system/health' \
           --fail \
           --show-error \
           --silent \
-          --max-time 30 \
-          --retry 5 \
-          --retry-delay 5 \
+          --max-time 120 \
+          --retry 8 \
+          --retry-delay 10 \
           --retry-connrefused \
           --write-out "\nHTTP Status: %{http_code}\nTotal Time: %{time_total}s\n"
