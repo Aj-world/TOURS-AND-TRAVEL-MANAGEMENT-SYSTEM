@@ -1,0 +1,50 @@
+spring:
+  datasource:
+    url: ${DB_URL:jdbc:postgresql://localhost:5432/travel_db}
+    driver-class-name: org.postgresql.Driver
+    username: ${DB_USERNAME:postgres}
+    password: ${DB_PASSWORD:123456}
+
+    hikari:
+      maximum-pool-size: ${DB_POOL_SIZE:10}
+      minimum-idle: ${DB_MIN_IDLE:2}
+      idle-timeout: ${DB_IDLE_TIMEOUT:300000}
+      max-lifetime: ${DB_MAX_LIFETIME:1800000}
+      connection-timeout: ${DB_CONNECTION_TIMEOUT:30000}
+
+  jpa:
+    hibernate:
+      ddl-auto: ${JPA_DDL_AUTO:update}
+    open-in-view: false
+    show-sql: ${JPA_SHOW_SQL:true}
+    properties:
+      hibernate:
+        dialect: org.hibernate.dialect.PostgreSQLDialect
+        format_sql: ${HIBERNATE_FORMAT_SQL:true}
+
+  data:
+    redis:
+      host: ${REDIS_HOST:localhost}
+      port: ${REDIS_PORT:6379}
+      timeout: ${REDIS_TIMEOUT:2s}
+
+server:
+  port: ${SERVER_PORT:8080}
+
+jwt:
+  secret: ${JWT_SECRET:local-dev-jwt-secret-change-me}
+
+razorpay:
+  key: ${RAZORPAY_KEY:}
+  secret: ${RAZORPAY_SECRET:}
+
+bootstrap:
+  admin:
+    name: ${BOOTSTRAP_ADMIN_NAME:Default Admin}
+    email: ${BOOTSTRAP_ADMIN_EMAIL:admin@travel.local}
+    password: ${BOOTSTRAP_ADMIN_PASSWORD:admin123}
+
+logging:
+  level:
+    root: INFO
+    com.aj.travel: DEBUG

@@ -1,42 +1,19 @@
 spring:
   application:
     name: TOURS-AND-TRAVEL-MANAGEMENT-SYSTEM
-  datasource:
-    url: ${DB_URL:jdbc:postgresql://localhost:5432/travel_db}
-    driver-class-name: org.postgresql.Driver
-    username: ${DB_USERNAME:postgres}
-    password: ${DB_PASSWORD:postgres}
-    hikari:
-      maximum-pool-size: ${DB_POOL_SIZE:10}
 
-  jpa:
-    hibernate:
-      ddl-auto: ${JPA_DDL_AUTO:update}
-    open-in-view: false
-    show-sql: ${JPA_SHOW_SQL:true}
-    properties:
-      hibernate:
-        dialect: org.hibernate.dialect.PostgreSQLDialect
+  profiles:
+    active: ${SPRING_PROFILES_ACTIVE:dev}
+
+  cache:
+    type: redis
+    redis:
+      key-prefix: "travel::"
+      use-key-prefix: true
 
 server:
   port: ${SERVER_PORT:8080}
 
-jwt:
-  secret: ${JWT_SECRET:change-this-jwt-secret-key-before-production-use}
-
-razorpay:
-  key: ${RAZORPAY_KEY:}
-  secret: ${RAZORPAY_SECRET:}
-
-bootstrap:
-  admin:
-    name: ${BOOTSTRAP_ADMIN_NAME:Default Admin}
-    email: ${BOOTSTRAP_ADMIN_EMAIL:admin@travel.local}
-    password: ${BOOTSTRAP_ADMIN_PASSWORD:}
-
 logging:
-  level:
-    root: INFO
-    com.aj.travel: DEBUG
   pattern:
     level: "requestId=%X{requestId:-N/A} %5p"
