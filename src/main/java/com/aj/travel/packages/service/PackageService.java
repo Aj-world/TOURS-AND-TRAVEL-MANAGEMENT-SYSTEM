@@ -8,6 +8,10 @@ import com.aj.travel.packages.dto.TravelPackageResponse;
 import com.aj.travel.packages.mapper.PackageMapper;
 import com.aj.travel.packages.repository.TravelPackageRepository;
 import lombok.RequiredArgsConstructor;
+import org.springframework.cache.annotation.CacheEvict;
+import org.springframework.cache.annotation.CachePut;
+import org.springframework.cache.annotation.Cacheable;
+import org.springframework.cache.annotation.Caching;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -21,12 +25,17 @@ public class PackageService {
     private final TravelPackageRepository packageRepository;
     private final PackageMapper packageMapper;
 
+    @CacheEvict(cacheNames = "packages", key = "'active'")
     public TravelPackageResponse createPackage(CreateTravelPackageRequest request) {
         TravelPackage travelPackage = packageMapper.toEntity(request);
 
         return packageMapper.toResponse(packageRepository.save(travelPackage));
     }
 
+    @Caching(
+            put = @CachePut(cacheNames = "packageById", key = "#id"),
+            evict = @CacheEvict(cacheNames = "packages", key = "'active'")
+    )
     public TravelPackageResponse updatePackage(Long id, CreateTravelPackageRequest request) {
         TravelPackage travelPackage = packageRepository.findById(id)
                 .orElseThrow(() -> new ResourceNotFoundException("Package not found"));
@@ -36,6 +45,10 @@ public class PackageService {
         return packageMapper.toResponse(packageRepository.save(travelPackage));
     }
 
+    @Caching(evict = {
+            @CacheEvict(cacheNames = "packages", key = "'active'"),
+            @CacheEvict(cacheNames = "packageById", key = "#id")
+    })
     public void deletePackage(Long id) {
         TravelPackage travelPackage = packageRepository.findById(id)
                 .orElseThrow(() -> new ResourceNotFoundException("Package not found"));
@@ -43,6 +56,7 @@ public class PackageService {
         packageRepository.delete(travelPackage);
     }
 
+    @Cacheable(cacheNames = "packages", key = "'active'")
     @Transactional(readOnly = true)
     public List<TravelPackageResponse> getActivePackages() {
         return packageRepository.findByStatus(PackageStatus.ACTIVE)
@@ -51,6 +65,7 @@ public class PackageService {
                 .toList();
     }
 
+    @Cacheable(cacheNames = "packageById", key = "#id")
     @Transactional(readOnly = true)
     public TravelPackageResponse getPackage(Long id) {
         TravelPackage travelPackage = packageRepository.findById(id)
