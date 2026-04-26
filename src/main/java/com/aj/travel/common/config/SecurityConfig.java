@@ -5,6 +5,7 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 import lombok.RequiredArgsConstructor;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
+import org.springframework.http.HttpMethod;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.security.authentication.AuthenticationManager;
@@ -42,12 +43,20 @@ public class SecurityConfig {
                         session.sessionCreationPolicy(SessionCreationPolicy.STATELESS)
                 )
                 .authorizeHttpRequests(auth -> auth
-                        .requestMatchers("/", "/api/system/health").permitAll()
-                        .requestMatchers("/auth/**").permitAll()
-                        .requestMatchers("/admin/register").permitAll()
-                        .requestMatchers("/packages/**").permitAll()
+                        .requestMatchers(HttpMethod.GET, "/", "/api/system/health").permitAll()
+                        .requestMatchers(HttpMethod.POST, "/auth/register", "/auth/login").permitAll()
                         .requestMatchers("/swagger-ui/**", "/swagger-ui.html").permitAll()
                         .requestMatchers("/v3/api-docs/**", "/v3/api-docs.yaml").permitAll()
+                        .requestMatchers(HttpMethod.GET, "/packages", "/packages/*").hasAnyRole("USER", "ADMIN")
+                        .requestMatchers(HttpMethod.POST, "/admin/register").hasRole("ADMIN")
+                        .requestMatchers(HttpMethod.POST, "/packages").hasRole("ADMIN")
+                        .requestMatchers(HttpMethod.PUT, "/packages/*").hasRole("ADMIN")
+                        .requestMatchers(HttpMethod.DELETE, "/packages/*").hasRole("ADMIN")
+                        .requestMatchers(HttpMethod.GET, "/bookings/all").hasRole("ADMIN")
+                        .requestMatchers(HttpMethod.GET, "/users").hasRole("ADMIN")
+                        .requestMatchers(HttpMethod.POST, "/bookings").hasRole("USER")
+                        .requestMatchers(HttpMethod.GET, "/bookings/my").hasRole("USER")
+                        .requestMatchers(HttpMethod.POST, "/payments", "/payments/confirm/*").hasRole("USER")
                         .anyRequest().authenticated()
                 )
                 .exceptionHandling(exception -> exception

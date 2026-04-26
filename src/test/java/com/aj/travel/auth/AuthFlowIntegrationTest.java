@@ -57,6 +57,33 @@ class AuthFlowIntegrationTest {
     }
 
     @Test
+    void testUserRegistration_duplicateEmailReturnsConflict() throws Exception {
+        User existingUser = new User();
+        existingUser.setName("Existing User");
+        existingUser.setEmail("duplicate-user@test.com");
+        existingUser.setPassword(passwordEncoder.encode("Password@123"));
+        existingUser.setPhone("9876543212");
+        existingUser.setRole(UserRole.USER);
+        userRepository.save(existingUser);
+
+        Map<String, Object> request = new LinkedHashMap<>();
+        request.put("name", "Test User");
+        request.put("email", "duplicate-user@test.com");
+        request.put("password", "Password@123");
+        request.put("phone", "9876543210");
+
+        mockMvc.perform(post("/auth/register")
+                        .contentType(MediaType.APPLICATION_JSON)
+                        .content(objectMapper.writeValueAsString(request)))
+                .andExpect(status().isConflict())
+                .andExpect(jsonPath("$.status").value(409))
+                .andExpect(jsonPath("$.error").value("CONFLICT"))
+                .andExpect(jsonPath("$.message").value("Email already registered"))
+                .andExpect(jsonPath("$.path").value("/auth/register"))
+                .andExpect(jsonPath("$.timestamp").exists());
+    }
+
+    @Test
     void testAdminRegistration() throws Exception {
         Map<String, Object> request = new LinkedHashMap<>();
         request.put("name", "Admin User");
@@ -73,6 +100,34 @@ class AuthFlowIntegrationTest {
                 .andExpect(jsonPath("$.data.role").value("ADMIN"))
                 .andExpect(jsonPath("$.data.email").value("admin@test.com"))
                 .andExpect(jsonPath("$.data.id").isNumber());
+    }
+
+    @Test
+    void testAdminRegistration_duplicateEmailReturnsConflict() throws Exception {
+        User existingAdmin = new User();
+        existingAdmin.setName("Existing Admin");
+        existingAdmin.setEmail("duplicate-admin@test.com");
+        existingAdmin.setPassword(passwordEncoder.encode("Admin@123"));
+        existingAdmin.setPhone("9999999997");
+        existingAdmin.setRole(UserRole.ADMIN);
+        userRepository.save(existingAdmin);
+
+        Map<String, Object> request = new LinkedHashMap<>();
+        request.put("name", "Admin User");
+        request.put("email", "duplicate-admin@test.com");
+        request.put("password", "Admin@123");
+        request.put("phone", "9999999999");
+
+        mockMvc.perform(post("/admin/register")
+                        .with(user("system-admin").roles("ADMIN"))
+                        .contentType(MediaType.APPLICATION_JSON)
+                        .content(objectMapper.writeValueAsString(request)))
+                .andExpect(status().isConflict())
+                .andExpect(jsonPath("$.status").value(409))
+                .andExpect(jsonPath("$.error").value("CONFLICT"))
+                .andExpect(jsonPath("$.message").value("Email already registered"))
+                .andExpect(jsonPath("$.path").value("/admin/register"))
+                .andExpect(jsonPath("$.timestamp").exists());
     }
 
     @Test

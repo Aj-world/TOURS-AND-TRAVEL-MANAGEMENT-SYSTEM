@@ -29,12 +29,17 @@ public class JwtAuthenticationFilter extends OncePerRequestFilter {
             FilterChain filterChain
     ) throws ServletException, IOException {
 
+        if (isPublicEndpoint(request)) {
+            filterChain.doFilter(request, response);
+            return;
+        }
+
         try {
             String token = resolveToken(request);
 
-            if (StringUtils.hasText(token)
-                    && jwtTokenProvider.validateToken(token)
-                    && SecurityContextHolder.getContext().getAuthentication() == null) {
+            if (StringUtils.hasText(token) &&
+                    jwtTokenProvider.validateToken(token) &&
+                    SecurityContextHolder.getContext().getAuthentication() == null) {
 
                 String username = jwtTokenProvider.getUsernameFromToken(token);
 
@@ -60,6 +65,18 @@ public class JwtAuthenticationFilter extends OncePerRequestFilter {
         }
 
         filterChain.doFilter(request, response);
+    }
+
+    private boolean isPublicEndpoint(HttpServletRequest request) {
+        String path = request.getServletPath();
+        String method = request.getMethod();
+
+        return ("GET".equals(method) && (path.equals("/") || path.equals("/api/system/health"))) ||
+                ("POST".equals(method) && (path.equals("/auth/register") || path.equals("/auth/login"))) ||
+                path.startsWith("/swagger-ui") ||
+                path.equals("/swagger-ui.html") ||
+                path.startsWith("/v3/api-docs") ||
+                path.equals("/v3/api-docs.yaml");
     }
 
     private String resolveToken(HttpServletRequest request) {
