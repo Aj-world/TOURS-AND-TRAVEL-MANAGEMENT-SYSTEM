@@ -1,8 +1,8 @@
 package com.aj.travel.user.controller;
 
-import com.aj.travel.common.config.SecurityConfig;
-import com.aj.travel.common.security.CustomUserDetailsService;
-import com.aj.travel.common.security.JwtAuthenticationFilter;
+import com.aj.travel.auth.security.JwtAuthenticationFilter;
+import com.aj.travel.auth.security.SecurityConfig;
+import com.aj.travel.auth.security.UserAuthenticationService;
 import com.aj.travel.user.service.UserService;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
@@ -37,7 +37,7 @@ class UserControllerTest {
     private JwtAuthenticationFilter jwtAuthenticationFilter;
 
     @MockBean
-    private CustomUserDetailsService customUserDetailsService;
+    private UserAuthenticationService userAuthenticationService;
 
     @BeforeEach
     void setUp() throws Exception {

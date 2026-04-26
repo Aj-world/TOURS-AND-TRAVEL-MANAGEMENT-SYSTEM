@@ -1,17 +1,22 @@
 package com.aj.travel.auth;
 
+import com.aj.travel.user.domain.User;
+import com.aj.travel.user.domain.UserRole;
+import com.aj.travel.user.repository.UserRepository;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMockMvc;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.http.MediaType;
+import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.test.context.ActiveProfiles;
 import org.springframework.test.web.servlet.MockMvc;
 
 import java.util.LinkedHashMap;
 import java.util.Map;
 
+import static org.springframework.security.test.web.servlet.request.SecurityMockMvcRequestPostProcessors.user;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.jsonPath;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
@@ -27,6 +32,12 @@ class AuthFlowIntegrationTest {
     @Autowired
     private ObjectMapper objectMapper;
 
+    @Autowired
+    private UserRepository userRepository;
+
+    @Autowired
+    private PasswordEncoder passwordEncoder;
+
     @Test
     void testUserRegistration() throws Exception {
         Map<String, Object> request = new LinkedHashMap<>();
@@ -38,7 +49,7 @@ class AuthFlowIntegrationTest {
         mockMvc.perform(post("/auth/register")
                         .contentType(MediaType.APPLICATION_JSON)
                         .content(objectMapper.writeValueAsString(request)))
-                .andExpect(status().isOk())
+                .andExpect(status().isCreated())
                 .andExpect(jsonPath("$.success").value(true))
                 .andExpect(jsonPath("$.data.role").value("USER"))
                 .andExpect(jsonPath("$.data.email").value("user@test.com"))
@@ -54,6 +65,7 @@ class AuthFlowIntegrationTest {
         request.put("phone", "9999999999");
 
         mockMvc.perform(post("/admin/register")
+                        .with(user("system-admin").roles("ADMIN"))
                         .contentType(MediaType.APPLICATION_JSON)
                         .content(objectMapper.writeValueAsString(request)))
                 .andExpect(status().isOk())
@@ -74,7 +86,7 @@ class AuthFlowIntegrationTest {
         mockMvc.perform(post("/auth/register")
                         .contentType(MediaType.APPLICATION_JSON)
                         .content(objectMapper.writeValueAsString(registerRequest)))
-                .andExpect(status().isOk())
+                .andExpect(status().isCreated())
                 .andExpect(jsonPath("$.data.role").value("USER"));
 
         Map<String, Object> loginRequest = new LinkedHashMap<>();
@@ -92,17 +104,13 @@ class AuthFlowIntegrationTest {
 
     @Test
     void testAdminLogin() throws Exception {
-        Map<String, Object> registerRequest = new LinkedHashMap<>();
-        registerRequest.put("name", "Login Admin");
-        registerRequest.put("email", "login-admin@test.com");
-        registerRequest.put("password", "Admin@123");
-        registerRequest.put("phone", "9999999998");
-
-        mockMvc.perform(post("/admin/register")
-                        .contentType(MediaType.APPLICATION_JSON)
-                        .content(objectMapper.writeValueAsString(registerRequest)))
-                .andExpect(status().isOk())
-                .andExpect(jsonPath("$.data.role").value("ADMIN"));
+        User admin = new User();
+        admin.setName("Login Admin");
+        admin.setEmail("login-admin@test.com");
+        admin.setPassword(passwordEncoder.encode("Admin@123"));
+        admin.setPhone("9999999998");
+        admin.setRole(UserRole.ADMIN);
+        userRepository.save(admin);
 
         Map<String, Object> loginRequest = new LinkedHashMap<>();
         loginRequest.put("email", "login-admin@test.com");

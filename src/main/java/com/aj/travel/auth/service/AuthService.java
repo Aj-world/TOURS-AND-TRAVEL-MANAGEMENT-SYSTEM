@@ -2,7 +2,8 @@ package com.aj.travel.auth.service;
 
 import com.aj.travel.auth.dto.LoginRequest;
 import com.aj.travel.auth.dto.LoginResponse;
-import com.aj.travel.common.security.JwtTokenProvider;
+import com.aj.travel.auth.security.AuthenticatedUserPrincipal;
+import com.aj.travel.auth.security.JwtTokenProvider;
 import lombok.RequiredArgsConstructor;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
@@ -19,11 +20,18 @@ public class AuthService {
     private final JwtTokenProvider jwtTokenProvider;
 
     public LoginResponse login(LoginRequest request) {
+
         Authentication authentication = authenticationManager.authenticate(
-                new UsernamePasswordAuthenticationToken(request.getEmail(), request.getPassword())
+                new UsernamePasswordAuthenticationToken(
+                        request.getEmail(),
+                        request.getPassword()
+                )
         );
 
-        String token = jwtTokenProvider.generateToken(authentication.getName());
+        AuthenticatedUserPrincipal principal =
+                (AuthenticatedUserPrincipal) authentication.getPrincipal();
+
+        String token = jwtTokenProvider.generateToken(principal.getUsername());
 
         return new LoginResponse(token);
     }

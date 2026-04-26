@@ -1,4 +1,4 @@
-package com.aj.travel.common.security;
+package com.aj.travel.auth.security;
 
 import lombok.Getter;
 import org.springframework.security.core.GrantedAuthority;
@@ -11,24 +11,32 @@ public class AuthenticatedUserPrincipal implements UserDetails {
 
     private final Long id;
     private final String email;
-    private final String password;
     private final Collection<? extends GrantedAuthority> authorities;
+    private String password;
 
     public AuthenticatedUserPrincipal(
             Long id,
             String email,
-            String password,
             Collection<? extends GrantedAuthority> authorities
     ) {
         this.id = id;
         this.email = email;
-        this.password = password;
         this.authorities = authorities;
+    }
+
+    AuthenticatedUserPrincipal withPassword(String password) {
+        this.password = password;
+        return this;
     }
 
     @Override
     public String getUsername() {
         return email;
+    }
+
+    @Override
+    public String getPassword() {
+        return password;
     }
 
     @Override

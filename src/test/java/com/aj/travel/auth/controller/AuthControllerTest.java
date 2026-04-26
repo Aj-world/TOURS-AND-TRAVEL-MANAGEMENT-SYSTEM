@@ -1,10 +1,10 @@
 package com.aj.travel.auth.controller;
 
 import com.aj.travel.auth.dto.LoginResponse;
+import com.aj.travel.auth.security.JwtAuthenticationFilter;
+import com.aj.travel.auth.security.SecurityConfig;
+import com.aj.travel.auth.security.UserAuthenticationService;
 import com.aj.travel.auth.service.AuthService;
-import com.aj.travel.common.config.SecurityConfig;
-import com.aj.travel.common.security.CustomUserDetailsService;
-import com.aj.travel.common.security.JwtAuthenticationFilter;
 import com.aj.travel.user.dto.UserResponse;
 import com.aj.travel.user.service.UserService;
 import org.junit.jupiter.api.BeforeEach;
@@ -46,22 +46,21 @@ class AuthControllerTest {
     private JwtAuthenticationFilter jwtAuthenticationFilter;
 
     @MockBean
-    private CustomUserDetailsService customUserDetailsService;
+    private UserAuthenticationService userAuthenticationService;
 
     @BeforeEach
     void setUp() throws Exception {
         doAnswer(invocation -> {
-            jakarta.servlet.FilterChain filterChain = invocation.getArgument(2);
+            jakarta.servlet.FilterChain chain = invocation.getArgument(2);
             jakarta.servlet.ServletRequest request = invocation.getArgument(0);
             jakarta.servlet.ServletResponse response = invocation.getArgument(1);
-            filterChain.doFilter(request, response);
+            chain.doFilter(request, response);
             return null;
         }).when(jwtAuthenticationFilter).doFilter(any(), any(), any());
     }
 
     @Test
     void registerUser_success() throws Exception {
-        // Arrange
         String requestJson = """
                 {
                   "name":"Test User",
@@ -82,11 +81,10 @@ class AuthControllerTest {
 
         when(userService.register(any())).thenReturn(response);
 
-        // Act Assert
         mockMvc.perform(post("/auth/register")
                         .contentType(MediaType.APPLICATION_JSON)
                         .content(requestJson))
-                .andExpect(status().isOk())
+                .andExpect(status().isCreated())
                 .andExpect(jsonPath("$.success").value(true))
                 .andExpect(jsonPath("$.message").value("User registered successfully"))
                 .andExpect(jsonPath("$.data.id").value(1))
@@ -98,7 +96,6 @@ class AuthControllerTest {
 
     @Test
     void login_success() throws Exception {
-        // Arrange
         String requestJson = """
                 {
                   "email":"user@test.com",
@@ -108,7 +105,6 @@ class AuthControllerTest {
 
         when(authService.login(any())).thenReturn(new LoginResponse("jwt-token"));
 
-        // Act Assert
         mockMvc.perform(post("/auth/login")
                         .contentType(MediaType.APPLICATION_JSON)
                         .content(requestJson))
@@ -122,7 +118,6 @@ class AuthControllerTest {
 
     @Test
     void login_invalidCredentials() throws Exception {
-        // Arrange
         String requestJson = """
                 {
                   "email":"user@test.com",
@@ -130,9 +125,9 @@ class AuthControllerTest {
                 }
                 """;
 
-        when(authService.login(any())).thenThrow(new BadCredentialsException("Bad credentials"));
+        when(authService.login(any()))
+                .thenThrow(new BadCredentialsException("Bad credentials"));
 
-        // Act Assert
         mockMvc.perform(post("/auth/login")
                         .contentType(MediaType.APPLICATION_JSON)
                         .content(requestJson))
