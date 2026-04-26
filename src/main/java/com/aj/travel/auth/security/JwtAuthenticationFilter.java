@@ -29,12 +29,21 @@ public class JwtAuthenticationFilter extends OncePerRequestFilter {
             FilterChain filterChain
     ) throws ServletException, IOException {
 
+        String path = request.getServletPath();
+
+        // ✅ Skip JWT processing for public endpoints
+        if (isPublicEndpoint(path)) {
+            filterChain.doFilter(request, response);
+            return;
+        }
+
         try {
             String token = resolveToken(request);
 
-            if (StringUtils.hasText(token)
-                    && jwtTokenProvider.validateToken(token)
-                    && SecurityContextHolder.getContext().getAuthentication() == null) {
+            // ✅ Only authenticate if token is present
+            if (StringUtils.hasText(token) &&
+                    jwtTokenProvider.validateToken(token) &&
+                    SecurityContextHolder.getContext().getAuthentication() == null) {
 
                 String username = jwtTokenProvider.getUsernameFromToken(token);
 
@@ -57,9 +66,20 @@ public class JwtAuthenticationFilter extends OncePerRequestFilter {
 
         } catch (Exception ex) {
             logger.error("JWT authentication failed", ex);
+            // ❗ Do NOT block request here
         }
 
         filterChain.doFilter(request, response);
+    }
+
+    // ✅ Centralized public endpoint definition
+    private boolean isPublicEndpoint(String path) {
+        return path.equals("/admin/register") ||
+                path.startsWith("/auth") ||
+                path.startsWith("/swagger-ui") ||
+                path.startsWith("/v3/api-docs") ||
+                path.equals("/api/system/health") ||
+                path.equals("/");
     }
 
     private String resolveToken(HttpServletRequest request) {

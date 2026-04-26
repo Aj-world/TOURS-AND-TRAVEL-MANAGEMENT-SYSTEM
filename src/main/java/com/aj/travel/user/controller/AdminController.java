@@ -10,14 +10,13 @@ import org.springframework.security.access.annotation.Secured;
 import org.springframework.web.bind.annotation.*;
 
 @RestController
-@RequestMapping("/admin") // ✅ clean base path
+@RequestMapping("/admin")
 @RequiredArgsConstructor
 public class AdminController {
 
     private final UserService userService;
 
     @PostMapping("/register")
-    @Secured("ROLE_ADMIN") // 🔒 CRITICAL: protect admin creation
     public ApiResponse<UserResponse> registerAdmin(
             @Valid @RequestBody CreateUserRequest request
     ) {
