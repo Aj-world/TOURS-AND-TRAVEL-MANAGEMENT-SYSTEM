@@ -55,6 +55,7 @@ class PackageControllerTest {
     }
 
     @Test
+    @WithMockUser(roles = "USER")
     void getPackages_success() throws Exception {
 
         List<TravelPackageResponse> responses = List.of(

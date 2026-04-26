@@ -1,5 +1,6 @@
 package com.aj.travel.user.service;
 
+import com.aj.travel.common.exception.DuplicateResourceException;
 import com.aj.travel.user.domain.User;
 import com.aj.travel.user.domain.UserRole;
 import com.aj.travel.user.dto.CreateUserRequest;
@@ -38,13 +39,13 @@ public class UserService {
         try {
             return userMapper.toResponse(userRepository.save(user));
         } catch (DataIntegrityViolationException ex) {
-            throw new RuntimeException("Email already registered");
+            throw new DuplicateResourceException("Email already registered");
         }
     }
 
     // 🔹 ADMIN REGISTER
     public UserResponse createAdmin(CreateUserRequest request) {
-        validateUniqueEmail(request.getEmail());
+        validateUniqueAdminEmail(request.getEmail());
 
         User user = userMapper.toEntity(request);
 
@@ -57,7 +58,7 @@ public class UserService {
         try {
             return userMapper.toResponse(userRepository.save(user));
         } catch (DataIntegrityViolationException ex) {
-            throw new RuntimeException("Email already registered");
+            throw new DuplicateResourceException("Email already registered");
         }
     }
 
@@ -73,7 +74,14 @@ public class UserService {
     // 🔹 EMAIL VALIDATION
     private void validateUniqueEmail(String email) {
         if (userRepository.existsByEmail(email)) {
-            throw new RuntimeException("Email already registered");
+            throw new DuplicateResourceException("Email already registered");
+        }
+    }
+
+    private void validateUniqueAdminEmail(String email) {
+        if (userRepository.existsByEmail(email)) {
+            throw new DuplicateResourceException("Email already registered");
         }
     }
 }
+

@@ -7,7 +7,11 @@ import com.aj.travel.payment.service.PaymentService;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import org.springframework.security.access.prepost.PreAuthorize;
-import org.springframework.web.bind.annotation.*;
+import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestBody;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RestController;
 
 @RestController
 @RequestMapping("/payments")
@@ -28,7 +32,7 @@ public class PaymentController {
     }
 
     @PostMapping("/confirm/{bookingId}")
-    @PreAuthorize("hasRole('ADMIN')")
+    @PreAuthorize("hasRole('USER')")
     public ApiResponse<Void> confirmPayment(@PathVariable Long bookingId) {
 
         paymentService.confirmPayment(bookingId);
@@ -39,5 +43,4 @@ public class PaymentController {
                 null
         );
     }
-
 }
