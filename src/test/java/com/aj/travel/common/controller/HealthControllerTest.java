@@ -1,8 +1,8 @@
 package com.aj.travel.common.controller;
 
-import com.aj.travel.common.config.SecurityConfig;
-import com.aj.travel.common.security.CustomUserDetailsService;
-import com.aj.travel.common.security.JwtAuthenticationFilter;
+import com.aj.travel.auth.security.JwtAuthenticationFilter;
+import com.aj.travel.auth.security.SecurityConfig;
+import com.aj.travel.auth.security.UserAuthenticationService;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -29,15 +29,15 @@ class HealthControllerTest {
     private JwtAuthenticationFilter jwtAuthenticationFilter;
 
     @MockBean
-    private CustomUserDetailsService customUserDetailsService;
+    private UserAuthenticationService userAuthenticationService;
 
     @BeforeEach
     void setUp() throws Exception {
         doAnswer(invocation -> {
-            jakarta.servlet.FilterChain filterChain = invocation.getArgument(2);
+            jakarta.servlet.FilterChain chain = invocation.getArgument(2);
             jakarta.servlet.ServletRequest request = invocation.getArgument(0);
             jakarta.servlet.ServletResponse response = invocation.getArgument(1);
-            filterChain.doFilter(request, response);
+            chain.doFilter(request, response);
             return null;
         }).when(jwtAuthenticationFilter).doFilter(any(), any(), any());
     }

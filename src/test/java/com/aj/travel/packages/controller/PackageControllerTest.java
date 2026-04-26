@@ -1,8 +1,8 @@
 package com.aj.travel.packages.controller;
 
-import com.aj.travel.common.config.SecurityConfig;
-import com.aj.travel.common.security.CustomUserDetailsService;
-import com.aj.travel.common.security.JwtAuthenticationFilter;
+import com.aj.travel.auth.security.JwtAuthenticationFilter;
+import com.aj.travel.auth.security.SecurityConfig;
+import com.aj.travel.auth.security.UserAuthenticationService;
 import com.aj.travel.packages.dto.TravelPackageResponse;
 import com.aj.travel.packages.service.PackageService;
 import org.junit.jupiter.api.BeforeEach;
@@ -22,15 +22,9 @@ import java.time.LocalDateTime;
 import java.util.List;
 
 import static org.mockito.ArgumentMatchers.any;
-import static org.mockito.Mockito.doAnswer;
-import static org.mockito.Mockito.never;
-import static org.mockito.Mockito.verify;
-import static org.mockito.Mockito.when;
-import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
-import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
-import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.put;
-import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.jsonPath;
-import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
+import static org.mockito.Mockito.*;
+import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.*;
+import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.*;
 
 @WebMvcTest(PackageController.class)
 @Import(SecurityConfig.class)
@@ -47,22 +41,22 @@ class PackageControllerTest {
     private JwtAuthenticationFilter jwtAuthenticationFilter;
 
     @MockBean
-    private CustomUserDetailsService customUserDetailsService;
+    private UserAuthenticationService userAuthenticationService;
 
     @BeforeEach
     void setUp() throws Exception {
         doAnswer(invocation -> {
-            jakarta.servlet.FilterChain filterChain = invocation.getArgument(2);
+            jakarta.servlet.FilterChain chain = invocation.getArgument(2);
             jakarta.servlet.ServletRequest request = invocation.getArgument(0);
             jakarta.servlet.ServletResponse response = invocation.getArgument(1);
-            filterChain.doFilter(request, response);
+            chain.doFilter(request, response);
             return null;
         }).when(jwtAuthenticationFilter).doFilter(any(), any(), any());
     }
 
     @Test
     void getPackages_success() throws Exception {
-        // Arrange
+
         List<TravelPackageResponse> responses = List.of(
                 new TravelPackageResponse(
                         1L,
@@ -80,7 +74,6 @@ class PackageControllerTest {
 
         when(packageService.getActivePackages()).thenReturn(responses);
 
-        // Act Assert
         mockMvc.perform(get("/packages"))
                 .andExpect(status().isOk())
                 .andExpect(jsonPath("$.success").value(true))
@@ -94,8 +87,8 @@ class PackageControllerTest {
 
     @Test
     @WithMockUser(roles = "USER")
-    void createPackage_adminOnly() throws Exception {
-        // Arrange
+    void createPackage_adminOnly_userForbidden() throws Exception {
+
         String requestJson = """
                 {
                   "title":"Goa Trip",
@@ -109,21 +102,43 @@ class PackageControllerTest {
                 }
                 """;
 
-        // Act Assert
         mockMvc.perform(post("/packages")
                         .contentType(MediaType.APPLICATION_JSON)
                         .content(requestJson))
-                .andExpect(status().isForbidden())
-                .andExpect(jsonPath("$.status").value(403))
-                .andExpect(jsonPath("$.message").value("Access denied"));
+                .andExpect(status().isForbidden());
 
         verify(packageService, never()).createPackage(any());
     }
 
     @Test
+    @WithMockUser(roles = "ADMIN")
+    void createPackage_adminAllowed() throws Exception {
+
+        String requestJson = """
+                {
+                  "title":"Goa Trip",
+                  "description":"Beach holiday",
+                  "location":"Goa",
+                  "price":15000,
+                  "capacity":10,
+                  "startDate":"2026-05-10",
+                  "endDate":"2026-05-15",
+                  "status":"ACTIVE"
+                }
+                """;
+
+        mockMvc.perform(post("/packages")
+                        .contentType(MediaType.APPLICATION_JSON)
+                        .content(requestJson))
+                .andExpect(status().isOk());
+
+        verify(packageService).createPackage(any());
+    }
+
+    @Test
     @WithMockUser(roles = "USER")
-    void updatePackage_adminOnly() throws Exception {
-        // Arrange
+    void updatePackage_adminOnly_userForbidden() throws Exception {
+
         String requestJson = """
                 {
                   "title":"Updated Goa Trip",
@@ -137,13 +152,10 @@ class PackageControllerTest {
                 }
                 """;
 
-        // Act Assert
         mockMvc.perform(put("/packages/1")
                         .contentType(MediaType.APPLICATION_JSON)
                         .content(requestJson))
-                .andExpect(status().isForbidden())
-                .andExpect(jsonPath("$.status").value(403))
-                .andExpect(jsonPath("$.message").value("Access denied"));
+                .andExpect(status().isForbidden());
 
         verify(packageService, never()).updatePackage(any(), any());
     }

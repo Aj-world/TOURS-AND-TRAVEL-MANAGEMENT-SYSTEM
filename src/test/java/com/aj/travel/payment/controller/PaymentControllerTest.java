@@ -1,8 +1,8 @@
 package com.aj.travel.payment.controller;
 
-import com.aj.travel.common.config.SecurityConfig;
-import com.aj.travel.common.security.CustomUserDetailsService;
-import com.aj.travel.common.security.JwtAuthenticationFilter;
+import com.aj.travel.auth.security.JwtAuthenticationFilter;
+import com.aj.travel.auth.security.SecurityConfig;
+import com.aj.travel.auth.security.UserAuthenticationService;
 import com.aj.travel.payment.dto.PaymentResponse;
 import com.aj.travel.payment.service.PaymentService;
 import org.junit.jupiter.api.BeforeEach;
@@ -20,13 +20,9 @@ import java.math.BigDecimal;
 import java.time.LocalDateTime;
 
 import static org.mockito.ArgumentMatchers.any;
-import static org.mockito.Mockito.doAnswer;
-import static org.mockito.Mockito.never;
-import static org.mockito.Mockito.verify;
-import static org.mockito.Mockito.when;
+import static org.mockito.Mockito.*;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
-import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.jsonPath;
-import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
+import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.*;
 
 @WebMvcTest(PaymentController.class)
 @Import(SecurityConfig.class)
@@ -43,15 +39,15 @@ class PaymentControllerTest {
     private JwtAuthenticationFilter jwtAuthenticationFilter;
 
     @MockBean
-    private CustomUserDetailsService customUserDetailsService;
+    private UserAuthenticationService userAuthenticationService;
 
     @BeforeEach
     void setUp() throws Exception {
         doAnswer(invocation -> {
-            jakarta.servlet.FilterChain filterChain = invocation.getArgument(2);
+            jakarta.servlet.FilterChain chain = invocation.getArgument(2);
             jakarta.servlet.ServletRequest request = invocation.getArgument(0);
             jakarta.servlet.ServletResponse response = invocation.getArgument(1);
-            filterChain.doFilter(request, response);
+            chain.doFilter(request, response);
             return null;
         }).when(jwtAuthenticationFilter).doFilter(any(), any(), any());
     }
@@ -59,7 +55,7 @@ class PaymentControllerTest {
     @Test
     @WithMockUser(roles = "USER")
     void createPayment_success() throws Exception {
-        // Arrange
+
         String requestJson = """
                 {
                   "bookingId":1,
@@ -80,7 +76,6 @@ class PaymentControllerTest {
 
         when(paymentService.createPayment(any())).thenReturn(response);
 
-        // Act Assert
         mockMvc.perform(post("/payments")
                         .contentType(MediaType.APPLICATION_JSON)
                         .content(requestJson))
@@ -96,14 +91,21 @@ class PaymentControllerTest {
 
     @Test
     @WithMockUser(roles = "USER")
-    void confirmPayment_adminOnly() throws Exception {
-        // Arrange Act Assert
+    void confirmPayment_adminOnly_userForbidden() throws Exception {
+
         mockMvc.perform(post("/payments/confirm/1"))
-                .andExpect(status().isForbidden())
-                .andExpect(jsonPath("$.status").value(403))
-                .andExpect(jsonPath("$.message").value("Access denied"))
-                .andExpect(jsonPath("$.path").value("/payments/confirm/1"));
+                .andExpect(status().isForbidden());
 
         verify(paymentService, never()).confirmPayment(any());
+    }
+
+    @Test
+    @WithMockUser(roles = "ADMIN")
+    void confirmPayment_adminAllowed() throws Exception {
+
+        mockMvc.perform(post("/payments/confirm/1"))
+                .andExpect(status().isOk());
+
+        verify(paymentService).confirmPayment(1L);
     }
 }

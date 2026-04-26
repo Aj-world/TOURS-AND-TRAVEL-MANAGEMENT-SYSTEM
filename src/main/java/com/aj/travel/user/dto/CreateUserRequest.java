@@ -1,6 +1,5 @@
 package com.aj.travel.user.dto;
 
-import com.aj.travel.user.domain.UserRole;
 import jakarta.validation.constraints.Email;
 import jakarta.validation.constraints.NotBlank;
 import lombok.AllArgsConstructor;
@@ -24,6 +23,4 @@ public class CreateUserRequest {
 
     @NotBlank
     private String phone;
-
-    private UserRole role;
 }

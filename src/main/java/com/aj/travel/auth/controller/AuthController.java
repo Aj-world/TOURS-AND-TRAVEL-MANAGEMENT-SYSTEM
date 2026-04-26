@@ -11,7 +11,7 @@ import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
-import org.springframework.http.ResponseEntity;
+import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.*;
 
 @RestController
@@ -23,28 +23,34 @@ public class AuthController {
     private final UserService userService;
     private final AuthService authService;
 
+    // 🔹 REGISTER
     @PostMapping("/register")
+    @ResponseStatus(HttpStatus.CREATED)
     @Operation(summary = "Register a new user")
-    public ResponseEntity<ApiResponse<UserResponse>> register(@Valid @RequestBody CreateUserRequest request) {
+    public ApiResponse<UserResponse> register(
+            @Valid @RequestBody CreateUserRequest request
+    ) {
 
-        UserResponse savedUser = userService.register(request);
+        UserResponse user = userService.register(request);
 
-        return ResponseEntity.ok(ApiResponse.success(
+        return ApiResponse.success(
                 "User registered successfully",
-                savedUser
-        ));
+                user
+        );
     }
 
+    // 🔹 LOGIN
     @PostMapping("/login")
     @Operation(summary = "Authenticate user and return JWT token")
-    public ResponseEntity<ApiResponse<LoginResponse>> login(@Valid @RequestBody LoginRequest request) {
+    public ApiResponse<LoginResponse> login(
+            @Valid @RequestBody LoginRequest request
+    ) {
 
         LoginResponse response = authService.login(request);
 
-        return ResponseEntity.ok(ApiResponse.success(
+        return ApiResponse.success(
                 "Login successful",
                 response
-        ));
+        );
     }
-
 }
