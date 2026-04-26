@@ -91,21 +91,21 @@ class PaymentControllerTest {
 
     @Test
     @WithMockUser(roles = "USER")
-    void confirmPayment_adminOnly_userForbidden() throws Exception {
-
-        mockMvc.perform(post("/payments/confirm/1"))
-                .andExpect(status().isForbidden());
-
-        verify(paymentService, never()).confirmPayment(any());
-    }
-
-    @Test
-    @WithMockUser(roles = "ADMIN")
-    void confirmPayment_adminAllowed() throws Exception {
+    void confirmPayment_userAllowed() throws Exception {
 
         mockMvc.perform(post("/payments/confirm/1"))
                 .andExpect(status().isOk());
 
         verify(paymentService).confirmPayment(1L);
+    }
+
+    @Test
+    @WithMockUser(roles = "ADMIN")
+    void confirmPayment_userOnly_adminForbidden() throws Exception {
+
+        mockMvc.perform(post("/payments/confirm/1"))
+                .andExpect(status().isForbidden());
+
+        verify(paymentService, never()).confirmPayment(any());
     }
 }
