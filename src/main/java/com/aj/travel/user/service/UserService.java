@@ -39,7 +39,7 @@ public class UserService {
         try {
             return userMapper.toResponse(userRepository.save(user));
         } catch (DataIntegrityViolationException ex) {
-            throw new RuntimeException("Email already registered");
+            throw new DuplicateResourceException("Email already registered");
         }
     }
 
@@ -74,7 +74,7 @@ public class UserService {
     // 🔹 EMAIL VALIDATION
     private void validateUniqueEmail(String email) {
         if (userRepository.existsByEmail(email)) {
-            throw new RuntimeException("Email already registered");
+            throw new DuplicateResourceException("Email already registered");
         }
     }
 

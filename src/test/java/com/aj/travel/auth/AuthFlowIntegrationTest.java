@@ -57,6 +57,33 @@ class AuthFlowIntegrationTest {
     }
 
     @Test
+    void testUserRegistration_duplicateEmailReturnsConflict() throws Exception {
+        User existingUser = new User();
+        existingUser.setName("Existing User");
+        existingUser.setEmail("duplicate-user@test.com");
+        existingUser.setPassword(passwordEncoder.encode("Password@123"));
+        existingUser.setPhone("9876543212");
+        existingUser.setRole(UserRole.USER);
+        userRepository.save(existingUser);
+
+        Map<String, Object> request = new LinkedHashMap<>();
+        request.put("name", "Test User");
+        request.put("email", "duplicate-user@test.com");
+        request.put("password", "Password@123");
+        request.put("phone", "9876543210");
+
+        mockMvc.perform(post("/auth/register")
+                        .contentType(MediaType.APPLICATION_JSON)
+                        .content(objectMapper.writeValueAsString(request)))
+                .andExpect(status().isConflict())
+                .andExpect(jsonPath("$.status").value(409))
+                .andExpect(jsonPath("$.error").value("CONFLICT"))
+                .andExpect(jsonPath("$.message").value("Email already registered"))
+                .andExpect(jsonPath("$.path").value("/auth/register"))
+                .andExpect(jsonPath("$.timestamp").exists());
+    }
+
+    @Test
     void testAdminRegistration() throws Exception {
         Map<String, Object> request = new LinkedHashMap<>();
         request.put("name", "Admin User");
