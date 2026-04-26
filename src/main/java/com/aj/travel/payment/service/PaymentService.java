@@ -13,7 +13,6 @@ import com.aj.travel.payment.mapper.PaymentMapper;
 import com.aj.travel.payment.repository.PaymentRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.security.access.AccessDeniedException;
-import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Service;
@@ -28,7 +27,6 @@ public class PaymentService {
     private final BookingRepository bookingRepository;
     private final PaymentMapper paymentMapper;
 
-    @PreAuthorize("hasRole('USER')")
     public PaymentResponse createPayment(CreatePaymentRequest request) {
 
         Long currentUserId = getCurrentUserId();
@@ -44,7 +42,6 @@ public class PaymentService {
         return paymentMapper.toResponse(paymentRepository.save(payment));
     }
 
-    @PreAuthorize("hasRole('USER')")
     public void confirmPayment(Long bookingId) {
 
         Long currentUserId = getCurrentUserId();
@@ -52,7 +49,6 @@ public class PaymentService {
         Booking booking = bookingRepository.findById(bookingId)
                 .orElseThrow(() -> new ResourceNotFoundException("Booking not found"));
 
-        // 🔒 Protect this endpoint as well
         validateBookingOwnership(booking, currentUserId);
 
         booking.setStatus(BookingStatus.CONFIRMED);
@@ -65,7 +61,6 @@ public class PaymentService {
         }
     }
 
-    // 🔐 Replace SecurityUtils
     private Long getCurrentUserId() {
         Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
 

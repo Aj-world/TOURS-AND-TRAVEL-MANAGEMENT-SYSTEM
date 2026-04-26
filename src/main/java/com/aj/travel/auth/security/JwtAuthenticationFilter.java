@@ -29,10 +29,7 @@ public class JwtAuthenticationFilter extends OncePerRequestFilter {
             FilterChain filterChain
     ) throws ServletException, IOException {
 
-        String path = request.getServletPath();
-
-        // ✅ Skip JWT processing for public endpoints
-        if (isPublicEndpoint(path)) {
+        if (isPublicEndpoint(request)) {
             filterChain.doFilter(request, response);
             return;
         }
@@ -40,7 +37,6 @@ public class JwtAuthenticationFilter extends OncePerRequestFilter {
         try {
             String token = resolveToken(request);
 
-            // ✅ Only authenticate if token is present
             if (StringUtils.hasText(token) &&
                     jwtTokenProvider.validateToken(token) &&
                     SecurityContextHolder.getContext().getAuthentication() == null) {
@@ -66,20 +62,21 @@ public class JwtAuthenticationFilter extends OncePerRequestFilter {
 
         } catch (Exception ex) {
             logger.error("JWT authentication failed", ex);
-            // ❗ Do NOT block request here
         }
 
         filterChain.doFilter(request, response);
     }
 
-    // ✅ Centralized public endpoint definition
-    private boolean isPublicEndpoint(String path) {
-        return path.equals("/admin/register") ||
-                path.startsWith("/auth") ||
+    private boolean isPublicEndpoint(HttpServletRequest request) {
+        String path = request.getServletPath();
+        String method = request.getMethod();
+
+        return ("GET".equals(method) && (path.equals("/") || path.equals("/api/system/health"))) ||
+                ("POST".equals(method) && (path.equals("/auth/register") || path.equals("/auth/login"))) ||
                 path.startsWith("/swagger-ui") ||
+                path.equals("/swagger-ui.html") ||
                 path.startsWith("/v3/api-docs") ||
-                path.equals("/api/system/health") ||
-                path.equals("/");
+                path.equals("/v3/api-docs.yaml");
     }
 
     private String resolveToken(HttpServletRequest request) {
