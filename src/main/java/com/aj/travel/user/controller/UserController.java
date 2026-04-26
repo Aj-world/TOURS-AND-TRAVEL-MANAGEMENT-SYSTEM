@@ -17,11 +17,10 @@ public class UserController {
     private final UserService userService;
 
     @GetMapping
-    @Secured("ROLE_ADMIN")
+    @Secured("ROLE_ADMIN") // 🔒 only admin can access
     public ApiResponse<List<UserResponse>> getUsers() {
 
-        return new ApiResponse<>(
-                true,
+        return ApiResponse.success(
                 "Users retrieved successfully",
                 userService.getUsers()
         );

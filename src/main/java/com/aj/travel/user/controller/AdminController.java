@@ -6,24 +6,27 @@ import com.aj.travel.user.dto.UserResponse;
 import com.aj.travel.user.service.UserService;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
-import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.security.access.annotation.Secured;
+import org.springframework.web.bind.annotation.*;
 
 @RestController
+@RequestMapping("/admin") // ✅ clean base path
 @RequiredArgsConstructor
 public class AdminController {
 
     private final UserService userService;
 
-    @PostMapping("/admin/register")
-    public ResponseEntity<ApiResponse<UserResponse>> registerAdmin(@Valid @RequestBody CreateUserRequest request) {
+    @PostMapping("/register")
+    @Secured("ROLE_ADMIN") // 🔒 CRITICAL: protect admin creation
+    public ApiResponse<UserResponse> registerAdmin(
+            @Valid @RequestBody CreateUserRequest request
+    ) {
+
         UserResponse savedAdmin = userService.createAdmin(request);
 
-        return ResponseEntity.ok(ApiResponse.success(
+        return ApiResponse.success(
                 "Admin registered successfully",
                 savedAdmin
-        ));
+        );
     }
 }

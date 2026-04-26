@@ -12,6 +12,7 @@ import org.springframework.cache.annotation.CacheEvict;
 import org.springframework.cache.annotation.CachePut;
 import org.springframework.cache.annotation.Cacheable;
 import org.springframework.cache.annotation.Caching;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -25,6 +26,7 @@ public class PackageService {
     private final TravelPackageRepository packageRepository;
     private final PackageMapper packageMapper;
 
+    @PreAuthorize("hasRole('ADMIN')")
     @CacheEvict(cacheNames = "packages", key = "'active'")
     public TravelPackageResponse createPackage(CreateTravelPackageRequest request) {
         TravelPackage travelPackage = packageMapper.toEntity(request);
@@ -32,6 +34,7 @@ public class PackageService {
         return packageMapper.toResponse(packageRepository.save(travelPackage));
     }
 
+    @PreAuthorize("hasRole('ADMIN')")
     @Caching(
             put = @CachePut(cacheNames = "packageById", key = "#id"),
             evict = @CacheEvict(cacheNames = "packages", key = "'active'")

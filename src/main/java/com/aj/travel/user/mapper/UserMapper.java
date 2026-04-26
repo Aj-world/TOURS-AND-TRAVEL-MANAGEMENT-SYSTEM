@@ -14,7 +14,10 @@ public class UserMapper {
         user.setEmail(request.getEmail());
         user.setPassword(request.getPassword());
         user.setPhone(request.getPhone());
-        user.setRole(request.getRole());
+
+        // ❌ DO NOT MAP ROLE FROM REQUEST
+        // user.setRole(request.getRole());
+
         return user;
     }
 

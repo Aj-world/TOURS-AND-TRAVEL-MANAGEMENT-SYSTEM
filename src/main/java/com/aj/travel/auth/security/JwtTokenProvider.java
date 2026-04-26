@@ -1,4 +1,4 @@
-package com.aj.travel.common.security;
+package com.aj.travel.auth.security;
 
 import io.jsonwebtoken.Claims;
 import io.jsonwebtoken.JwtException;
@@ -16,25 +16,32 @@ import java.util.Date;
 @Component
 public class JwtTokenProvider {
 
-    private static final long TOKEN_VALIDITY_IN_MILLISECONDS = 60 * 60 * 1000;
-
     private final String jwtSecret;
+    private final long jwtExpirationInMs;
 
     private SecretKey secretKey;
 
-    public JwtTokenProvider(@Value("${jwt.secret}") String jwtSecret) {
+    public JwtTokenProvider(
+            @Value("${jwt.secret}") String jwtSecret,
+            @Value("${jwt.expiration:3600000}") long jwtExpirationInMs // default 1 hour
+    ) {
         this.jwtSecret = jwtSecret;
+        this.jwtExpirationInMs = jwtExpirationInMs;
     }
 
     @PostConstruct
     public void init() {
-        byte[] keyBytes = jwtSecret.getBytes(StandardCharsets.UTF_8);
-        this.secretKey = Keys.hmacShaKeyFor(keyBytes);
+        if (jwtSecret == null || jwtSecret.length() < 32) {
+            throw new IllegalArgumentException("JWT secret must be at least 32 characters long");
+        }
+
+        this.secretKey = Keys.hmacShaKeyFor(jwtSecret.getBytes(StandardCharsets.UTF_8));
     }
 
+    // 🔐 Generate token
     public String generateToken(String username) {
         Date now = new Date();
-        Date expiryDate = new Date(now.getTime() + TOKEN_VALIDITY_IN_MILLISECONDS);
+        Date expiryDate = new Date(now.getTime() + jwtExpirationInMs);
 
         return Jwts.builder()
                 .setSubject(username)
@@ -44,19 +51,22 @@ public class JwtTokenProvider {
                 .compact();
     }
 
-    public String extractUsername(String token) {
+    // 📥 Extract username
+    public String getUsernameFromToken(String token) {
         return extractClaims(token).getSubject();
     }
 
+    // ✅ Validate token
     public boolean validateToken(String token) {
         try {
-            extractClaims(token);
-            return true;
+            Claims claims = extractClaims(token);
+            return !claims.getExpiration().before(new Date());
         } catch (JwtException | IllegalArgumentException ex) {
             return false;
         }
     }
 
+    // 🔍 Extract claims (centralized parsing)
     private Claims extractClaims(String token) {
         return Jwts.parserBuilder()
                 .setSigningKey(secretKey)
